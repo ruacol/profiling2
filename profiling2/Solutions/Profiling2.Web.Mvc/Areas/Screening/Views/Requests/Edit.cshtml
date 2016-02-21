@@ -1,0 +1,128 @@
+﻿@using System.Linq
+@using Profiling2.Domain.Scr.Attach
+@model Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels.RequestViewModel
+@{
+  ViewBag.Title = "Edit Screening Request";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("#RespondBy").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+    $("#RespondBy").change(function() {
+      if ($("#RespondBy").val())
+        $("#RespondImmediately").prop("checked", false);
+    });
+    $("#RespondImmediately").change(function() {
+      if ($("#RespondImmediately").is(":checked"))
+        $("#RespondBy").val("");
+    });
+  });
+}
+
+<h2>Edit Screening Request</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+@using (Html.BeginForm("Edit", "Requests", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <fieldset>
+        <legend>@(!string.IsNullOrEmpty(Model.RequestName) ? Model.RequestName : "(no request name)")</legend>
+
+        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+        {
+            <div class="alert alert-success">
+                @ViewBag.SuccessMessage
+            </div>
+        }
+        
+        <div class="control-group">
+            <label class="control-label">Reference number</label>
+            <div class="controls">
+                @Html.TextBoxFor(x => x.ReferenceNumber, new { @class = "uneditable-input" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Type *</label>
+            <div class="controls">
+                @Html.DropDownListFor(x => x.RequestTypeID, Model.RequestTypes, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Name *</label>
+            <div class="controls">
+                @Html.TextBoxFor(x => x.RequestName, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Description *</label>
+            <div class="controls">
+                @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Requesting entity *</label>
+            <div class="controls">
+                @Html.DropDownListFor(x => x.RequestEntityID, Model.RequestEntities, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Respond By</label>
+            <div class="controls">
+                <div class="input-append">
+                    @Html.TextBoxFor(x => x.RespondBy, new { @readonly = true, style = "cursor: pointer; background-color: #ffffff;" })
+                    <span class="add-on"><i class="icon-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Respond Immediately?</label>
+            <div class="controls">
+                @Html.CheckBoxFor(x => x.RespondImmediately)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">
+                @Html.ActionLink("Attachments", "Index", "Attachments", new { requestId = Model.Id, area = "Screening" }, new { @class = "btn btn-mini" })
+            </label>
+            <div class="controls">
+                @if (Model.RequestAttachments != null && Model.RequestAttachments.Where(x => !x.Archive).Any())
+                {
+                    <ul>
+                        @foreach (RequestAttachment ra in Model.RequestAttachments.Where(x => !x.Archive))
+                        {
+                            <li>
+                                @Html.ActionLink(ra.Attachment.FileName, "Download", "Attachments", new { area = "Screening", requestId = ra.Request.Id, id = ra.Attachment.Id }, null)
+                                @if (ra.Archive)
+                                {
+                                    @:&nbsp;<span class="label">removed</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <span class="help-inline">There are no attachments.</span>
+                }
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Status</label>
+            <div class="controls">
+                @Html.DropDownListFor(x => x.RequestStatusID, Model.RequestStatuses, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+    </fieldset>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @Html.ActionLink("Back", "Details", "Requests", new { area = "Screening", id = Model.Id }, new { @class = "btn" })
+    </div>
+        
+    
+}

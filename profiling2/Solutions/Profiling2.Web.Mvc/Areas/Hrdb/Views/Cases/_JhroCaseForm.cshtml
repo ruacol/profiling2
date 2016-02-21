@@ -1,0 +1,18 @@
+﻿@using Profiling2.Web.Mvc.Areas.Hrdb.Controllers.ViewModels
+@model JhroCaseViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+<div class="alert alert-error">
+    @Html.ValidationSummary()
+</div>
+}
+
+<div id="validation-errors"></div>
+
+<div class="control-group">
+    <label class="control-label">Case Code *</label>
+    <div class="controls">
+        @Html.TextBoxFor(x => x.CaseNumber, new { @class = "input-xlarge" })
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model LocationViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+<div class="alert alert-error">
+    @Html.ValidationSummary()
+</div>
+}
+
+<div id="validation-errors"></div>
+
+<fieldset>
+    <div class="control-group">
+        <label class="control-label">Name *</label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.LocationName, new { @class = "input-xlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Town</label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.Town, new { @class = "input-xlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Territory</label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.Territory, new { @class = "input-xlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Pre-2015 Province</label>
+        <div class="controls">
+            @Html.DropDownListFor(x => x.RegionId, Model.RegionList, string.Empty)
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Province</label>
+        <div class="controls">
+            @Html.DropDownListFor(x => x.ProvinceId, Model.ProvinceList, string.Empty)
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Latitude</label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.Latitude, new { @class = "input-xlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Longitude</label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.Longitude, new { @class = "input-xlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Notes</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Notes, new { @class = "input-xlarge" })
+        </div>
+    </div>
+</fieldset>

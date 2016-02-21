@@ -1,0 +1,61 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model PhotoViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<div id="validation-errors"></div>
+
+<fieldset>
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.PersonId)
+    <div class="control-group">
+        <label class="control-label">
+            Photo
+        </label>
+        <div class="controls">
+            @if (Model.Id > 0)
+            {
+                <img src="@Url.Action("Get", "PersonPhotos", new { personId = Model.PersonId, photoId = Model.Id })" height="150" width="150" class="img-polaroid" />
+            }
+            else
+            {
+                <span class="btn fileinput-button">
+                    <span>Upload Photo</span>
+                    <input type="file" id="FileData" name="FileData" />
+                </span>
+                <i class="accordion-toggle icon-info-sign" title="The photo that should be attached to this individual."></i>
+            }
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Photo Name *
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.PhotoName, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            URL
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.FileURL, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The URL where this image was sourced from."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Notes
+        </label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="Notes about this photo."></i>
+        </div>
+    </div>
+</fieldset>

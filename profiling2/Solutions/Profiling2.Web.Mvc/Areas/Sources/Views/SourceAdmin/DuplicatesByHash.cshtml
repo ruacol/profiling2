@@ -1,0 +1,43 @@
+﻿@model IList<object[]>
+@{
+    ViewBag.Title = "Duplicates By Hash";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("duplicates-table", {
+      bServerSide: false
+    });
+  }); 
+}
+
+<h2>Duplicates By Hash</h2>
+
+<p>This page identifies source duplicates by an MD5 hash of their contents.  You can inspect the individual sources by clicking on the hash.</p>
+
+<p>'Cleaning' the duplicates involves merging all the duplicates' attached entities into one source, and archiving the rest.  
+    If the source paths match the source to be kept, the other sources are outright deleted ater merging.</p>
+
+<p>@Html.ActionLink("Clean 500 at a time", "CleanDuplicatesByHash", "SourceAdmin", new { area = "Sources" }, new { @class = "btn btn-mini" })</p>
+
+<hr />
+
+<table id="duplicates-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Hash</th>
+      <th>Duplicates</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (object[] row in Model)
+    {
+      <tr>
+        <td>
+          @Html.ActionLink(BitConverter.ToString(row[0] as byte[]).Replace("-", ""), "DuplicatesByHashOf", "SourceAdmin", new { area = "Sources", Hash = BitConverter.ToString(row[0] as byte[]).Replace("-", "") }, new { target = "_blank" })
+        </td>
+        <td>@row[1]</td>
+      </tr>
+    }
+  </tbody>
+</table>

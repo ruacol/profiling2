@@ -1,0 +1,48 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model OperationNameChangeViewModel
+@{
+    ViewBag.Title = ViewBag.CurrentOperation.Name;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.BasicSelect({
+      el: "#OldOperationId",
+      placeholder: "Search by operation name...",
+      nameUrl: "@(Request.ApplicationPath + "/")Profiling/Operations/Name/",
+      getUrl: "@(Request.ApplicationPath + "/")Profiling/Operations/Json"
+    });
+  }); 
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Set Operation's Former Name</h3>
+
+<p>@ViewBag.CurrentOperation.Name was formerly known as...</p>
+
+<hr />
+
+@if (!ViewData.ModelState.IsValid)
+{
+  <div class="alert alert-error">
+    @Html.ValidationSummary()
+  </div>
+}
+
+@using (Html.BeginForm("EditFormerNameChange", "Operations", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+  @Html.HiddenFor(x => x.CurrentOperationId)
+  @Html.HiddenFor(x => x.NewOperationId)
+  <div class="control-group">
+      <label class="control-label">(Former) Operation</label>
+      <div class="controls">
+          @Html.HiddenFor(x => x.OldOperationId, new { @class = "input-xxlarge" })
+      </div>
+  </div>
+  
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Set</button>
+    @Html.ActionLink("Back", "Details", "Operations", new { area = "Profiling", id = ViewBag.CurrentOperation.Id }, new { @class = "btn" })
+  </div>
+}

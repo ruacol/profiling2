@@ -1,0 +1,96 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf.Units
+@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels
+@model QueryFinalDecisionViewModel
+@{
+    ViewBag.Title = "Final Decisions";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.BasicSelect({
+      el: "#OrganizationId",
+      placeholder: "Search by organization ID or name...",
+      nameUrl: "@(Request.ApplicationPath + "/")Profiling/Organizations/Name/",
+      getUrl: "@(Request.ApplicationPath + "/")Profiling/Organizations/Get"
+    });
+
+    new Profiling.DataTable("decision-table", {
+      bServerSide: false,
+      aaSorting: [ [ 5, 'desc' ] ]
+    });
+  }); 
+}
+
+<h2>Final Decisions</h2>
+
+<p>
+    Use this form to produce a list of persons for whom a final decision was made, filtered by screening result (a.k.a. color coding).  You can optionally filter these results
+    by organization; only those persons who have, at some point during their career, been a member of the selected organization will be shown.
+</p>
+
+@using (Html.BeginForm("FinalDecisions", "Home", new { area = "Screening" }, FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="control-group">
+      <label class="control-label">Screening Result</label>
+      <div class="controls">
+        @Html.DropDownListFor(x => x.ScreeningResultId, Model.ScreeningResults, new { @class = "input-large" })
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Organization</label>
+      <div class="controls">
+        @Html.HiddenFor(x => x.OrganizationId, new { @class = "input-xxlarge" })
+        <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Go</button>
+      </div>
+    </div>
+}
+
+<hr />
+
+@if (ViewData["people"] != null)
+{
+    <p>Notes:</p>
+    <ol>
+        <li>Function and rank are current (i.e. not at the time of the final decision, if at all different).</li>
+        <li>The last result, decision date and waiver columns are based on the most recent final decision.</li>
+        <li>The presence of a waiver in this table is based purely on whether the final decision commentary contains the text 'waiver'; nothing more.</li>
+        <li>Operations is based on the person's current unit.</li>
+    </ol>
+}
+
+<table class="table table-bordered" id="decision-table">
+    <thead>
+        <tr>
+            <th>ID</th><th>Name</th><th>Function</th><th>Rank</th><th>Last Result</th><th>Last Decision Date</th><th>Waiver</th><th>Part of Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewData["people"] != null)
+        {
+            foreach (Person p in (IList<Person>)ViewData["people"])
+            {
+                <tr>
+                    <td>@p.MilitaryIDNumber</td>
+                    <td style="white-space: nowrap;">@Html.ActionLink(p.Name, "Details", "Persons", new { area = "Profiling", id = p.Id }, new { target = "_blank" })</td>
+                    <td>@(p.CurrentCareer != null ? p.CurrentCareer.FunctionUnitSummary : string.Empty)</td>
+                    <td>@Html.Raw(p.CurrentRank)</td>
+                    <td>@p.LatestScreeningResult</td>
+                    <td style="white-space: nowrap;">@string.Format("{0:yyyy-MM-dd HH:mm}", p.LatestScreeningFinalDecisionDate)</td>
+                    <td>@(p.LatestScreeningFinalDecisionContainsWaiver ? "Yes" : "No")</td>
+                    <td>
+                        @if (p.CurrentCareer != null && p.CurrentCareer.Unit != null)
+                        {
+                            foreach (UnitOperation uo in p.CurrentCareer.Unit.UnitOperations.Where(x => x.IsCurrentAsOf(DateTime.Now) && !x.Operation.Archive))
+                            {
+                                @uo.Operation.Name
+                                <text><br /></text>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

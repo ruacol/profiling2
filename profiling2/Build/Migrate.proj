@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Migrate">
+
+  <PropertyGroup>
+	<AssemblyFile>..\Packages\FluentMigrator.1.1.1.0\tools\FluentMigrator.MSBuild.dll</AssemblyFile>
+	<Database>sqlserver2008</Database>
+	<Connection>Data Source=localhost;User ID=babbleuser;Password=babbleuser;Initial Catalog=undp-drc-profiling;</Connection>
+	<TargetDll>..\Solutions\Profiling2.Migrations\bin\Debug\Profiling2.Migrations.dll</TargetDll>
+  </PropertyGroup>
+
+  <UsingTask TaskName="FluentMigrator.MSBuild.Migrate" 
+        AssemblyFile="$(AssemblyFile)"/>
+
+  <Target Name="Migrate" >
+    <Message Text="Starting FluentMigrator Migration"/>
+    <Migrate Database="$(Database)"
+             Connection="$(Connection)"
+             Target="$(TargetDll)"
+			 Timeout="18000">
+    </Migrate>
+  </Target>
+  
+  <Target Name="MigrateRollback" >
+    <Message Text="Starting FluentMigrator Migration Rollback"/>
+
+    <Migrate Database="$(Database)"
+             Connection="$(Connection)"
+             Target="$(TargetDll)"
+			 Task="rollback">
+    </Migrate>
+  </Target>
+  
+  <Target Name="MigrateRollbackAll" >
+    <Message Text="Starting FluentMigrator Migration Rollback All"/>
+
+    <Migrate Database="$(Database)"
+             Connection="$(Connection)"
+             Target="$(TargetDll)"
+	     Task="rollback:all">
+    </Migrate>
+  </Target>
+
+</Project>

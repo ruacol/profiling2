@@ -1,0 +1,36 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@model IList<Source>
+
+<table id="duplicates-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Path</th>
+      <th>File Date</th>
+      <th>Size</th>
+      <th>Import Date</th>
+      <th>Reviews</th>
+      <th>Events</th>
+      <th>Persons</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Source s in Model)
+    {
+      <tr>
+        <td>
+          <a href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@s.Id" target="_blank">
+            @s.Id
+          </a>
+        </td>
+        <td>@s.SourcePath</td>
+        <td>@s.FileDateTimeStamp</td>
+        <td>@s.FileData.Count()</td>
+        <td>@s.SourceDate</td>
+        <td>@s.AdminReviewedSources.Count</td>
+        <td>@s.EventSources.Count</td>
+        <td>@s.PersonSources.Count</td>
+      </tr>
+    }
+  </tbody>
+</table>

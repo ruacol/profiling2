@@ -1,0 +1,27 @@
+﻿@using Profiling2.Domain.Prf.Units
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model Unit
+@{
+    ViewBag.Title = Model.UnitName + " Combined Locations";
+}
+@section styles
+{
+  @Html.RenderCssBundle("~/Content/leaflet.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <!--[if lte IE 8]>
+      @Html.RenderCssBundle("~/Content/leaflet.ie.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <![endif]-->
+}
+@section scriptSources
+{
+  @Html.RenderJsBundle("~/Scripts/leaflet.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+}
+@section scripts
+{
+  $(document).ready(function() {
+    var view = new Profiling.Views.CombinedLocationsMapView({ unitId: @Model.Id });
+    $("h2").after(view.render().el);
+  }); 
+}
+
+<h2>@ViewBag.Title</h2>
+

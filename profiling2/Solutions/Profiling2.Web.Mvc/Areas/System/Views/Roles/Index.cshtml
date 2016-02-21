@@ -1,0 +1,54 @@
+﻿@using Profiling2.Domain.Prf
+@model IList<AdminRole>
+@{
+    ViewBag.Title = "Roles";
+}
+
+<h2>Roles</h2>
+
+<p>Manage what each role is authorized to do using this interface.</p>
+
+<p>@Html.ActionLink("Create", "Create", "Roles", new { area = "System" }, new { @class = "btn" })</p>
+
+<hr />
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Permissions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (AdminRole r in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(r.Name, "Edit", "Roles", new { id = r.Id, area = "System" }, null)</td>
+                <td>
+                    @if (r.AdminPermissions != null && r.AdminPermissions.Any())
+                    {
+                        foreach (string s in new string[] { "Person", "Events", "Units", "Sources" })
+                        {
+                            if (r.AdminPermissions.Where(x => x.Name.Contains(s)).Any())
+                            {
+                                foreach (AdminPermission p in r.AdminPermissions.Where(x => x.Name.Contains(s)).OrderBy(x => x.Name))
+                                {
+                                    <span class="badge">@p.Name</span>
+                                }
+                                <br />
+                            }
+                        }
+                        foreach (AdminPermission p in r.AdminPermissions.Where(x => !x.Name.Contains("Person") && !x.Name.Contains("Events") && !x.Name.Contains("Units") && !x.Name.Contains("Sources")).OrderBy(x => x.Name))
+                        {
+                            <span class="badge">@p.Name</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="muted">No permissions</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

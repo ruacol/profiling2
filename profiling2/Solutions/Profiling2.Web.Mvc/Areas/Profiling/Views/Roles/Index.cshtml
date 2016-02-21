@@ -1,0 +1,46 @@
+﻿@using Profiling2.Domain.Prf.Careers
+@model IList<Role>
+@{
+  ViewBag.Title = "Functions";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("roles-table", {
+      bServerSide: false,
+      aaSorting: [ [ 3, 'asc' ] ]
+    });
+  }); 
+}
+
+<div class="btn-toolbar">
+    <div id="role-menu" class="btn-group">
+      @Html.ActionLink("Create Function", "Create", "Roles", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+    </div>
+</div>
+
+<h2>Functions</h2>
+
+<hr />
+
+<table id="roles-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Name (FR)</th>
+      <th>Sort Order</th>
+      <th>Individuals</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Role r in Model)
+    {
+      <tr>
+        <td>@Html.ActionLink(r.RoleName, "Details", "Roles", new { area = "Profiling", id = r.Id }, null)</td>
+        <td>@r.RoleNameFr</td>
+        <td>@r.SortOrder</td>
+        <td>@r.Careers.Select(x => x.Person).Distinct().Count()</td>
+      </tr>
+    }
+  </tbody>
+</table>

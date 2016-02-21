@@ -1,0 +1,51 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf.Careers
+@model IList<Career>
+
+<p class="pull-left">@Model.Count careers, @Model.Select(x => x.Person).Distinct().Count() individuals.</p>
+
+<table id="careers-table" class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Person</th>
+            <th>Date</th>
+            <th>Function</th>
+            <th>Rank</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Career c in Model)
+        {
+            <tr>
+                <td>
+                    @if (c.IsCurrentCareer)
+                    {
+                        <span class="label pull-right"><small>CURRENT</small></span>
+                    }
+                    @Html.ActionLink(c.Person.Name, "Details", "Persons", new { area = "Profiling", id = c.Person.Id }, null)
+                </td>
+                <td>
+                    <span title="@c.GetSortDate().Ticks"></span>
+                    @if (c.HasStartDate())
+                    {
+                        <span>From</span> @Html.DateLabel(c.YearOfStart, c.MonthOfStart, c.DayOfStart)
+                        if (c.HasEndDate())
+                        {
+                            <span>until</span> @Html.DateLabel(c.YearOfEnd, c.MonthOfEnd, c.DayOfEnd)
+                        }
+                    }
+                    else if (c.HasEndDate())
+                    {
+                        <span>Up to</span> @Html.DateLabel(c.YearOfEnd, c.MonthOfEnd, c.DayOfEnd)
+                    }
+                    else if (c.HasAsOfDate())
+                    {
+                        <span>As of</span> @Html.DateLabel(c.YearAsOf, c.MonthAsOf, c.DayAsOf)
+                    }
+                </td>
+                <td><span title="@(c.Role != null && c.Role.SortOrder > 0 ? c.Role.SortOrder : int.MaxValue)"></span>@Html.Raw(c.FunctionUnitSummary)</td>
+                <td><span title="@(c.Rank != null && c.Rank.SortOrder > 0 ? c.Rank.SortOrder : int.MaxValue)"></span>@Html.Raw(c.RankOrganizationLocationSummary)</td>
+            </tr>
+        }
+    </tbody>
+</table>

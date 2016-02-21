@@ -1,0 +1,78 @@
+﻿@using HrdbWebServiceClient.Domain
+@model HrdbPerpetrator
+
+<dl>
+    <dt>Person</dt>
+    <dd>
+        @if (string.IsNullOrEmpty(Model.GetName()))
+        {
+            <span class="muted">(no person)</span>
+        }
+        else
+        {
+            <a data-toggle="collapse" data-target="#perpetrator-@Model.PersonId">@Model.GetName()</a>
+        }
+    </dd>
+    @if (!string.IsNullOrEmpty(Model.Aliases))
+    {
+        <dt>Aliases</dt>
+        <dd>@Model.Aliases</dd>
+    }
+    <dt>Rank</dt>
+    <dd>
+        @if (string.IsNullOrEmpty(Model.Rank))
+        {
+            <span class="muted">(no rank)</span>
+        }
+        else
+        {
+            @Model.Rank
+        }
+    </dd>
+    <dt>Group</dt>
+    <dd>
+        @if (string.IsNullOrEmpty(Model.Group))
+        {
+            <span class="muted">(no group)</span>
+        }
+        else
+        {
+            @Model.Group
+        }
+    </dd>
+</dl>
+
+<div class="collapse" id="perpetrator-@Model.PersonId">
+    <dl>
+        @if (!string.IsNullOrEmpty(Model.Ethnicity))
+        {
+            <dt>Ethnicity</dt>
+            <dd>@Model.Ethnicity</dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.GetAgeString()))
+        {
+            <dt>Age</dt>
+            <dd>@Model.GetAgeString()</dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.Nationality))
+        {
+            <dt>Nationality</dt>
+            <dd>@Model.Nationality</dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.Sex))
+        {
+            <dt>Sex</dt>
+            <dd>@Model.Sex</dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.Religion))
+        {
+            <dt>Religion</dt>
+            <dd>@Model.Religion</dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.AdditionalInfo))
+        {
+            <dt>Additional Info</dt>
+            <dd>@Model.AdditionalInfo</dd>
+        }
+    </dl>
+</div>

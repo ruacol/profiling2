@@ -1,0 +1,70 @@
+﻿@using Profiling2.Domain.DTO
+@using Profiling2.Web.Mvc.Areas.System.Controllers.ViewModels
+@model SearchViewModel
+@{
+    ViewBag.Title = "Folders";
+    IDictionary<string, SourceFolderDTO> PathCounts = (IDictionary<string, SourceFolderDTO>)ViewData["pathCounts"];
+}
+@section scripts
+{
+  $(document).ready(function() {
+    var dataTable = new Profiling.DataTable("counts-table", {
+      bServerSide: false
+    });
+    $(".btn-archive").click(function(e) {
+      bootbox.confirm("All sources under this folder, including sub folders, will be archived.  Continue?", function(response) {
+        if (response === true)
+          window.location.href = "@(Request.ApplicationPath + "/")Sources/SourceAdmin/ArchiveFolder?Term=" + $(e.target).data("term");
+      });
+    });
+  });
+}
+
+<h2>Folders</h2>
+
+<p>Specify a list of share drive paths, one on each line, to get the number of files and the most recent file date for that path.</p>
+
+@using (Html.BeginForm("Folders", "SourceAdmin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="control-group">
+        <label class="control-label">Folders</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Term, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+}
+
+@if (PathCounts != null)
+{
+    <hr />
+    <p>@PathCounts.Values.Sum(x => x.NumFiles) files in total covered by the folders below.</p>
+    <table id="counts-table" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Folder</th><th>Files</th><th>Latest</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<string, SourceFolderDTO> kvp in PathCounts)
+            {
+                <tr>
+                    <td>@kvp.Key</td>
+                    <td class="count" data-count="@kvp.Value.NumFiles">@kvp.Value.NumFiles</td>
+                    <td style="white-space: nowrap;">
+                        @if (kvp.Value.LatestFileDate.HasValue)
+                        {
+                            @string.Format("{0:yyyy-MM-dd HH:mm}", kvp.Value.LatestFileDate.Value)
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-mini btn-archive" data-term="@kvp.Key">Archive</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

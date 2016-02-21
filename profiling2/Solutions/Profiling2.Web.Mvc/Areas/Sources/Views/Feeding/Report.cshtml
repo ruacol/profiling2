@@ -1,0 +1,75 @@
+﻿@using Profiling2.Domain.Contracts.Tasks.Sources
+@using Profiling2.Domain.DTO
+@using Profiling2.Domain.Scr
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model DateViewModel
+@{
+  ViewBag.Title = "Feeding Source Report";
+  IDictionary<string, FeedingSourceStat> Stats = ViewBag.Stats;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("#StartDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+    $("#EndDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+  });
+}
+
+<h2>Feeding Source Report</h2>
+
+<p>Select the date period in which to report on source feeding activity.  Start Date is inclusive, End Date is exclusive.</p>
+
+<div class="clearfix" style="margin-top: 20px;">
+  @using (Html.BeginForm("Report", "Feeding", new { area = "Sources" }, FormMethod.Post, new { @class = "form-horizontal" }))
+  {
+    <div class="control-group">
+      <label class="control-label">Start Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.StartDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">End Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.EndDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Go</button>
+      </div>
+    </div>
+  }
+</div>
+
+@if (Stats != null)
+{
+  <hr />
+    
+    <h4>Source feeding activity from @Model.StartDate to @Model.EndDate</h4>
+    
+    <table class="table table-bordered table-stats" style="margin-top: 15px;">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th class="span2">Uploaded</th>
+                <th class="span2">Approved</th>
+                <th class="span2">Rejected</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<string, FeedingSourceStat> kvp in Stats)
+            {
+                <tr>
+                    <td>@kvp.Key</td>
+                    <td class="span2">@kvp.Value.Uploaded</td>
+                    <td class="span2">@kvp.Value.Approved</td>
+                    <td class="span2">@kvp.Value.Rejected</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+}

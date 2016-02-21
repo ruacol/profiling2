@@ -1,0 +1,95 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@{
+    ViewBag.Title = "Sources";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var countChart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'count-chart',
+                type: 'line'
+            },
+            credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: true
+            },
+            title: {
+                text: 'Sources Imported'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: {
+                    day: '%b %e'
+                },
+                minTickInterval: 24 * 3600 * 1000
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Sources'
+                },
+                min: 0,
+                minTickInterval: 1
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>' + moment(this.x).format('LL') + '</b><br />' + this.series.name + ': ' + this.y;
+                }
+            },
+            series: [
+                {
+                    name: "Sources Imported",
+                    data: [
+                        @foreach (object[] row in ViewBag.ImportCounts)
+                        {
+                            @:[Date.UTC(@(row[0] != null ? row[0] : 0), @(row[1] != null ? (int)row[1]-1 : 0), @(row[2] != null ? row[2] : 0)), @row[3]],
+                        }
+                    ]
+                }
+             ]
+        });
+    });
+}
+
+<h2>Sources</h2>
+
+<p>
+  Last successful source was imported on <strong>@string.Format("{0:dddd dd MMMM yyyy}", ViewBag.LastImportDate)</strong> 
+  at <strong>@string.Format("{0:h:mm tt}", ViewBag.LastImportDate)</strong>.
+</p>
+
+<p>There are <strong>@ViewBag.Count</strong> sources, and @ViewBag.CountArchived archived sources.</p>
+
+<div class="clearfix">
+  <div class="pull-left">
+    <p>Total size of sources is:</p>
+    <dl class="dl-horizontal">
+      <dt>Bytes</dt>
+      <dd>@ViewBag.TotalSize</dd>
+      <dt>Kilobytes</dt>
+      <dd>@(ViewBag.TotalSize / 1024)</dd>
+      <dt>Megabytes</dt>
+      <dd>@(ViewBag.TotalSize / 1024 / 1024)</dd>
+      <dt>Gigabytes</dt>
+      <dd>@(ViewBag.TotalSize / 1024 / 1024 / 1024)</dd>
+    </dl>
+  </div>
+
+  <div class="pull-left" style="margin-left: 20px;">
+    <p>Total size of archived sources is:</p>
+    <dl class="dl-horizontal">
+      <dt>Bytes</dt>
+      <dd>@ViewBag.TotalArchivedSize</dd>
+      <dt>Kilobytes</dt>
+      <dd>@(ViewBag.TotalArchivedSize / 1024)</dd>
+      <dt>Megabytes</dt>
+      <dd>@(ViewBag.TotalArchivedSize / 1024 / 1024)</dd>
+      <dt>Gigabytes</dt>
+      <dd>@(ViewBag.TotalArchivedSize / 1024 / 1024 / 1024)</dd>
+    </dl>
+  </div>
+</div>
+
+<div id="count-chart"></div>

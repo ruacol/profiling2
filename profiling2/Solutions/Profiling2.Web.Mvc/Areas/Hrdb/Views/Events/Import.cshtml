@@ -1,0 +1,247 @@
+﻿@using Profiling2.Web.Mvc.Areas.Hrdb.Controllers.ViewModels
+@model HrdbCaseViewModel
+@{
+    ViewBag.Title = "Import HRDB Case";
+    ViewBag.NoSidebar = true;
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.HrdbCaseImportRouter({ 
+            id: @Model.Id,
+            numPerpetrators: @Model.HrdbPerpetrators.Count
+        });
+        Backbone.history.start();
+    });
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>@Model.HrdbCase.CaseCode</h3>
+
+<p>
+    Import data from this case into Events, Person Responsibilities and Organization Responsibilities.
+    &nbsp;&nbsp;Data from the HRDB case is shown in the left column, and the Profiling entities to be created in the right column.</p>
+<hr />
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+@using (Html.BeginForm("Import", "Events", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <h4>Incident</h4>
+    <p class="alert alert-info">Link this case with an existing Event, or create a new Event.</p>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td class="span3">
+                    <dl>
+                        <dt>Code</dt>
+                        <dd>@Model.HrdbCase.CaseCode</dd>
+                        <dt>Title</dt> 
+                        <dd>@Model.HrdbCase.Title</dd>
+                    </dl>
+                </td>
+                <td class="span9">
+                    <div class="accordion" id="event-handle">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#event-handle" href="#event-existing">Existing event...</a>
+                            </div>
+                            <div class="accordion-body collapse in" id="event-existing">
+                                <div class="accordion-inner">
+                                    <div class="control-group">
+                                        <label class="control-label">Potential matching events</label>
+                                        <div class="controls">
+                                            <label class="checkbox">
+                                                <div id="matches"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Select existing event...</label>
+                                        <div class="controls">
+                                            @Html.HiddenFor(x => x.EventId, new { @class = "input-xxlarge" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#event-handle" href="#event-new">Create new event...</a>
+                            </div>
+                            <div class="accordion-body collapse" id="event-new">
+                                <div class="accordion-inner">
+                                    <p class="alert">Check and correct the pre-populated values below...</p>
+                                    <div class="control-group">
+                                        <label class="control-label">Categories *</label>
+                                        <div class="controls">
+                                            @Html.HiddenFor(x => x.Event.ViolationIds, new { @class = "input-xxlarge" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Narrative <small>(English)</small></label>
+                                        <div class="controls">
+                                            @Html.TextAreaFor(x => x.Event.NarrativeEn, new { @class = "input-xxlarge", rows = "5" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Narrative <small>(French)</small></label>
+                                        <div class="controls">
+                                            @Html.TextAreaFor(x => x.Event.NarrativeFr, new { @class = "input-xxlarge", rows = "5" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Start Date</label>
+                                        <div class="controls">
+                                            <span class="muted">Year</span> @Html.TextBoxFor(x => x.Event.YearOfStart, new { @class = "input-mini" })
+                                            <span class="muted">Month</span> @Html.TextBoxFor(x => x.Event.MonthOfStart, new { @class = "input-mini" })
+                                            <span class="muted">Day</span> @Html.TextBoxFor(x => x.Event.DayOfStart, new { @class = "input-mini" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">End Date</label>
+                                        <div class="controls">
+                                            <span class="muted">Year</span> @Html.TextBoxFor(x => x.Event.YearOfEnd, new { @class = "input-mini" })
+                                            <span class="muted">Month</span> @Html.TextBoxFor(x => x.Event.MonthOfEnd, new { @class = "input-mini" })
+                                            <span class="muted">Day</span> @Html.TextBoxFor(x => x.Event.DayOfEnd, new { @class = "input-mini" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Location *</label>
+                                        <div class="controls">
+                                            @Html.HiddenFor(x => x.Event.LocationId, new { @class = "input-xxlarge" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Notes</label>
+                                        <div class="controls">
+                                            @Html.TextAreaFor(x => x.Event.Notes, new { @class = "input-xxlarge" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Verified Status</label>
+                                        <div class="controls">
+                                            @Html.DropDownListFor(x => x.Event.EventVerifiedStatusId, Model.Event.EventVerifiedStatuses, string.Empty, new { @class = "input-xxlarge" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">HRDB Case Code</label>
+                                        <div class="controls">
+                                            @Html.HiddenFor(x => x.Event.JhroCaseIds, new { @class = "input-xxlarge" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Tags</label>
+                                        <div class="controls">
+                                            @Html.HiddenFor(x => x.Event.TagIds, new { @class = "input-xxlarge" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h4>Perpetrators</h4>
+    <p class="alert alert-info">Link perpetrators (whether individual or group) responsible for the above Event.</p>
+    <table class="table table-bordered">
+        <tbody>
+            @for (int i = 0; i < Model.HrdbPerpetrators.Count; i++)
+            {
+                <tr>
+                    <td class="span3">
+                        @Html.Partial("_HrdbPerpetratorDetails", Model.HrdbPerpetrators[i].HrdbPerpetrator)
+                        <dl>
+                            <dt>Violations</dt>
+                            <dd>
+                                @if (Model.HrdbPerpetrators[i].HrdbPerpetrator.Violations.Any())
+                                {
+                                    <ul>
+                                        @foreach (HrdbWebServiceClient.Domain.HrdbViolation hv in Model.HrdbPerpetrators[i].HrdbPerpetrator.Violations)
+                                        {
+                                            <li>@hv.ViolationDesc</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <span class="muted">(no violations)</span>   
+                                }
+                            </dd>
+                            <dt>Degree of responsibility</dt>
+                            <dd>
+                                @if (string.IsNullOrEmpty(Model.HrdbPerpetrators[i].HrdbPerpetrator.DegreeOfResponsibility))
+                                {
+                                    <span class="muted">(no degree of responsibility)</span>
+                                }
+                                else
+                                {
+                                    @Model.HrdbPerpetrators[i].HrdbPerpetrator.DegreeOfResponsibility
+                                }
+                            </dd>
+                        </dl>
+                    </td>
+                    <td class="span9">
+                        @if (!string.IsNullOrEmpty(Model.HrdbPerpetrators[i].HrdbPerpetrator.Name))
+                        {
+                            <div class="control-group">
+                                <label class="control-label">Link to existing person...</label>
+                                <div class="controls">
+                                    @Html.HiddenFor(x => x.HrdbPerpetrators[i].PersonId, new { @class = "input-xxlarge" })
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Person responsibility type</label>
+                                <div class="controls">
+                                    @Html.DropDownListFor(x => x.HrdbPerpetrators[i].PersonResponsibilityTypeId, Model.PersonResponsibilityTypes, new { @class = "input-xxlarge" })
+                                </div>
+                            </div>
+                        }
+                        else if (!string.IsNullOrEmpty(Model.HrdbPerpetrators[i].HrdbPerpetrator.Group))
+                        {
+                            <div class="control-group">
+                                <label class="control-label">Link to existing organization...</label>
+                                <div class="controls">
+                                    @Html.HiddenFor(x => x.HrdbPerpetrators[i].OrganizationId, new { @class = "input-xxlarge" })
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Organization responsibility type</label>
+                                <div class="controls">
+                                    @Html.DropDownListFor(x => x.HrdbPerpetrators[i].OrganizationResponsibilityTypeId, Model.OrganizationResponsibilityTypes, new { @class = "input-xxlarge" })
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="muted">This case has no perpetrator listed.</p>   
+                        }
+                        @if (!string.IsNullOrEmpty(Model.HrdbPerpetrators[i].HrdbPerpetrator.Name)
+                            || !string.IsNullOrEmpty(Model.HrdbPerpetrators[i].HrdbPerpetrator.Group))
+                        {
+                            <div class="control-group">
+                                <label class="control-label">Link to violations...</label>
+                                <div class="controls">
+                                    @Html.HiddenFor(x => x.HrdbPerpetrators[i].ViolationIds, new { @class = "input-xxlarge" })
+                                </div>
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @Html.ActionLink("Back", "Details", "Cases", new { area = "Hrdb", id = Model.Id }, new { @class = "btn" })
+    </div>
+}

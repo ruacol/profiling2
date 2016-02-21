@@ -1,0 +1,26 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model LocationViewModel
+@{
+    Layout = "";
+    ViewBag.Title = "Edit Location";
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4>Edit Location</h4>
+</div>
+<div class="modal-body form-horizontal">
+    <div class="row-fluid">
+        <div class="span6">
+            @using (Html.BeginForm("EditModal", "Locations", FormMethod.Post, new { id = "location-edit-form" }))
+            {
+                @Html.Partial("_LocationForm", Model)
+            }
+        </div>
+        <div id="location-map-container" class="span6"></div>
+    </div>
+</div>
+<div class="modal-footer">
+    <a id="modal-location-edit-button-@Model.Id" class="btn btn-primary">Save</a>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+</div>

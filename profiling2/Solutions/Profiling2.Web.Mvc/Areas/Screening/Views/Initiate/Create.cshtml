@@ -1,0 +1,86 @@
+﻿@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels
+@using Profiling2.Domain.Scr.Attach
+@model RequestViewModel
+@{
+  ViewBag.Title = "Create Screening Request";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("#RespondBy").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+    $("#RespondBy").change(function() {
+      if ($("#RespondBy").val())
+        $("#RespondImmediately").prop("checked", false);
+    });
+    $("#RespondImmediately").change(function() {
+      if ($("#RespondImmediately").is(":checked"))
+        $("#RespondBy").val("");
+    });
+  });
+}
+
+<h2>Create Screening Request</h2>
+
+<p>You may add attachments and individuals to be screened on the next page.</p>
+
+<hr />
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+@using (Html.BeginForm("Create", "Initiate", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <fieldset>
+        @Html.HiddenFor(x => x.ReferenceNumber)
+        <div class="control-group">
+            <label class="control-label">Type *</label>
+            <div class="controls">
+                @Html.DropDownListFor(x => x.RequestTypeID, Model.RequestTypes, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Name *</label>
+            <div class="controls">
+                @Html.TextBoxFor(x => x.RequestName, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Description</label>
+            <div class="controls">
+                @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Requesting Entity *</label>
+            <div class="controls">
+                @Html.DropDownListFor(x => x.RequestEntityID, Model.RequestEntities, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Respond By</label>
+            <div class="controls">
+                <div class="input-append">
+                    @Html.TextBoxFor(x => x.RespondBy, new { @readonly = true, style = "cursor: pointer; background-color: #ffffff;" })
+                    <span class="add-on"><i class="icon-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Respond Immediately?</label>
+            <div class="controls">
+                @Html.CheckBoxFor(x => x.RespondImmediately)
+            </div>
+        </div>
+    </fieldset>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Create Request</button>
+        @Html.ActionLink("Cancel", "Index", "Initiate", new { area = "Screening" }, new { @class = "btn" })
+    </div>
+        
+    
+}

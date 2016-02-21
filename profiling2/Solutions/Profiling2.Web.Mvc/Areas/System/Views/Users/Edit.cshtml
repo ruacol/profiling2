@@ -1,0 +1,77 @@
+﻿@using Profiling2.Web.Mvc.Areas.System.Controllers.ViewModels
+@model UserViewModel
+@{
+    ViewBag.Title = "Edit User";
+}
+@section scripts
+{
+  $(document).ready(function() {
+      var view = new Profiling.Views.UserEditFormView();
+      $("h2").after(view.render().el);
+  }); 
+}
+
+<h2>Edit User</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+@using (Html.BeginForm("Edit", "Users", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(x => x.UserID)
+    <fieldset>
+        <legend>@(!string.IsNullOrEmpty(Model.UserID) ? Model.UserID : "(no user ID)")</legend>
+        <div class="control-group">
+            <label class="control-label">Name</label>
+            <div class="controls">
+                @Html.TextBoxFor(x => x.UserName, new { @class = "uneditable-input" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Email</label>
+            <div class="controls">
+                @if (new string[] { "LocalMembershipProvider", "SetupMembershipProvider" }.Contains(Membership.Provider.Name))
+                {
+                    @Html.TextBoxFor(x => x.Email, new { @class = "input-xxlarge" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(x => x.Email, new { @class = "uneditable-input" })
+                }
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Roles</label>
+            <div class="controls">
+                @Html.HiddenFor(x => x.AdminRoleIds, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Affiliations</label>
+            <div class="controls">
+                @Html.HiddenFor(x => x.SourceOwningEntityIds, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Request Entity</label>
+            <div class="controls">
+                @Html.DropDownListFor(x => x.RequestEntityID, Model.RequestEntitySelectItems, string.Empty, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Screening Entity</label>
+            <div class="controls">
+                @Html.DropDownListFor(x => x.ScreeningEntityID, Model.ScreeningEntitySelectItems, string.Empty, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+    </fieldset>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @Html.ActionLink("Back", "Details", "Users", new { area = "System", id = Model.Id }, new { @class = "btn" })
+    </div>
+}

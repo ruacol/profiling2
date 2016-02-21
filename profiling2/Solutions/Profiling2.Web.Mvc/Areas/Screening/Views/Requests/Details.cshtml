@@ -1,0 +1,409 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Scr
+@using Profiling2.Domain.Scr.Attach
+@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels
+@using System.Linq
+@using Profiling2.Infrastructure.Security;
+@model Request
+@{
+  ViewBag.Title = @Model.Headline;
+  IDictionary<int, IList<Career>> PersonCareers = ViewBag.PersonCareers;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("td.reason-cell").click(function() {
+      var tdElement = $(this);
+      var content = "<h4>" + $("td:eq(1)", $(tdElement).parent()).text() + "</h4>";
+      $.ajax({
+        url: "@(Request.ApplicationPath + "/")Screening/RequestPerson/Reasons",
+        data: {
+          term: $(tdElement).data("request-person-id")
+        },
+        async: false,
+        success: function(data, textStatus, xhr) {
+          if (data && _(data).size() > 0) {
+            _(data).each(function(obj) {
+              if (_([ "JHRO", "JMAC", "CPS", "SWA" ]).contains(obj.ScreeningEntity)) {
+                content += "<div class='pull-left' style='width: 24%; margin-right: 1%;'>";
+              } else {
+                content += "<div style='clear: both;'>";
+              }
+              content += "<h5>" + obj.ScreeningEntity + "</h5>";
+              if (obj.Result) {
+                var className = "label ";
+                if (obj.Result == "Green")
+                  className += "label-success";
+                else if (obj.Result == "Yellow")
+                  className += "label-warning";
+                else if (obj.Result == "Red")
+                  className += "label-important";
+                content += '<p class="' + className + '">' + obj.Result + "</p>";
+              }
+              if (obj.SupportStatus) {
+                content += "<p>" + obj.SupportStatus + "</p>";
+              }
+              if (obj.Reason && $.trim(obj.Reason).length > 0) {
+                content += "<h6>Reason</h6>";
+                content += "<p>" + obj.Reason.replace(/\n/g, "<br />") + "</p>";
+              }
+              if (obj.Commentary && $.trim(obj.Commentary).length > 0) {
+                content += "<h6>Commentary</h6>";
+                content += "<p>" + obj.Commentary.replace(/\n/g, "<br />") + "</p>";
+              }
+              content += "<hr /></div>";
+            });
+          }
+        }
+      });
+      if (content) {
+        bootbox.dialog(content, {
+          label: "OK",
+          callback: null
+        }, {
+          onEscape: true,
+          classes: "narrative",
+          animate: false
+        });
+      }
+    });
+
+    
+    var dataTable = new Profiling.DataTable("persons-table", {
+      bServerSide: false,
+      aoColumns: [ null, null, { sType: "title-numeric" }, { sType: "title-numeric" }, @foreach (string entity in ScreeningEntity.GetNames(Model.GetCreatedDate())) { <text>null, </text> } null, null, null ]
+    });
+
+    $(".undo-link").click(function(e) {
+      var entity = $(e.target).data("entity");
+      bootbox.confirm("Are you sure you want to reset " + entity + "'s response?", function(response) {
+        if (response === true) {
+          window.location.href = "@(Request.ApplicationPath + "/")Screening/Requests/UndoResponse/@Model.Id/" + entity;
+        } else {
+          bootbox.hideAll();
+          return false;
+        }
+      });
+    });
+  });
+}
+
+<h2>Screening Request Details</h2>
+
+<div class="form-horizontal">
+    <fieldset>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th colspan="2">
+                        <h3>
+                        @(!string.IsNullOrEmpty(Model.RequestName) ? Model.RequestName : "(no request name)")
+                        @if (Model.Archive)
+                        {
+                            <small>(archived)</small>
+                        }
+                        @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanAdministrate))
+                        {
+                            @:&nbsp; &nbsp;
+                            @Html.ActionLink("Edit", "Edit", "Requests", new { id = Model.Id, area = "Screening" }, new { @class = "btn btn-mini" })
+                            @:&nbsp; &nbsp;
+                            <div class="btn-group">
+                              <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+                                <strong>Reset Response</strong>
+                                <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                @foreach (string entity in ScreeningEntity.GetNames(Model.GetCreatedDate()))
+                                {
+                                  <li>
+                                      <a class="undo-link" data-entity="@entity">Reset @entity Response</a>
+                                  </li>
+                                }
+                              </ul>
+                            </div>
+                        }
+                        @if (User.IsInRole(AdminRole.ScreeningRequestInitiator)
+                          || User.IsInRole(AdminRole.ScreeningRequestValidator)
+                          || User.IsInRole(AdminRole.ScreeningRequestConsolidator)
+                          || User.IsInRole(AdminRole.ScreeningRequestFinalDecider))
+                        {
+                            @:&nbsp; &nbsp;
+                            @Html.ActionLink("Attachments", "Index", "Attachments", new { requestId = Model.Id, area = "Screening" }, new { @class = "btn btn-mini" })
+                        }
+                        &nbsp; &nbsp;
+                        <div class="btn-group">
+                          <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+                            <strong>Export Support Status</strong>
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Export", "Requests", new { id = Model.Id })?sortByRank=false">...persons sorted as they were added</a></li>
+                            <li><a href="@Url.Action("Export", "Requests", new { id = Model.Id })?sortByRank=true">...persons sorted by rank</a></li>
+                          </ul>
+                        </div>
+                        @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanPerformScreeningInput) && ViewBag.User != null && ViewBag.User.GetScreeningEntity() != null)
+                        {
+                          @:&nbsp; &nbsp;
+                          <div class="btn-group">
+                            <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+                              <strong>Export @ViewBag.User.GetScreeningEntity().ToString() Inputs</strong>
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li><a href="@Url.Action("Export", "Inputs", new { id = Model.Id, area = "Screening" })?sortByRank=false">...persons sorted as they were added</a></li>
+                              <li><a href="@Url.Action("Export", "Inputs", new { id = Model.Id, area = "Screening" })?sortByRank=true">...persons sorted by rank</a></li>
+                            </ul>
+                          </div>
+                        }
+                        </h3>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Reference Number</th>
+                    <td>@Model.ReferenceNumber</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>@Model.RequestType</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>@Model.RequestName</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>@Model.Notes</td>
+                </tr>
+                <tr>
+                    <th>Entity</th>
+                    <td>@Model.RequestEntity</td>
+                </tr>
+                <tr>
+                    <th>Respond By</th>
+                    <td>@(new RequestView(Model).RespondBy)</td>
+                </tr>
+                <tr>
+                    <th>Attachments</th>
+                    <td>
+                        @if (Model.RequestAttachments != null && Model.RequestAttachments.Where(x => !x.Archive).Any())
+                        {
+                            <ul>
+                                @foreach (RequestAttachment ra in Model.RequestAttachments.Where(x => !x.Archive))
+                                {
+                                    <li>
+                                        @Html.ActionLink(ra.Attachment.FileName, "Download", "Attachments", new { area = "Screening", requestId = ra.Request.Id, id = ra.Attachment.Id }, null)
+                                        @if (ra.Archive)
+                                        {
+                                            @:&nbsp;<span class="label">removed</span>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span class="muted">There are no attachments.</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>@Model.CurrentStatus on @string.Format("{0:yyyy-MM-dd}", Model.CurrentStatusDate)</td>
+                </tr>
+                @if (!string.IsNullOrEmpty(Model.RejectedReason))
+                {
+                  <tr>
+                    <th>Rejection Reason</th>
+                    <td>@Model.RejectedReason</td>
+                  </tr>
+                }
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+
+@if (Model.Units != null && Model.Units.Where(x => !x.Archive).ToList().Count > 0)
+{
+    <div class="clearfix">
+      <hr />
+      <h3>Units</h3>
+      @Html.Partial("_RequestUnits", Model.Units)
+    </div>
+}
+
+<div class="clearfix">
+  <hr />
+  <h3>Persons</h3>
+  @if (Model.Persons != null && Model.Persons.Where(x => !x.Archive).ToList().Count > 0)
+  {
+      <table id="persons-table" class="table table-condensed table-bordered">
+        <thead>
+          <tr>
+              <th title="This column represents the order in which the person was introduced to the request.">No.</th>
+              <th>Name</th>
+              <th>Function</th>
+              <th>Rank</th>
+              @foreach (string entity in ScreeningEntity.GetNames(Model.GetCreatedDate()))
+              {
+                  <th>@entity</th>
+              }
+              <th>PWG</th>
+              <th>SMG</th>
+              <th>Support Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @{
+            int i = 1; 
+          }
+          @foreach (var h in Model.Persons.Where(x => !x.Archive).OrderBy(x => x.Id))
+          {
+            Career currentCareer = PersonCareers[h.Person.Id] != null && PersonCareers[h.Person.Id].Any() ? PersonCareers[h.Person.Id].First() : null;
+            <tr>
+              <td>@i</td>
+              <td>
+                  @Html.ActionLink(h.Person.Name, "Details", "Persons", new { area = "Profiling", id = h.Person.Id }, new { target = "_blank", title = "ID Number: " + h.Person.MilitaryIDNumber })
+              </td>
+              <td>
+                @if (PersonCareers != null)
+                {
+                  try
+                  {
+                    int sort = currentCareer != null && currentCareer.Role != null && currentCareer.Role.SortOrder > 0 ? currentCareer.Role.SortOrder : int.MaxValue;
+                    <span title="@sort">
+                      @foreach (Career c in PersonCareers[h.Person.Id])
+                      {
+                        <span style="display: block;">
+                          @c.Function
+                          @if (c.Unit != null)
+                          {
+                            @:of @Html.ActionLink(c.Unit.UnitName, "Details", "Units", new { id = c.Unit.Id, area = "Profiling" }, new { target = "_blank" })
+                          }
+                        </span>
+                      }
+                    </span>
+                  }
+                  catch
+                  {
+                    <span class="muted">Something was deleted.</span>
+                  }
+                }
+              </td>
+              <td>
+                @if (PersonCareers != null)
+                {
+                  try
+                  {
+                    int sort = currentCareer != null && currentCareer.Rank != null && currentCareer.Rank.SortOrder > 0 ? currentCareer.Rank.SortOrder : int.MaxValue;
+                    <span title="@sort">
+                      @if (currentCareer != null && currentCareer.Rank != null)
+                      {
+                        @currentCareer.Rank
+                      }
+                    </span>
+                  }
+                  catch
+                  {
+                    <span class="muted">Something was deleted.</span>
+                  }
+                }
+              </td>
+              @foreach (string entity in ScreeningEntity.GetNames(Model.GetCreatedDate()))
+              {
+                  var srpe = h.GetScreeningRequestPersonEntity(entity);
+                  <td class="reason-cell accordion-toggle" data-request-person-id="@h.Id">
+                      @if (srpe != null)
+                      {
+                          @Html.ScreeningResultLabel(srpe.ScreeningResult.ToString())
+                      }
+                  </td>
+              }
+              <td class="reason-cell accordion-toggle" data-request-person-id="@h.Id">
+                  @if (h.ScreeningRequestPersonRecommendations != null && h.ScreeningRequestPersonRecommendations.Count > 0)
+                  {
+                      @Html.ScreeningResultLabel(h.ScreeningRequestPersonRecommendations[0].ScreeningResult.ToString())
+                  }
+              </td>
+              <td class="reason-cell accordion-toggle" data-request-person-id="@h.Id">
+                  @if (h.ScreeningRequestPersonFinalDecisions != null && h.ScreeningRequestPersonFinalDecisions.Count > 0)
+                  {
+                      @Html.ScreeningResultLabel(h.ScreeningRequestPersonFinalDecisions[0].ScreeningResult.ToString())
+                  }
+              </td>
+              <td class="reason-cell accordion-toggle" data-request-person-id="@h.Id">
+                  @if (h.GetScreeningRequestPersonFinalDecision() != null)
+                  {
+                      @h.GetScreeningRequestPersonFinalDecision().ScreeningSupportStatus
+                  }
+              </td>
+            </tr>
+                  i++;
+          }
+        </tbody>
+      </table>
+  }
+  else
+  {
+      <span class="muted">There are no persons attached to this screening request.</span>
+  }
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>Proposed Persons</h3>
+  @if (Model.ProposedPersons != null && Model.ProposedPersons.Where(x => !x.Archive).ToList().Count > 0)
+  {
+      <table class="table table-condensed table-bordered">
+          <tr>
+              <th>Name</th><th>Military ID</th><th>Notes</th>
+          </tr>
+          @foreach (var h in Model.ProposedPersons.Where(x => !x.Archive))
+          {
+          <tr>
+              <td>@h.PersonName</td>
+              <td>@h.MilitaryIDNumber</td>
+              <td>@h.Notes</td>
+          </tr>
+          }
+      </table>
+  }
+  else
+  {
+      <span class="muted">There are no proposed persons attached to this screening request.</span>
+  }
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>History</h3>
+
+  <p>Changes in the status of the request are highlighted light blue.</p>
+
+  <table class="table table-condensed table-bordered">
+      <tr>
+          <th>Status</th><th>Date</th><th>User</th><th>Entity</th>
+      </tr>
+      @foreach (var h in ViewBag.Histories)
+      {
+      <tr @(h.Type == typeof(Request) ? "class=info" : string.Empty)>
+          <td title="@h.Notes">@h.Status</td>
+          <td style="white-space: nowrap;">@string.Format("{0:yyyy-MM-dd HH:mm}", h.Date)</td>
+          <td style="white-space: nowrap;">@h.User</td>
+          <td style="white-space: nowrap;">
+              @if (h.User.ScreeningEntities != null && h.User.ScreeningEntities.Count > 0)
+              {
+                  @h.User.ScreeningEntities[0]
+              }
+              else if (h.User.RequestEntities != null && h.User.RequestEntities.Count > 0)
+              {
+                  @h.User.RequestEntities[0]
+              }
+          </td>
+      </tr>
+      }
+  </table>
+</div>

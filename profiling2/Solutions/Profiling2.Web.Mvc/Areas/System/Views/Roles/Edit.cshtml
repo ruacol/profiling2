@@ -1,0 +1,21 @@
+﻿@using Profiling2.Web.Mvc.Areas.System.Controllers.ViewModels
+@model RoleViewModel
+@{
+    ViewBag.Title = "Edit Role";
+}
+@section scripts
+{
+  $(document).ready(function() {
+      var view = new Profiling.Views.RoleEditFormView();
+      $("h2").after(view.render().el);
+  }); 
+}
+
+<h2>Edit Role</h2>
+
+<hr />
+
+@using (Html.BeginForm("Edit", "Roles", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.Partial("_RoleForm")
+}

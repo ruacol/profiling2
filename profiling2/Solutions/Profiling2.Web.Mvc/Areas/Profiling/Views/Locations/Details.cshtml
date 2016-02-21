@@ -1,0 +1,283 @@
+﻿@using Profiling2.Domain.DTO
+@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Domain.Prf.Units
+@using Profiling2.Infrastructure.Security
+@model Location
+@{
+    ViewBag.Title = Model.LocationName;
+}
+@section styles
+{
+  @Html.RenderCssBundle("~/Content/leaflet.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <!--[if lte IE 8]>
+      @Html.RenderCssBundle("~/Content/leaflet.ie.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <![endif]-->
+}
+@section scriptSources
+{
+  @Html.RenderJsBundle("~/Scripts/leaflet.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+}
+@section scripts
+{
+  $(document).ready(function() {
+    @if (Model.HasNonZeroCoordinates())
+    {
+      <text>
+        var mapView = new Profiling.Views.MapView({
+          height: 400,
+          latitude: @Model.Latitude,
+          longitude: @Model.Longitude
+        });
+        $("#container").html(mapView.render().el);
+        _.defer(function() {
+            var marker = L.marker([@Model.Latitude.Value, @Model.Longitude.Value]).addTo(mapView.map);
+        });
+      </text>
+    }
+
+    new Profiling.DataTable("careers-table", {
+      bServerSide: false,
+      aoColumns: [ null, { sType: "title-numeric" }, { sType: "title-numeric" }, { sType: "title-numeric" } ]
+    });
+
+    new Profiling.DataTable("events-table", {
+      bServerSide: false,
+      aaSorting: [ [2, 'desc'] ]
+    });
+
+    new Profiling.DataTable("units-table", {
+      bServerSide: false
+    });
+
+    $("#delete-button").click(function(e) {
+      bootbox.confirm("This location will only be deleted if there are no careers, events or units are linked to it. Continue?", function(response) {
+        if (response === true)
+          window.location.href = "@(Request.ApplicationPath + "/")Profiling/Locations/Delete/@Model.Id";
+      });
+    });
+
+    $('#combined-units-table').each(Profiling.mergeTableCellsWithRowspan);
+  }); 
+}
+
+<h2>
+  @Model.LocationName
+  @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersons))
+  {
+    @Html.ActionLink("Edit", "Edit", "Locations", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini", style = "margin-left: 10px;" })
+    @Html.ActionLink("Merge Into", "MergeInto", "Locations", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini", style = "margin-left: 10px;" })
+    <button id="delete-button" class="btn btn-mini btn-danger">Delete</button>
+  }
+</h2>
+
+<div class="clearfix">
+  <dl class="dl-horizontal pull-left">
+    <dt>Town</dt>
+    <dd>
+      @if (!string.IsNullOrEmpty(Model.Town))
+      {
+        @Model.Town
+      }
+      else
+      {
+        <span>&nbsp;</span>
+      }
+    </dd>
+    <dt>Territory</dt>
+    <dd>
+      @if (!string.IsNullOrEmpty(Model.Territory))
+      {
+        @Model.Territory
+      }
+      else
+      {
+        <span>&nbsp;</span>
+      }
+    </dd>
+    <dt>Pre-2015 Province</dt>
+    <dd>
+      @if (Model.Region != null)
+      {
+        @Model.Region
+      }
+      else
+      {
+        <span>&nbsp;</span>
+      }
+    </dd>
+    <dt>Province</dt>
+    <dd>
+      @if (Model.Province != null)
+      {
+        @Model.Province
+      }
+      else
+      {
+        <span>&nbsp;</span>
+      }
+    </dd>
+    <dt>Latitude</dt>
+    <dd>
+        @if (Model.Latitude.HasValue)
+        {
+            @Model.Latitude
+        }
+        else
+        {
+            <span>&nbsp;</span>   
+        }
+    </dd>
+    <dt>Longitude</dt>
+    <dd>
+        @if (Model.Longitude.HasValue)
+        {
+            @Model.Longitude
+        }
+        else
+        {
+            <span>&nbsp;</span>
+        }
+    </dd>
+    @if (!string.IsNullOrEmpty(Model.Notes))
+    {
+      <dt>Notes</dt>
+      <dd>@Html.Raw(Model.Notes.Replace("\n", "<br />"))</dd>
+    }
+  </dl>
+  @if (Model.HasNonZeroCoordinates())
+  {
+    <div id="container" class="span6"></div>
+  }
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>Careers</h3>
+
+  @Html.Partial("_CareersTable", Model.Careers)
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>Events</h3>
+
+  <table id="events-table" class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents))
+        {
+          <th>Event</th>
+          <th>Location</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+        }
+        else
+        {
+          <th>Event</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (Event e in Model.Events)
+      {
+        if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents))
+        {
+          <tr>
+            <td>@Html.ActionLink(e.Headline, "Details", "Events", new { area = "Profiling", id = e.Id }, null)</td>
+            <td>@e.Location.LocationName</td>
+            <td>@Html.DateLabel(e.YearOfStart, e.MonthOfStart, e.DayOfStart)</td>
+            <td>@Html.DateLabel(e.YearOfEnd, e.MonthOfEnd, e.DayOfEnd)</td>
+          </tr>
+        } 
+        else
+        {
+          <tr>
+            <td>
+              <ul>
+                @foreach (Violation v in e.Violations)
+                {
+                  <li>@v.Name</li>
+                }
+              </ul>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>Units</h3>
+
+  <table id="units-table" class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Unit</th>
+        <th>Organization</th>
+        <th>Location</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>As Of Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (UnitLocation ul in Model.UnitLocations)
+      {
+        <tr>
+          <td>@Html.Partial("_UnitLinkAndDates", ul.Unit)</td>
+          <td>
+            @if (ul.Unit.Organization != null)
+            {
+              @ul.Unit.Organization.OrgShortName
+            }
+          </td>
+          <td>@ul.Location.LocationName</td>
+          <td>@Html.DateLabel(ul.YearOfStart, ul.MonthOfStart, ul.DayOfStart)</td>
+          <td>@Html.DateLabel(ul.YearOfEnd, ul.MonthOfEnd, ul.DayOfEnd)</td>
+          <td>@Html.DateLabel(ul.YearAsOf, ul.MonthAsOf, ul.DayAsOf)</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>Combined Units</h3>
+
+  <p>This list is drawn from known information on units present in this location via careers, event responsibilities, and manual location entries.</p>
+
+  @if (Model.GetEntityUnitDTOs().Keys.Count > 0)
+  {
+      <table id="combined-units-table" class="table table-bordered" style="width: auto;">
+          <thead>
+              <tr>
+                  <th>Unit</th>
+                  <th>Start Date</th>
+                  <th>As Of Date</th>
+                  <th>End Date</th>
+              </tr>
+          </thead>
+          <tbody>
+              @foreach (EntityUnitDateDTO dto in Model.GetEntityUnitDTOs().Values.Aggregate((x, y) => x.Concat(y).ToList()).Distinct().OrderByDescending(x => x.GetSortDate()))
+              {
+                  <tr title="@dto.SourceTypeName">
+                      <td>@Html.Partial("_UnitLinkAndDates", dto.Unit)</td>
+                      <td>@dto.GetStartDateString()</td>
+                      <td>@dto.GetAsOfDateString()</td>
+                      <td>@dto.GetEndDateString()</td>
+                  </tr>
+              }
+          </tbody>
+      </table>
+  }
+  else
+  {
+    <span class="muted">No information on units present in this location.</span>
+  }
+</div>

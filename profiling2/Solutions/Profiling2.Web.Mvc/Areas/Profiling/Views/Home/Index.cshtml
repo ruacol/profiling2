@@ -1,0 +1,73 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@{
+    ViewBag.Title = "Profiling";
+}
+
+@section scripts
+{
+    $(document).ready(function() {
+        var createdChart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'created-chart',
+                type: 'line'
+            },
+            credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: false
+            },
+            title: {
+                text: 'Number of Profiles Created'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: {
+                    day: '%b %e'
+                },
+                minTickInterval: 24 * 3600 * 1000
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Profiles Created'
+                },
+                min: 0,
+                minTickInterval: 1
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>' + moment(this.x).format('LL') + ': </b>' + this.y;
+                }
+            },
+            series: [{
+                data: [
+                    @{
+                        IList<string> elements = new List<string>();
+                    }
+                    @foreach (object[] row in ViewBag.Created)
+                    {
+                        if (row[0] != null)
+                        {
+                            int month = (int)row[1] - 1;
+                            elements.Add("[Date.UTC(" + row[0] + ", " + month + ", " + row[2] + "), " + row[3] + "]");
+                        }
+                        else
+                        {
+                            elements.Add("[Date.UTC(2013, 0, 23), " + row[3] + "]");
+                        }
+                    }
+                    @string.Join(",", elements.ToArray())
+                ]
+            }]
+        });
+
+    });
+}
+
+<div class="row">
+    <div class="span12">
+        <div id="created-chart"></div>
+    </div>
+</div>
+
+<span class="muted"><small>* No data before 23 January 2013</small></span>

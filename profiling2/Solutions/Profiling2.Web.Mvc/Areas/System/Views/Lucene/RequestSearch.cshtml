@@ -1,0 +1,55 @@
+﻿@using Profiling2.Domain
+@using Profiling2.Web.Mvc.Areas.System.Controllers.ViewModels
+@using Lucene.Net.Search
+@using Lucene.Net.Documents
+@model SearchViewModel
+@{
+    ViewBag.Title = "Request Search";
+    IList<LuceneSearchResult> Results = (IList<LuceneSearchResult>)ViewData["results"];
+}
+
+<h2>Search</h2>
+
+@using (Html.BeginForm("RequestSearch", "Lucene", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <fieldset>
+        <legend>Search</legend>
+        <div class="control-group">
+            <label class="control-label">Search term</label>
+            <div class="controls">
+                @Html.TextBoxFor(x => x.Term, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+    </fieldset>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+}
+
+@if (Results != null)
+{
+    <table class="table">
+        <tr>
+            <th>Id</th><th>Reference</th><th>Name</th><th>Entity</th><th>Type</th><th>Respond By</th><th>Status</th><th>Status Date</th><th>Persons</th><th>Score</th>
+        </tr>
+        @foreach (LuceneSearchResult result in Results)
+        {
+            <tr>
+                @foreach (string key in new string[] { "Id", "ReferenceNumber", "RequestName", "RequestEntity", "RequestType", "RespondByDateDisplay", "CurrentStatus", "CurrentStatusDateDisplay", "Persons" })
+                {
+                    <td>
+                        @if (result.FieldValues.ContainsKey(key))
+                        {
+                            foreach (string s in result.FieldValues[key])
+                            {
+                                @s <br />
+                            }
+                        }
+                    </td>
+                }
+                <td>@result.Score</td>
+            </tr>
+        }
+    </table>
+}

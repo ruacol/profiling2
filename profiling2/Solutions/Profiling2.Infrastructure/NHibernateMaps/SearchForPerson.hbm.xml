@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <sql-query name="PRF_SP_Search_SearchForPerson_NHibernate"  callable="true" >
+    <query-param name="ExactName" type="System.String"/>
+    <query-param name="PartialName" type="System.String"/>
+    <query-param name="MilitaryID" type="System.String"/>
+    <query-param name="AlternativeMilitaryID" type="System.String"/>
+    <query-param name="RankID" type="System.Int64"/>
+    <query-param name="RoleID" type="System.Int64"/>
+    <query-param name="YearOfBirth" type="System.Int64"/>
+    <query-param name="MonthOfBirth" type="System.Int64"/>
+    <query-param name="DayOfBirth" type="System.Int64"/>
+    <query-param name="UserID" type="System.String"/>
+    <query-param name="Separator" type="System.String"/>
+    <query-param name="MaximumRows" type="System.Int64"/>
+    <query-param name="StartRowIndex" type="System.Int64"/>
+    <query-param name="IncludeRestrictedProfiles" type="System.Boolean"/>
+
+    <return-scalar column ="PersonID" type ="System.Int32"/>
+    <return-scalar column ="FirstName" type ="System.String"/>
+    <return-scalar column ="LastName" type ="System.String"/>
+    <return-scalar column ="MilitaryIDNumber" type ="System.String"/>
+    <return-scalar column ="Aliases" type ="System.String"/>
+    <return-scalar column ="Score" type ="System.Decimal"/>
+    <return-scalar column ="RowNumber" type ="System.Int32"/>
+    <return-scalar column ="TotalRecords" type ="System.Int32"/>
+
+    exec PRF_SP_Search_SearchForPerson_NHibernate @ExactName=:ExactName, @PartialName=:PartialName, @MilitaryID=:MilitaryID, @AlternativeMilitaryID=:AlternativeMilitaryID, @RankID=:RankID, @RoleID=:RoleID, @YearOfBirth=:YearOfBirth, @MonthOfBirth=:MonthOfBirth, @DayOfBirth=:DayOfBirth, @UserID=:UserID, @Separator=:Separator, @MaximumRows=:MaximumRows, @StartRowIndex=:StartRowIndex, @IncludeRestrictedProfiles=:IncludeRestrictedProfiles
+  </sql-query>
+</hibernate-mapping>

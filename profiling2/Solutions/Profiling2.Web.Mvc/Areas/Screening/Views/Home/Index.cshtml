@@ -1,0 +1,68 @@
+﻿@model IList<object[]>
+@{
+    ViewBag.Title = "Screening";
+}
+
+@section scripts
+{
+    $(document).ready(function() {
+        var chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'chart',
+                type: 'line'
+            },
+            credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: false
+            },
+            title: {
+                text: 'Screened Persons Per Month'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: {
+                    month: '%b %Y'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Persons'
+                },
+                min: 0
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>' + Highcharts.dateFormat('%B %Y', this.x) + '</b><br/>Screened Persons: ' + this.y;
+                }
+            },
+            series: [{
+                data: [
+                    @{
+                        IList<string> elements = new List<string>();
+                    }
+                    @foreach (object[] row in Model)
+                    {
+                        int month = (int)row[1] - 1;
+                        elements.Add("[Date.UTC(" + row[0] + ", " + month + ", 1), " + row[2] + "]");
+                    }
+                    @string.Join(",", elements.ToArray())
+                ]
+            }]
+        });
+    });
+}
+
+<div id="chart"></div>
+
+<div class="muted">
+  <small>
+    * A screened person for the purposes of this graph is someone who:
+    <ul>
+      <li class="muted">Has had a final screening made about them by the DSRSG-RoL combining inputs from conditionality participants;</li>
+      <li class="muted">Was included in a screening request that has been completed;</li>
+      <li class="muted">May have been screened before.</li>
+    </ul>
+  </small>
+</div>

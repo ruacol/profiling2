@@ -1,0 +1,20 @@
+﻿@using System.Linq;
+@{
+    ViewBag.Title = "Browse Cases";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var view = new Profiling.Views.ExplorerCaseView();
+        $("div#content").html(view.render().el);
+    });
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>Browse sources tagged in the system as official human rights cases.  These include cases imported from the OHCHR Human Rights Database.</p>
+
+<p>Use the search box to the right to search by case number.  e.g. <span class="text-info">DHGOM</span> will return all cases 
+    which were registered by the Goma field office using MONUSCO's former Lotus Notes database for human rights.</p>
+
+<div id="content"></div>

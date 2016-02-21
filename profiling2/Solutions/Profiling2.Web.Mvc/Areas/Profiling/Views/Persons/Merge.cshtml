@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Merge Persons";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.MergePersonsRouter();
+        Backbone.history.start();
+    });
+}
+
+<h2>Person Merge</h2>
+
+<div class="row-fluid">
+    <div id="left-column" class="span6"></div>
+    <div id="right-column" class="span6"></div>
+</div>
+<hr />
+<div class="row-fluid pagination-centered">
+    <button id="merge-button" class="btn btn-primary">Merge</button>
+</div>

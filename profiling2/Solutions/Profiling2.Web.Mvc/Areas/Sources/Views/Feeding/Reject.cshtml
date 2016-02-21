@@ -1,0 +1,84 @@
+﻿@using Profiling2.Web.Mvc.Areas.Sources.Controllers.ViewModels
+@model FeedingSourceViewModel
+@{
+    ViewBag.Title = "Reject Feeding Source";
+}
+
+<h2>Reject Source</h2>
+
+<p>Rejecting this file here will prevent it from being inserted it into the database.</p>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<h3>
+    @Model.Name
+    @if (Model.IsReadOnly)
+    {
+        @:&nbsp;
+        <i class="icon-lock" style="vertical-align: middle;"></i>
+    }
+</h3>
+
+@if (Model.Rejected)
+{
+    <p class="alert alert-info">This source has been rejected.</p>
+    
+    @Html.ActionLink("Back", "Index", "Feeding", new { area = "Sources" }, new { @class = "btn" })
+}
+else
+{
+    using (Html.BeginForm("Reject", "Feeding", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <table class="table table-bordered" style="width: auto;">
+            @if (Model.Restricted)
+            {
+                <tr>
+                    <td colspan="2">
+                        File is <span class="label label-important"><small>RESTRICTED</small></span>
+                    </td>
+                </tr>
+            }
+            @if (Model.IsPublic)
+            {
+                <tr>
+                    <td colspan="2">
+                        File is <span class="label"><small>PUBLIC</small></span>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th>Last Modified Date</th>
+                <td>@string.Format("{0: d MMM yyyy HH:mm}", Model.FileModifiedDateTime)</td>
+            </tr>
+            <tr>
+                <th>Upload</th>
+                <td>
+                    Uploaded by @Model.UploadedBy on @string.Format("{0: d MMM yyyy HH:mm}", Model.UploadDate)
+                </td>
+            </tr>
+            <tr>
+                <th>Notes From Uploader</th>
+                <td>
+                    @Model.UploadNotes
+                </td>
+            </tr>
+            <tr>
+                <th>Rejection Reason</th>
+                <td>
+                    @Html.TextAreaFor(x => x.RejectedReason, new { @class = "input-xlarge" })
+                </td>
+            </tr>
+        </table>
+    
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Reject</button>
+            @Html.ActionLink("Download", "Download", "Feeding", new { area = "Sources", id = Model.Id }, new { @class = "btn" })
+            @Html.ActionLink("Back", "Index", "Feeding", new { area = "Sources" }, new { @class = "btn" })
+        </div>
+    }
+}

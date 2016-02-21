@@ -1,0 +1,12 @@
+﻿@{
+    var errors = ViewData.ModelState.Values.SelectMany(v => v.Errors);
+    if (errors.Any())
+    {
+        <ul>
+            @foreach (ModelError e in errors)
+            {
+                <li>@Html.Raw(e.ErrorMessage)</li>
+            }
+        </ul>
+    }
+}

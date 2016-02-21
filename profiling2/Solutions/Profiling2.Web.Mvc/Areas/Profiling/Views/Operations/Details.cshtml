@@ -1,0 +1,236 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Domain.Prf.Units
+@using Profiling2.Domain.Prf
+@using Profiling2.Infrastructure.Security
+@using Profiling2.Domain.Extensions
+@model Operation
+@{
+    ViewBag.Title = @Model.Name;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    var router = new Profiling.Routers.OperationDetailsRouter({ 
+      operationId: @Model.Id,
+      permissions: {
+        canChangeUnits: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeUnits).ToJsBool()),
+        canViewAndSearchSources: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources).ToJsBool()),
+        canViewAndSearchEvents: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents).ToJsBool())
+      }
+    });
+    Backbone.history.start();
+  });
+}
+
+<div class="btn-toolbar">
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeUnits))
+    {
+        <div class="btn-group">
+            <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">Change operation... <span class="caret"></span></a>
+            <ul id="dropdown-list" class="dropdown-menu" style="font-size: small;">
+                <li>@Html.ActionLink("Edit Operation", "Edit", "Operations", new { id = Model.Id, area = "Profiling" }, null)</li>
+                <li>@Html.ActionLink("Set Former Name", "EditFormerNameChange", "Operations", new { id = Model.Id, area = "Profiling" }, null)</li>
+                <li>@Html.ActionLink("Set New Name", "EditNewNameChange", "Operations", new { id = Model.Id, area = "Profiling" }, null)</li>
+                <li>@Html.ActionLink("Add Operation Alias", "Create", "OperationAliases", new { operationId = Model.Id, area = "Profiling" }, null)</li>
+                <li class="divider"></li>
+                <li><a id="delete-operation-button">Delete Operation</a></li>
+            </ul>
+        </div>
+    }
+    <div class="btn-group pull-right">
+        @Html.ActionLink("Screenings", "Screenings", "Operations", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini", target = "_blank" })
+        @Html.ActionLink("Audit Trail", "Audit", "Operations", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini", target = "_blank" })
+    </div>
+</div>
+
+<h2>
+    @Model.Name
+    @if (Model.HasStartDate() || Model.HasEndDate())
+    {
+        <small>(@Model.PrintDates())</small>   
+    }
+</h2>
+
+@if (Model.OperationAliases.Any())
+{
+    <ul>
+        @foreach (OperationAlias oa in Model.OperationAliases)
+        {
+            <li>
+                <span class="alias" data-id="@oa.Id"></span>
+                (a.k.a)&nbsp; @oa.Name
+            </li>
+        }
+    </ul>
+}
+@if (Model.FormerOperations.Any())
+{
+    <ul>
+        @foreach (Operation o in Model.FormerOperations)
+        {
+            <li>@Html.ActionLink(o.Name, "Details", "Operations", new { area = "Profiling", id = o.Id }, null) changed its name to @Model.Name</li>
+        }
+    </ul>
+}
+@if (Model.NextOperation != null)
+{
+    <ul>
+        <li>@Model.Name changed its name to @Html.ActionLink(Model.NextOperation.Name, "Details", "Operations", new { area = "Profiling", id = Model.NextOperation.Id }, null)</li>
+    </ul>
+}
+
+<dl class="dl-horizontal">
+  <dt>Objective</dt>
+  <dd>
+    @if (!string.IsNullOrEmpty(Model.Objective))
+    {
+      @Html.Raw(Model.Objective.Replace("\n", "<br />"))
+    }
+    else
+    {
+      <span class="muted">No listed objective.</span>
+    }
+  </dd>
+  <dt>Current Commander</dt>
+  <dd>@Html.Partial("_CommanderList", (IList<Profiling2.Domain.Prf.Careers.Career>)Model.GetCommanders(true))</dd>
+  <dt>Current Deputy Commander</dt>
+  <dd>@Html.Partial("_CommanderList", (IList<Profiling2.Domain.Prf.Careers.Career>)Model.GetDeputyCommanders(true))</dd>
+  <dt>Start Date</dt>
+  <dd>@Html.DateLabel(Model.YearOfStart, Model.MonthOfStart, Model.DayOfStart)</dd>
+  <dt>End Date</dt>
+  <dd>@Html.DateLabel(Model.YearOfEnd, Model.MonthOfEnd, Model.DayOfEnd)</dd>
+</dl>
+
+<hr />
+
+<h3>Units</h3>
+
+@if (Model.UnitOperations.Any())
+{
+    <table class="table table-bordered" style="width: auto;">
+        <thead>
+            <tr>
+                <th></th><th>Unit</th><th>Hierarchy</th><th>Last Screening Result</th><th>Last Screening Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (UnitOperation uo in Model.UnitOperations)
+            {
+                if (uo.Unit != null)
+                {
+                    int rows = uo.Unit.GetCommanders(true).Count + uo.Unit.GetDeputyCommanders(true).Count;
+                    IEnumerable<Person> hierarchy = uo.Unit.GetCommanders(true).Select(x => x.Person).Concat(uo.Unit.GetDeputyCommanders(true).Select(x => x.Person));
+                    ViewBag.ParentNameChanges = uo.Unit.GetParentChangedNameUnitHierarchiesRecursive(new List<UnitHierarchy>()).Distinct().ToList();
+                    ViewBag.ChildNameChanges = uo.Unit.GetChildChangedNameUnitHierarchiesRecursive(new List<UnitHierarchy>()).Distinct().ToList();
+                    ViewBag.DateEntity = uo;
+                    <tr>
+                        <td rowspan="@(rows == 0 ? 1 : rows)" style="white-space: nowrap;"><span class="unit-operation" data-id="@uo.Id" /></td>
+                        <td rowspan="@(rows == 0 ? 1 : rows)">
+                            @if (uo.IsCommandUnit)
+                            {
+                                <i class="icon-star" title="The commander of this unit commands this operation."></i>
+                            }
+                            @Html.Partial("_UnitNameForOperations", uo.Unit)
+                        </td>
+                        <td>
+                            @if (hierarchy.Any())
+                            {
+                                @hierarchy.First().CurrentCareer.Function@:&nbsp;
+                                @Html.ActionLink(hierarchy.First().Name, "Details", "Persons", new { id = hierarchy.First().Id, area = "Profiling" }, new { target = "_blank" })   
+                            }
+                            else
+                            {
+                                <span class="muted">No known commanders.</span>   
+                            }
+                        </td>
+                        <td style="text-align: center;">
+                            @if (hierarchy.Any())
+                            {
+                                @Html.ScreeningResultLabel(hierarchy.First().LatestScreeningResult)
+                            }
+                        </td>
+                        <td>
+                            @if (hierarchy.Any())
+                            {
+                                <span>
+                                    @(hierarchy.First().LatestScreeningFinalDecisionDate.HasValue ? string.Format("{0:yyyy-MM-dd HH:mm}", hierarchy.First().LatestScreeningFinalDecisionDate.Value) : string.Empty)
+                                    @if (hierarchy.First().LatestScreeningFinalDecisionDate.HasValue && hierarchy.First().LatestScreeningFinalDecisionDate.Value >= DateTime.Now.AddMonths(-3))
+                                    {
+                                        @:&nbsp;<span class="badge">less than 3 months ago</span>
+                                    }
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                            foreach (Person p in hierarchy.Skip(1))
+                            {
+                        <tr>
+                            <td>
+                                @p.CurrentCareer.Function&nbsp;@Html.ActionLink(p.Name, "Details", "Persons", new { id = p.Id, area = "Profiling" }, new { target = "_blank" })
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.ScreeningResultLabel(p.LatestScreeningResult)
+                            </td>
+                            <td>
+                                <span>
+                                    @(p.LatestScreeningFinalDecisionDate.HasValue ? string.Format("{0:yyyy-MM-dd HH:mm}", p.LatestScreeningFinalDecisionDate.Value) : string.Empty)
+                                    @if (p.LatestScreeningFinalDecisionDate.HasValue && p.LatestScreeningFinalDecisionDate.Value >= DateTime.Now.AddMonths(-3))
+                                    {
+                                        @:&nbsp;<span class="badge">less than 3 months ago</span>
+                                    }
+                                </span>
+                            </td>
+                        </tr>
+                            }
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <span class="muted">There are no units listed as part of this operation.</span>
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources))
+{
+    <hr />
+    <h3>Operation Sources</h3>
+    <div class="clearfix" id="operation-sources">
+    </div>
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents))
+{
+    <div class="clearfix">
+        <hr />
+        <h3>Event Responsibilities</h3>
+
+        @if (Model.HasNameChange())
+        {
+            <ul class="nav nav-pills nav-stacked pull-right" style="font-size: small;">
+                <li @(Request.QueryString["includeNameChanges"] == "False" || !Request.QueryString.HasKeys() ? "class=active" : string.Empty)>
+                    @Html.ActionLink("Single view", "Details", "Operations", new { id = Model.Id }, new { title = "View the details for only this operation." })
+                </li>
+                <li @(Request.QueryString["includeNameChanges"] == "True" ? "class=active" : string.Empty)>
+                    @Html.ActionLink("Combined view", "Details", "Operations", new { id = Model.Id, includeNameChanges = true }, new { title = "View the event responsibilities for all historical and future versions of this operation." })
+                </li>
+            </ul>   
+        }
+
+        <p>Only those events which occurred while the responsible unit was linked to this Operation are shown.  This includes any name changes the unit may have undergone.</p>
+        <p>Use the single/combined view toggle buttons to the right to toggle inclusion of this Operation's name changes.</p>
+
+        @{
+            var ors = Model.GetCombinedOrganizationResponsibilities(true, (bool)ViewBag.IncludeNameChanges);
+        }
+        @if (ors != null && ors.Count > 0)
+        {
+            @Html.Partial("_OrganizationResponsibilities", ors)
+        }
+        else
+        {
+            <span class="muted">There are no event responsibilities.</span>
+        }
+    </div>
+}

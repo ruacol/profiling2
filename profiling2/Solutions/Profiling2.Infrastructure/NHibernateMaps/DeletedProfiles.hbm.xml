@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <sql-query name="PRF_SP_Reports_DeletedProfiles_NHibernate"  callable="true" >
+    <return-scalar type="System.Int32" column="LogNo" />
+    <return-scalar type="System.String" column="Who"/>
+    <return-scalar type="System.String" column="When"/>
+    <return-scalar type="System.String" column="PersonID"/>
+    <return-scalar type="System.String" column="Person" />
+    <return-scalar type="System.String" column="NonProfilingChange" />
+
+    exec PRF_SP_Reports_DeletedProfiles_NHibernate 
+  </sql-query>
+</hibernate-mapping>

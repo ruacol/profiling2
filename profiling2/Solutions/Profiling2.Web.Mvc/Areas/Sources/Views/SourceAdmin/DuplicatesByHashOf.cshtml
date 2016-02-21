@@ -1,0 +1,45 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@model IList<SourceDTO>
+@{
+  ViewBag.Title = "Duplicates Of " + Request.Params["Hash"];
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("duplicates-table", {
+      bServerSide: false
+    });
+  }); 
+}
+
+<h2>Duplicates By Hash Of @Request.Params["Hash"]</h2>
+
+<p>@Html.ActionLink("Clean", "CleanDuplicatesByHashOf", "SourceAdmin", new { area = "Sources", Hash = Request.Params["Hash"] }, new { @class = "btn btn-mini" })</p>
+
+<hr />
+
+<table id="duplicates-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Path</th>
+      <th>File Date</th>
+      <th>Archive</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (SourceDTO s in Model)
+    {
+      <tr>
+        <td>
+          <a href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@s.SourceID" target="_blank">
+            @s.SourceID
+          </a>
+        </td>
+        <td>@s.SourcePath</td>
+        <td>@string.Format("{0:yyyy/MM/dd HH:mm:ss}", s.FileDateTimeStamp)</td>
+        <td>@s.Archive</td>
+      </tr>
+    }
+  </tbody>
+</table>

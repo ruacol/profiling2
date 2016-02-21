@@ -1,0 +1,433 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Actions
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Domain.Prf.Responsibility
+@using Profiling2.Domain.Prf.Sources
+@using Profiling2.Infrastructure.Security
+@using System.Linq
+@model Event
+@{
+  ViewBag.Title = Model.Headline;
+}
+@section styles
+{
+  @Html.RenderCssBundle("~/Content/leaflet.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <!--[if lte IE 8]>
+      @Html.RenderCssBundle("~/Content/leaflet.ie.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <![endif]-->
+}
+@section scriptSources
+{
+  @Html.RenderJsBundle("~/Scripts/leaflet.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.EventDetailsRouter({ 
+            id: @Model.Id, 
+            headline: "@Model.Headline",
+            permissions: {
+              canChangeEvents: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeEvents).ToJsBool()),
+              canApproveEvents: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanApproveEvents).ToJsBool()),
+              canChangeActionsTaken: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeActionsTaken).ToJsBool()),
+              canLinkEvents: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanLinkEvents).ToJsBool()),
+              canLinkEventsAndSources: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanLinkEventsAndSources).ToJsBool()),
+              canChangePersonResponsibilities: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersonResponsibilities).ToJsBool())
+            }
+        });
+        Backbone.history.start();
+    });
+}
+
+<div class="btn-toolbar">
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeEvents)
+        || ((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersonResponsibilities)
+        || ((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeActionsTaken)
+        || ((PrfPrincipal)User).HasPermission(AdminPermission.CanLinkEvents)
+        || ((PrfPrincipal)User).HasPermission(AdminPermission.CanLinkEventsAndSources))
+    {
+        <div class="btn-group">
+            <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">Change event... <span class="caret"></span></a>
+            <ul id="change-event-menu" class="dropdown-menu"></ul>
+        </div>
+    }
+
+    @if (!Model.IsApproved() && ((PrfPrincipal)User).HasPermission(AdminPermission.CanApproveEvents))
+    {
+        <div class="btn-group" id="approve-event-group"></div>
+    }
+
+    <div class="btn-group pull-right" id="button-group-right">
+        <a class="btn btn-mini" id="save-as-word-button">Save As Word</a>
+        @Html.ActionLink("Audit Trail", "Audit", "Events", new { id = Model.Id }, new { @class = "btn btn-mini", target = "_blank" })
+    </div>
+</div>
+
+<h2>
+    @Model.Headline
+    @if (Model.Archive)
+    {
+        <small>(archived)</small>
+    }
+    @if (!Model.IsApproved())
+    {
+        <small>(unapproved)</small>
+    }
+</h2>
+
+<div class="row-fluid">
+    <div class="span6">
+        @if (Model.EventVerifiedStatus != null)
+        {
+            <p>This event has a verified status of <span class="label" style="text-transform: uppercase;">@Model.EventVerifiedStatus</span></p>
+        }
+        else
+        {
+            <p class="muted">This event has no verified status.</p>   
+        }
+    </div>
+    <div class="span6 pagination-right">
+        @if (Model.JhroCases != null && Model.JhroCases.Any())
+        {
+            <p>
+                This event is linked to HRDB case code@(Model.JhroCases.Count > 1 ? "s" : string.Empty)
+                @foreach (JhroCase c in Model.JhroCases)
+                {
+                    @Html.ActionLink(c.CaseNumber, "Details", "Cases", new { area = "Hrdb", id = c.Id }, new { @class = "label", style = "margin-right: 5px;" })
+                }
+            </p>
+        }
+        else
+        {
+            <p class="muted">This event is not linked to any HRDB case.</p>   
+        }
+    </div>
+</div>
+
+<table class="table">
+    @if (Model.Tags != null && Model.Tags.Count > 0)
+    {
+        <tr>
+            <th>Tags</th>
+            <td>
+                @foreach (Tag tag in Model.Tags)
+                {
+                    <a href="@Url.Action("Details", "Tags", new { id = tag.Id })">
+                        <span class="label">@tag.TagName</span>
+                    </a>
+                }
+            </td>
+        </tr>
+    }
+    <tr>
+        <th>Categories</th>
+        <td>
+            @if (Model.Violations != null && Model.Violations.Count > 0)
+            {
+                <ul>
+                @foreach (Violation v in Model.Violations)
+                {
+                    <li>@Html.ActionLink(v.Name, "Details", "Violations", new { id = v.Id }, null)</li>
+                }
+                </ul>
+            }
+            else
+            {
+                <span class="muted">There are no categories linked to this event.</span>
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>Narrative <small>(English)</small></th>
+        <td>
+            @if (!string.IsNullOrEmpty(Model.NarrativeEn))
+            {
+              @Html.Raw(Model.NarrativeEn.Replace("\n", "<br />"))
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>Narrative <small>(French)</small></th>
+        <td>
+            @if (!string.IsNullOrEmpty(Model.NarrativeFr))
+            {
+              @Html.Raw(Model.NarrativeFr.Replace("\n", "<br />"))
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>Start date</th>
+        <td>@Html.DateLabel(Model.YearOfStart, Model.MonthOfStart, Model.DayOfStart)</td>
+    </tr>
+    <tr>
+        <th>End date</th>
+        <td>@Html.DateLabel(Model.YearOfEnd, Model.MonthOfEnd, Model.DayOfEnd)</td>
+    </tr>
+    <tr>
+        <th>Location</th>
+        <td>@Html.ActionLink(Model.Location.ToString(), "Details", "Locations", new { id = Model.Location.Id, area = "Profiling" }, null)</td>
+    </tr>
+    <tr>
+        <th>Notes</th>
+        <td>@Model.Notes</td>
+    </tr>
+</table>
+
+<h3>Event Sources</h3>
+@if (Model.EventSources != null && Model.EventSources.Count > 0)
+{
+    <table class="table">
+        @foreach (EventSource es in Model.EventSources)
+        {
+            <tr>
+                <td>
+                    <span class="event-source" data-id="@es.Id"></span>
+                    <a href="@Url.Action("Index", "Sources")#info/@es.Source.Id" target="_blank">@es.Source.SourceName</a>
+                    /
+                    @if (string.IsNullOrEmpty(es.Commentary))
+                    {
+                        <span class='muted'>No commentary</span>
+                    }
+                    else
+                    {
+                        @es.Commentary
+                    }
+                    @Html.Partial("_SourceThumbnail", es.Source)
+                </td>
+                <td>
+                    <div class="pull-right">
+                        @if (es.Source.Archive)
+                        {
+                            <span class="label"><small>ARCHIVED</small></span>
+                        }
+                        @if (es.Source.IsRestricted)
+                        {
+                            <span class="label label-important"><small>RESTRICTED</small></span>
+                        }
+                        @if (es.Reliability != null)
+                        {
+                            <span class="label" title="Reliability rating">@es.Reliability</span>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <span class="muted">There are no sources linked to this event.</span>
+}
+
+<h3>Related Events</h3>
+@if (Model.GetEventRelationships().Where(x => !x.Archive).Any())
+{
+  <table class="table">
+    <tbody>
+      @foreach (EventRelationship er in Model.GetEventRelationships().Where(x => !x.Archive))
+      {
+        <tr>
+          <td style="white-space: nowrap;" class="span1"><span class="event-relationship" data-id="@er.Id"></span></td>
+          <td>
+            @if (er.SubjectEvent == Model)
+            {
+              @:...
+            }
+            else
+            {
+              @Html.ActionLink(er.SubjectEvent.Headline, "Details", "Events", new { id = er.SubjectEvent.Id }, null)
+            }
+            @er.EventRelationshipType
+            @if (er.ObjectEvent == Model)
+            {
+              @:...
+            }
+            else
+            {
+              @Html.ActionLink(er.ObjectEvent.Headline, "Details", "Events", new { id = er.ObjectEvent.Id }, null)
+            }
+            @if (er.HasStartDate() || er.HasEndDate())
+            {
+              <br />
+              <span class="muted">
+                  @if (er.HasStartDate())
+                  {
+                      @:from @er.GetStartDateString()
+                  }
+                  @if (er.HasEndDate())
+                  {
+                      @:until @er.GetEndDateString()
+                  }
+              </span>
+            }
+            @if (!string.IsNullOrEmpty(er.Notes))
+            {
+                <br />
+                <p class="muted">@er.Notes</p>
+            }
+          </td>
+        </tr>   
+      }
+    </tbody>
+  </table>
+}
+else
+{
+    <span class="muted">No information on events related to this event.</span>
+}
+
+<h3>Organizations Responsible</h3>
+@if (Model.OrganizationResponsibilities != null && Model.OrganizationResponsibilities.Count > 0)
+{
+    <table class="table">
+        <tbody>
+            @foreach (OrganizationResponsibility or in Model.OrganizationResponsibilities.Where(x => !x.Archive))
+            {
+                <tr>
+                    <td style="white-space: nowrap;" class="span1"><span class="organization-responsibility" data-organization-responsibility-id="@or.Id"></span></td>
+                    <td data-selector="#or-@or.Id-notes" class="or-cell">
+                        @if (or.Unit != null)
+                        {
+                            @Html.Partial("_UnitLinkAndDates", or.Unit)
+                        }
+                        @if (or.Unit != null && or.Organization != null)
+                        {
+                            @:/
+                        }
+                        @if (or.Organization != null)
+                        {
+                            @Html.ActionLink(or.Organization.ToString(), "Details", "Organizations", new { id = or.Organization.Id, area = "Profiling" }, null)
+                        }
+                        @if (or.OrganizationResponsibilityType != null)
+                        {
+                            <span class="pull-right label" title="Responsibility">@or.OrganizationResponsibilityType</span>
+                        }
+                        @if (!string.IsNullOrEmpty(or.Commentary))
+                        {
+                            <br />
+                            <p class="muted">@Html.Raw(or.Commentary.Replace("\n", "<br />"))</p>
+                        }
+                        @if (!string.IsNullOrEmpty(or.Notes))
+                        {
+                            <div id="or-@or.Id-notes" style="display: none;">
+                                @or.Notes
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <span class="muted">No information on organizations responsible for this event.</span>
+}
+
+<h3>Persons Responsible</h3>
+@if (Model.PersonResponsibilities != null && Model.PersonResponsibilities.Count > 0)
+{
+    <table class="table">
+        <tbody>
+            @foreach (PersonResponsibility pr in Model.PersonResponsibilities.Where(x => !x.Archive))
+            {
+                <tr>
+                    <td style="white-space: nowrap;" class="span1"><span class="person-responsibility" data-id="@pr.Id"></span></td>
+                    <td data-selector="#pr-@pr.Id-notes" class="pr-cell">
+                        @Html.ActionLink(pr.Person.Name, "Details", "Persons", new { id = pr.Person.Id, area = "Profiling" }, null)
+                        /
+                        @if (!string.IsNullOrEmpty(pr.GetPersonFunctionUnitSummary()))
+                        {
+                            @pr.GetPersonFunctionUnitSummary()
+                        }
+                        else
+                        {
+                            <span class="muted">(no known function at the time)</span>   
+                        }
+                        /
+                        @foreach (Violation v in pr.Violations)
+                        {
+                            <span class="label label-@(v.ConditionalityInterest ? "warning" : "inverse")" style="margin-right: 5px;">@v.Name</span>
+                        }
+                        @if (!string.IsNullOrEmpty(pr.Commentary))
+                        {
+                            <br />
+                            <p class="muted">@Html.Raw(pr.Commentary.Replace("\n", "<br />"))</p>
+                        }
+                        @if (!string.IsNullOrEmpty(pr.Notes))
+                        {
+                            <div id="pr-@pr.Id-notes" style="display: none;">
+                                @pr.Notes
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @if (pr.PersonResponsibilityType != null)
+                        {
+                            <span class="pull-right label" title="Responsibility">@pr.PersonResponsibilityType</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <span class="muted">No information on persons responsible for this event.</span>
+}
+
+<h3>Actions Taken</h3>
+@if (Model.ActionTakens != null && Model.ActionTakens.Where(x => !x.Archive).Any())
+{
+    <table class="table">
+        <tbody>
+            @foreach (ActionTaken at in Model.ActionTakens.Where(x => !x.Archive))
+            {
+                <tr>
+                    <td style="white-space: nowrap;" class="span1"><span class="action-taken" data-action-taken-id="@at.Id"></span></td>
+                    <td>
+                        @if (at.SubjectPerson != null)
+                        {
+                            @Html.ActionLink(at.SubjectPerson.Name, "Details", "Persons", new { id = at.SubjectPerson.Id, area = "Profiling" }, null)
+                        }
+                        @at.ActionTakenType
+                        @if (at.ObjectPerson != null)
+                        {
+                            @Html.ActionLink(at.ObjectPerson.Name, "Details", "Persons", new { id = at.ObjectPerson.Id, area = "Profiling" }, null)
+                        }
+                        @if (at.ActionTakenType.IsRemedial)
+                        {
+                            <span class="pull-right label"><small>REMEDIAL</small></span>
+                        }
+                        @if (at.ActionTakenType.IsDisciplinary)
+                        {
+                            <span class="pull-right label"><small>DISCIPLINARY</small></span>
+                        }
+                        @if (at.HasStartDate() || at.HasEndDate())
+                        {
+                            if (at.HasStartDate())
+                            {
+                                @:from @at.GetStartDateString()
+                            }
+                            if (at.HasEndDate())
+                            {
+                                @:until @at.GetEndDateString()
+                            }
+                        }
+                        @if (!string.IsNullOrEmpty(at.Commentary))
+                        {
+                            <br />
+                            <span class="muted">@at.Commentary</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <span class="muted">No information on actions taken for this event.</span>
+}

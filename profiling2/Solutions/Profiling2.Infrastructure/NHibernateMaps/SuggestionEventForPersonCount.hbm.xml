@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <sql-query name="PRF_SP_Suggestion_EventForPersonCount_NHibernate"  callable="true" >
+    <query-param name="PersonID" type="System.Int32"/>
+
+    <return-scalar column ="Count" type ="System.Int32"/>
+
+    exec PRF_SP_Suggestion_EventForPersonCount_NHibernate @PersonID=:PersonID
+  </sql-query>
+</hibernate-mapping>

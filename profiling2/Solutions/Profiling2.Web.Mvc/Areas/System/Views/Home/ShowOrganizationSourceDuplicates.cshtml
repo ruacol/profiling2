@@ -1,0 +1,11 @@
+﻿@using Profiling2.Domain.DTO
+@model IList<ObjectSourceDuplicateDTO>
+@{
+    ViewBag.Title = "Show Organization Source Duplicates";
+}
+
+<h2>Show Organization Source Duplicates</h2>
+
+<p>@Model.Count duplicate OrganizationSources.</p>
+
+@Html.ActionLink("Merge", "MergeOrganizationSourceDuplicates", "Home", null, new { @class = "btn btn-primary" })

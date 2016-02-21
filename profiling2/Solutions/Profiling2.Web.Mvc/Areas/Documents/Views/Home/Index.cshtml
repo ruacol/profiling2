@@ -1,0 +1,53 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Documentation
+@using Profiling2.Infrastructure.Security
+@model IList<DocumentationFileTag>
+@{
+    ViewBag.Title = "Documents";
+    ViewBag.NoSidebar = true;
+}
+
+<h2>Documentation</h2>
+
+@if (User.IsInRole(AdminRole.ProfilingAdmin))
+{
+    <p>As an admin, use the Manage button to customize the sections below and upload/delete files.</p>
+    <p>@Html.ActionLink("Manage", "Manage", null, new { @class = "btn" })</p>
+}
+
+<div class="row-fluid"> 
+    <div class="span12">
+        @foreach (DocumentationFileTag tag in Model.Where(x => x.DocumentationFiles.Any()))
+        {
+            if (((PrfPrincipal)User).HasPermission(tag.AdminPermission.Name))
+            {
+                <div class="pull-left" style="margin-right: 20px;">
+                    <h3>@tag.Name</h3>
+                    <table class="table table-bordered" style="width: auto;">
+                        <thead>
+                            <tr>
+                                <th>Document</th>
+                                <th>Download</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DocumentationFile file in tag.DocumentationFiles.Where(x => !x.Archive))
+                            {
+                                <tr>
+                                    <td>
+                                        @(string.IsNullOrEmpty(file.Title) ? file.FileName : file.Title)
+                                        @if (!string.IsNullOrEmpty(file.Description))
+                                        {
+                                            <p class="muted">@file.Description</p>
+                                        }
+                                    </td>
+                                    <td>@Html.ActionLink(file.FileName, "Download", new { id = file.Id, area = "Documents" }, new { @class = "btn btn-mini" })</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+    </div>
+</div>

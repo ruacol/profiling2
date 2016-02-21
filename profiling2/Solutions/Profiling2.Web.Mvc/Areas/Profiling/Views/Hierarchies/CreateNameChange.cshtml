@@ -1,0 +1,38 @@
+﻿@using Profiling2.Domain.Prf.Units
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model UnitHierarchyViewModel
+@{
+  ViewBag.Title = ViewBag.CurrentUnit.UnitName;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    _(["#ParentUnitId", "#UnitId"]).each(function(el) {
+      new Profiling.BasicSelect({
+        el: el,
+        placeholder: "Search by unit ID or name...",
+        nameUrl: "@(Request.ApplicationPath + "/")Profiling/Units/Name/",
+        getUrl: "@(Request.ApplicationPath + "/")Profiling/Units/Get"
+      });
+    });
+  }); 
+}
+
+@Html.Partial("_UnitHeading", (Unit)ViewBag.CurrentUnit)
+
+<h3>Unit Name Change</h3>
+
+<p>Use this form to record a name change for a unit.</p>
+<p><button type="button" class="btn btn-mini" data-toggle="collapse" data-target="#name-change-dates" title="Click to toggle dates">Toggle dates</button></p>
+
+<hr />
+
+@using (Html.BeginForm("CreateNameChange", "Hierarchies", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+  @Html.Partial("_UnitNameChangeForm")
+  
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Add</button>
+    @Html.ActionLink("Back", "Details", "Units", new { area = "Profiling", id = ViewBag.CurrentUnit.Id }, new { @class = "btn" })
+  </div>
+}

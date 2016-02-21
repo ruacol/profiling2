@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Users";
+}
+
+@section scripts
+{
+    $(document).ready(function() {
+        var view = new Profiling.Views.UsersIndexView({ url: "@(Request.ApplicationPath + "/")System/Users/DataTables" });
+        $("#users-index").html(view.render().el);
+    });
+}
+
+
+<div class="btn-toolbar">
+    @if (new string[] { "LocalMembershipProvider", "SetupMembershipProvider", "ActiveDirectoryMembershipProvider" }.Contains(Membership.Provider.Name))
+    {
+        <div class="btn-group">
+            @Html.ActionLink("Create", "Create", "Users", new { area = "System" }, new { @class = "btn btn-mini" })
+        </div>
+    }
+    <div class="btn-group">
+        @Html.ActionLink("Archived", "Archived", "Users", new { area = "System" }, new { @class = "btn btn-mini" })
+    </div>
+</div>
+
+<h2>Users</h2>
+
+<hr />
+
+<div class="row-fluid">
+    <div id="users-index" class="span12"></div>
+</div>

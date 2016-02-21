@@ -1,0 +1,47 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model PersonRelationshipTypeViewModel
+@{
+  ViewBag.Title = "Create Person Relationship Type";
+}
+
+<h2>Create Person Relationship Type</h2>
+
+<hr />
+
+@using (Html.BeginForm("Create", "PersonRelationshipTypes", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-error">
+            @Html.ValidationSummary()
+        </div>
+    }
+    
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label">Name</label>
+            <div class="controls">
+                @Html.TextBoxFor(x => x.PersonRelationshipTypeName, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Is Commutative</label>
+            <div class="controls">
+                @Html.CheckBoxFor(x => x.IsCommutative, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        @Html.HiddenFor(x => x.Archive)
+        <div class="control-group">
+            <label class="control-label">Notes</label>
+            <div class="controls">
+                @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+    </fieldset>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @Html.ActionLink("Back", "Index", "PersonRelationshipTypes", new { area = "Profiling" }, new { @class = "btn" })
+    </div>
+}

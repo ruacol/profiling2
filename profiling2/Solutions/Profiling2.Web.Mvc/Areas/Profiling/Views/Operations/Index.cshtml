@@ -1,0 +1,42 @@
+﻿@using Profiling2.Domain.Prf.Units
+@using Profiling2.Domain.Prf
+@using Profiling2.Infrastructure.Security
+@{
+    ViewBag.Title = "Operations";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("operations-table", {
+      bStateSave: false,
+      sAjaxSource: "@(Request.ApplicationPath + "/")Profiling/Operations/DataTables",
+      aoColumnDefs: [ { aTargets: [ 0 ], bVisible: false } ],
+      fnRowCallback: function(nRow, aData, iDisplayIndex) {
+        $("td:eq(0)", nRow).html("<a href='@(Request.ApplicationPath + "/")Profiling/Operations/Details/" + aData[0] + "'>" + aData[1] + "</a>");
+        $("td:eq(0)", nRow).css("white-space", "nowrap");
+      }
+    });
+  }); 
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeUnits))
+{
+  <div class="btn-toolbar">
+      <div id="role-menu" class="btn-group">
+        @Html.ActionLink("Create Operation", "Create", "Operations", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+      </div>
+  </div>
+}
+
+<h2>Operations</h2>
+
+<hr />
+
+<table id="operations-table" class="table table-bordered table-hover table-condensed">
+    <thead>
+        <tr>
+            <th>ID</th><th>Name</th><th>Objective</th><th>Start Date</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

@@ -1,0 +1,44 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model IList<Ethnicity>
+@{
+  ViewBag.Title = "Ethnicities";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("ethnicities-table", {
+      bServerSide: false
+    });
+  }); 
+}
+
+<div class="btn-toolbar">
+    <div id="rank-menu" class="btn-group">
+      @Html.ActionLink("Create Ethnicity", "Create", "Ethnicities", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+    </div>
+</div>
+
+<h2>Ethnicities</h2>
+
+<hr />
+
+<table id="ethnicities-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Notes</th>
+      <th>Individuals</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Ethnicity e in Model)
+    {
+      <tr>
+        <td>@Html.ActionLink(e.EthnicityName, "Details", new { id = e.Id })</td>
+        <td>@e.Notes</td>
+        <td>@e.Persons.Count</td>
+      </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,9 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf.Units
+@model Unit
+
+@Html.ActionLink(Model.UnitName, "Details", "Units", new { id = Model.Id, area = "Profiling" }, new { target = "_blank" }) 
+@if (Model.HasStartDate() || Model.HasEndDate())
+{
+    <span class="muted">(@Model.PrintDates())</span>
+}

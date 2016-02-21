@@ -1,0 +1,40 @@
+﻿@using Profiling2.Domain.Scr;
+@model IList<Request>
+@{
+  ViewBag.Title = "Requests for Final Decision";
+}
+
+<h2>Requests for Final Decision</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th><th>Reference</th><th>Name</th><th>Requesting Entity</th><th>Type</th><th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Request r in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink("View", "RequestAction", "Finalize", new { area = "Screening", id = r.Id }, new { @class = "btn btn-mini" })</td>
+                    <td style="white-space: nowrap;">@r.ReferenceNumber</td>
+                    <td>@r.RequestName</td>
+                    <td>@r.RequestEntity</td>
+                    <td>@r.RequestType</td>
+                    <td>@r.CurrentStatus on @string.Format("{0:yyyy-MM-dd HH:mm}", r.CurrentStatusDate) by @r.CurrentStatusUser</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There are no requests awaiting final decision.</p>
+}

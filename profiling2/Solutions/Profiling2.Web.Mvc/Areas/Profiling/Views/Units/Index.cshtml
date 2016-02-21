@@ -1,0 +1,121 @@
+﻿@using Profiling2.Domain.Prf.Units
+@using Profiling2.Domain.Prf
+@using Profiling2.Infrastructure.Security
+@model IList<Unit>
+@{
+    ViewBag.Title = "Units";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("units-table", {
+      bStateSave: false,
+      sAjaxSource: "@(Request.ApplicationPath + "/")Profiling/Units/DataTables",
+      aoColumns: [ { mDataProp: 'Id', bSortable: false }, { mDataProp: 'Name', bSortable: false }, { mDataProp: 'Organization', bSortable: false } ],
+      fnRowCallback: function(nRow, aData, iDisplayIndex) {
+        $("td:eq(0)", nRow).html("<a href='@(Request.ApplicationPath + "/")Profiling/Units/Details/" + aData['Id'] + "'>" + aData['Id'] + "</a>");
+        $("td:eq(0)", nRow).addClass('span1');
+        
+        var names = [];
+        _(aData['Aliases']).each(function(alias) {
+          names.push("<span class='muted'>(a.k.a.)</span> " + alias);
+        });
+        _(aData['ParentNames']).each(function(parent) {
+          names.push("<span class='muted'>(formerly known as)</span> " + parent);
+        });
+        _(aData['ChildNames']).each(function(child) {
+          names.push("<span class='muted'>(changed name to)</span> " + child);
+        });
+
+        var pieces = [];
+        var name = aData['Name'];
+        if (aData['StartDateDisplay'] || aData['EndDateDisplay']) {
+            name += " <span class='muted'>";
+            if (aData['StartDateDisplay']) {
+                name += 'from ' + aData['StartDateDisplay'];
+            }
+            if (aData['EndDateDisplay']) {
+                name += ' until ' + aData['EndDateDisplay'];
+            }
+            name += "</span>";
+        }
+        pieces.push(name);
+
+        var otherNames = names.join(", ");
+        if (otherNames) {
+            pieces.push(otherNames);
+        }
+        
+        if (aData['BackgroundInformation']) {
+          pieces.push("<span class='muted' style='font-size: small;'>" + aData['BackgroundInformation'].substring(0, aData['BackgroundInformation'].indexOf('<br')) + "</span>");
+        }
+        $("td:eq(1)", nRow).html(pieces.join("<br />"));
+        $("td:eq(1)", nRow).addClass('ellipsis');
+        $("td:eq(2)", nRow).addClass('span1');
+      }
+    });
+  }); 
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeUnits))
+{
+  <div class="btn-toolbar">
+      <div class="btn-group">
+        @Html.ActionLink("Create Unit", "Create", "Units", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+        @Html.ActionLink("Merge Units", "Merge", "Units", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+      </div>
+      <div class="btn-group pull-right">
+          <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">Reports <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+              <li>
+                  @Html.ActionLink("Current Numbers", "Current", "Units", new { area = "Profiling" }, new { style = "font-size: 85%;" })
+              </li>
+              <li>
+                  @Html.ActionLink("Empty Units", "EmptyUnits", "Units", new { area = "Profiling" }, new { style = "font-size: 85%;" })
+              </li>
+          </ul>
+        </div>
+  </div>
+}
+
+<h2>Units</h2>
+
+<table id="units-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Organization</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+<div class="clearfix" style="clear: both;">
+    <hr />
+
+    <h4>Search tips</h4>
+
+    <div>
+      <p>
+          For maximum results, search terms are by default ORed together (each term being optional) with some fuzziness allowed.  Search is not case sensitive.
+      </p>
+      <p class="lead">
+          Search includes unit names, aliases, as well as background information and organization abbreviations.
+      </p>
+      Internal ID number search:
+      <ul>
+          <li><span class="text-info">Id:100</span> will return the unit with the internal Id of 100.</li>
+          <li><span class="text-info">Id:[100 TO 200]</span> will return those units with internal Ids between 100 and 200.</li>
+      </ul>
+      For a more exact name search:
+      <ul>
+        <li><span class="text-info">Name:"8 Military Region"</span> will return units with the exact name "8 Military Region".</li>
+        <li><span class="text-info">military AND region</span> will narrow the search results to those units with both 'military' and 'region' in their name.</li>
+        <li><span class="text-info">Organization:fardc</span> will return units whose Organization is listed as FARDC.</li>
+      </ul>
+
+    </div>
+
+</div>

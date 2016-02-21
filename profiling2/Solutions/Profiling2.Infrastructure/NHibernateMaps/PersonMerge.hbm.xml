@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <sql-query name="PRF_SP_PersonMerge_NHibernate" callable="true">
+    <query-param name="ToKeepPersonID" type="System.Int64"/>
+    <query-param name="ToDeletePersonID" type="System.Int64"/>
+    <query-param name="UserID" type="System.String"/>
+    <query-param name="IsProfilingChange" type="System.Boolean"/>
+
+    <return-scalar column="Result" type="System.Int32"/>
+
+    exec PRF_SP_PersonMerge_NHibernate @ToKeepPersonID=:ToKeepPersonID, @ToDeletePersonID=:ToDeletePersonID, @UserID=:UserID, @IsProfilingChange=:IsProfilingChange
+  </sql-query>
+</hibernate-mapping>

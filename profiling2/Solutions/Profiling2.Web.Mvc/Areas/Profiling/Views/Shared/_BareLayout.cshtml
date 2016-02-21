@@ -1,0 +1,32 @@
+@using Profiling2.Infrastructure.Security
+@using Profiling2.Domain.Prf
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>@ViewBag.Title</title>
+
+    @Html.RenderCssBundle("~/Content/app.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+    @RenderSection("styles", false)
+</head>
+<body style="padding-top: 10px;">
+    <div class="container-fluid">
+        <div id="mainContent" class="row-fluid">
+            <div class="span12">@RenderBody()</div>
+        </div>
+        <!--/mainContent-->
+        <div id="footer" class="row-fluid">
+            <div class="span12">
+                <hr />
+                <p class="pull-right"><small>Profiling Unit - JHRO - MONUSCO - OHCHR</small></p>
+            </div>
+        </div>
+    </div>
+    <!--/container-fluid-->
+
+    @Html.RenderJsBundle("~/Scripts/app.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+    <script type="text/javascript">
+        @RenderSection("scripts", false)
+    </script>
+</body>
+</html>

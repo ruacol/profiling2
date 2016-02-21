@@ -1,0 +1,64 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Organizations
+@using Profiling2.Infrastructure.Security
+@model IList<Organization>
+@{
+  ViewBag.Title = "Organizations";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("organizations-table", {
+      bServerSide: false,
+      aaSorting: [ [ 1, 'desc' ] ]
+    });
+  }); 
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeOrganizations))
+{
+    <div class="btn-toolbar">
+        <div id="rank-menu" class="btn-group">
+          @Html.ActionLink("Create Organization", "Create", "Organizations", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+        </div>
+    </div>
+}
+
+<h2>Organizations</h2>
+
+<hr />
+
+<table id="organizations-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Individuals</th>
+      <th>Units</th>
+      <th>Responsibilities</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Organization o in Model)
+    {
+      <tr>
+        <td>
+            @Html.ActionLink(o.ToString(), "Details", new { id = o.Id })
+            <span class="muted">
+                @if (o.HasStartDate())
+                {
+                    @:from @o.GetStartDateString()
+                }
+                @if (o.HasEndDate())
+                {
+                    @:until @o.GetEndDateString()
+                }
+            </span>
+        </td>
+        <td>@o.Careers.Select(x => x.Person).Distinct().Count()</td>
+        <td>@o.Units.Distinct().Count()</td>
+        <td>@o.OrganizationResponsibilities.Count</td>
+      </tr>
+    }
+  </tbody>
+</table>

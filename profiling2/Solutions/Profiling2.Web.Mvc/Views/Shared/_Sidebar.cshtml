@@ -1,0 +1,8 @@
+﻿@if (!string.IsNullOrEmpty((string)ViewContext.RouteData.DataTokens["area"]))
+{
+    <ul class="well nav nav-list" data-spy="affix" id="primary-sidebar-well">
+        @Html.Partial("_SidebarListItems")
+    </ul>
+  
+    <div id="secondary-sidebar" data-spy="affix" style="padding-left: 19px; padding-right: 19px;"></div>
+}

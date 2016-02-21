@@ -1,0 +1,53 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Units
+@using Profiling2.Infrastructure.Security
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+
+@{
+    IList<UnitHierarchy> parentNameChanges = ViewBag.ParentNameChanges;
+    IList<UnitHierarchy> childNameChanges = ViewBag.ChildNameChanges;
+
+    if (parentNameChanges.Any())
+    {
+        <ul>
+            @foreach (UnitHierarchy uh in parentNameChanges)
+            {
+                UnitHierarchyViewModel vm = new UnitHierarchyViewModel(uh);
+                <li>
+                    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeUnits))
+                    {
+                        <div style="display: inline;">
+                          <a href="@(Request.ApplicationPath + "/")Profiling/Units/@Model.Id/Hierarchies/EditNameChange/@uh.Id"><i class="accordion-toggle icon-pencil" title="Edit Name Change" style="margin-right: 5px;"></i></a>
+                        </div>
+                        <div style="display: inline;">
+                          <i class="accordion-toggle icon-trash delete-name-change" title="Delete Name Change" style="margin-right: 5px;" data-id="@uh.Id"></i>
+                        </div>
+                    }
+                    @Html.ActionLink(vm.ParentUnitName, "Details", "Units", new { id = vm.ParentUnitId }, new { title = uh.ParentUnit.PrintDates() }) @Html.Raw(string.IsNullOrEmpty(uh.ParentUnit.PrintDates()) ? string.Empty : "<span class='muted'><small>(" + uh.ParentUnit.PrintDates() + ")</small></span>") changed its name to @uh.Unit.UnitName
+              </li>
+            }
+        </ul>
+    }
+    if (childNameChanges.Any())
+    {
+        <ul>
+            @foreach (UnitHierarchy uh in childNameChanges)
+            {
+                UnitHierarchyViewModel vm = new UnitHierarchyViewModel(uh);
+                <li>
+                    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeUnits))
+                    {
+                        <div style="display: inline;">
+                            <a href="@(Request.ApplicationPath + "/")Profiling/Units/@Model.Id/Hierarchies/EditNameChange/@uh.Id"><i class="accordion-toggle icon-pencil" title="Edit Name Change" style="margin-right: 5px;"></i></a>
+                        </div>
+                        <div style="display: inline;">
+                            <i class="accordion-toggle icon-trash delete-name-change" title="Delete Name Change" style="margin-right: 5px;" data-id="@uh.Id"></i>
+                        </div>
+                    }
+                    @uh.ParentUnit.UnitName changed its name to @Html.ActionLink(vm.UnitName, "Details", "Units", new { id = vm.UnitId }, new { title = uh.Unit.PrintDates() }) @Html.Raw(string.IsNullOrEmpty(uh.Unit.PrintDates()) ? string.Empty : "<span class='muted'><small>(" + uh.Unit.PrintDates() + ")</small></span>")
+                </li>
+            }
+        </ul>
+    }
+}

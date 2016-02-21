@@ -1,0 +1,31 @@
+﻿@using Profiling2.Domain.Prf.Careers
+@model IList<Rank>
+@{
+    ViewBag.Title = "Ranks";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("ranks-table", {
+      bServerSide: false,
+      aaSorting: [ [ 3, 'asc' ] ]
+    });
+  }); 
+}
+
+<div class="btn-toolbar">
+    <div class="btn-group">
+      @Html.ActionLink("Create Rank", "Create", "Ranks", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+    </div>
+    <div id="rank-menu" class="btn-group">
+      @Html.ActionLink("Army Ranks", "Army", "Ranks", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+      @Html.ActionLink("Naval Ranks", "Navy", "Ranks", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+      @Html.ActionLink("Police Ranks", "Police", "Ranks", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+    </div>
+</div>
+
+<h2>Ranks</h2>
+
+<hr />
+
+@Html.Partial("_RankTable")

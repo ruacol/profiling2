@@ -1,0 +1,27 @@
+﻿@using Profiling2.Domain.Prf.Events
+@model Violation
+
+<tr 
+    @if (Model.ParentViolation == null)
+    {
+        @:class="info"
+    }
+>
+    <td>
+        @if (Model.ConditionalityInterest)
+        {
+            <span class="pull-right label label-warning">HRDDP Interest</span>
+        }
+        @Html.ActionLink(Model.Name, "Details", "Violations", new { area = "Profiling", id = Model.Id }, null)
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <br />
+            <span class="muted">@Model.Description</span>
+        }
+    </td>
+    <td>@Model.Events.Count</td>
+</tr>
+@foreach (Violation child in Model.ChildrenViolations.OrderBy(x => x.Name))
+{
+    @Html.Partial("_ViolationRow", child)
+}

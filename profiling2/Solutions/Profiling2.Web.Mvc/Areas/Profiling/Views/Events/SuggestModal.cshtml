@@ -1,0 +1,76 @@
+﻿@using Profiling2.Domain.Prf.Suggestions
+@{
+  Layout = "";
+  IDictionary<string, AdminSuggestionFeaturePersonResponsibility> Features = (IDictionary<string, AdminSuggestionFeaturePersonResponsibility>)ViewBag.Features;
+}
+
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h4>
+    Event Suggestions
+    <button type="button" class="btn btn-mini" data-toggle="collapse" data-target="#event-suggest-settings" title="Click to toggle suggestion inputs"><i class="icon-cog"></i></button>
+  </h4>
+</div>
+<div class="modal-body">
+  <div id="event-suggest-settings" class="collapse out">
+    <p>Toggle the following inputs to the way these suggestions are made. The profiled person:</p>
+    <p>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabled_ids_person_relationships", true, new { disabled = "disabled" })
+        had a relationship with someone who was responsible for the suggested event
+      </label>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabledIds[]", true, new { value = Features[AdminSuggestionFeaturePersonResponsibility.RESPONSIBLE_FOR_RELATED_EVENT].Id })
+        is responsible for an event related to the suggested event
+      </label>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabledIds[]", true, new { value = Features[AdminSuggestionFeaturePersonResponsibility.LAST_NAME_APPEARS].Id })
+        has a last name that appears in the suggested event's narrative
+      </label>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabledIds[]", true, new { value = Features[AdminSuggestionFeaturePersonResponsibility.FIRST_NAME_APPEARS].Id })
+        has a first name that appears in the suggested event's narrative
+      </label>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabledIds[]", true, new { value = Features[AdminSuggestionFeaturePersonResponsibility.ALIAS_APPEARS].Id })
+        has an alias name that appears in the suggested event's narrative
+      </label>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabledIds[]", true, new { value = Features[AdminSuggestionFeaturePersonResponsibility.COMMON_SOURCE].Id })
+        and the suggested event share a common source
+      </label>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabledIds[]", true, new { value = Features[AdminSuggestionFeaturePersonResponsibility.CAREER_IN_LOCATION].Id })
+        had a career in the location or territory where the suggested event took place
+      </label>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabledIds[]", true, new { value = Features[AdminSuggestionFeaturePersonResponsibility.CAREER_IN_ORG_RESPONSIBLE].Id })
+        had a career in an organization responsible for the suggested event 
+      </label>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabledIds[]", true, new { value = Features[AdminSuggestionFeaturePersonResponsibility.CAREER_IN_UNIT_RESPONSIBLE].Id })
+        was a member of the unit responsible for the suggested event
+      </label>
+      <label class="checkbox inline">
+        @Html.CheckBox("enabledIds[]", true, new { value = Features[AdminSuggestionFeaturePersonResponsibility.RESPONSIBILITY_IN_LOCATION].Id })
+        is responsible for another event occuring in the same location or territory as the suggested event
+      </label>
+    </p>
+    <p>
+      <button type="button" class="btn" id="refresh-suggestions-btn">Refresh Suggestions</button>
+    </p>
+    <hr />
+  </div>
+  <table id="suggestions-table" class="table table-condensed table-bordered">
+    <thead>
+      <tr>
+        <th></th><th></th><th>Event ID</th><th>Event Headline</th><th>Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+<div class="modal-footer" style="margin-top: 15px;">
+  <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+</div>

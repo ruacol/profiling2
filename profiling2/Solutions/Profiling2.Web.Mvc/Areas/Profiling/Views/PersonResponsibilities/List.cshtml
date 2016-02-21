@@ -1,0 +1,50 @@
+﻿@using Microsoft.Practices.ServiceLocation
+@using Profiling2.Domain.Contracts.Tasks
+@using Profiling2.Domain.Prf.Responsibility
+@using Profiling2.Infrastructure.Util
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@{
+    ViewBag.Title = "List of Person Responsibility";
+    IList<PersonResponsibility> Responsibilities = ViewBag.Responsibilities;
+}
+
+<h2>List of Person Responsibility</h2>
+
+<hr />
+
+<p>@Responsibilities.Count total.</p>
+
+@using (Html.BeginForm("List", "PersonResponsibilities", new { area = "Profiling" }, FormMethod.Post, null))
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Person</th>
+                <th>Event</th>
+                <th>Commentary</th>
+                <th>Function</th>
+                <th>Distance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PersonResponsibility pr in Responsibilities
+                .OrderBy(x => ServiceLocator.Current.GetInstance<IResponsibilityTasks>().GetPersonResponsibilityEditDistanceBetweenCommentaryAndFunction(x)))
+            {
+                <tr>
+                    <td>
+                        <label><input type="checkbox" name="ids" value="@pr.Id" checked="checked" /></label>
+                    </td>
+                    <td>@pr.Person.Name</td>
+                    <td>@pr.Event.Id</td>
+                    <td>@pr.Commentary</td>
+                    <td>@pr.GetPersonFunctionUnitSummary()</td>
+                    <td>
+                        @(ServiceLocator.Current.GetInstance<IResponsibilityTasks>().GetPersonResponsibilityEditDistanceBetweenCommentaryAndFunction(pr))
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Clean Commentary</button>
+}

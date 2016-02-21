@@ -1,0 +1,94 @@
+﻿@using HrdbWebServiceClient.Domain
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Domain.Prf.Sources
+@using Profiling2.Infrastructure.Util
+@model IEnumerable<JhroCase>
+@{
+    ViewBag.Title = "HRDB Cases";
+    ViewBag.NoSideBar = true;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    var opts = {
+      bStateSave: false,
+      bServerSide: false,
+      aoColumnDefs: [ 
+          { aTargets: [ 2 ], sType: "date" }
+        ],
+      aaSorting: [ [ 2, 'desc' ] ]
+    };
+    new Profiling.DataTable("left-cases-table", opts);
+    new Profiling.DataTable("right-cases-table", opts);
+  }); 
+}
+
+<h2>HRDB Cases</h2>
+
+<p>This page lists cases drawn from the OHCHR Human Rights Case Database, which need to be imported before being used or referenced.</p>
+
+<hr />
+
+<div class="row-fluid">
+    <div class="span6">
+        <h3>Cases not imported</h3>
+        <table id="left-cases-table" class="table table-condensed table-bordered">
+            <thead>
+                <tr>
+                    <th style="white-space: nowrap;">Case Code</th>
+                    <th style="white-space: nowrap;">Sub-Office</th>
+                    <th>Date Registered</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (JhroCase jc in Model.Where(x => !x.Events.Any()))
+                {
+                    HrdbCase hrdbCase = StreamUtil.Deserialize(jc.HrdbContentsSerialized) as HrdbCase;
+                    <tr>
+                        <td>@Html.ActionLink(jc.CaseNumber, "Details", "Cases", new { area = "Hrdb", id = jc.Id }, null)</td>
+                        <td>@hrdbCase.SubOfficeDesc</td>
+                        <td style="white-space: nowrap;">@string.Format("{0:yyyy-MM-dd HH:mm}", hrdbCase.RegistryDt)</td>
+                        <td style="white-space: nowrap; text-align: center;">
+                            <a class="btn" href="@Url.Action("Import", "Events", new { area = "Hrdb", id = jc.Id })">
+                                <i class="icon-hand-right"></i> Import...
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="span6">
+        <h3>Cases already imported</h3>
+        <table id="right-cases-table" class="table table-condensed table-bordered">
+            <thead>
+                <tr>
+                    <th style="white-space: nowrap;">Case Code</th>
+                    <th style="white-space: nowrap;">Sub-Office</th>
+                    <th>Date Registered</th>
+                    <th>Event</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (JhroCase jc in Model.Where(x => x.Events.Any()))
+                {
+                    HrdbCase hrdbCase = StreamUtil.Deserialize(jc.HrdbContentsSerialized) as HrdbCase;
+                    <tr>
+                        <td>@Html.ActionLink(jc.CaseNumber, "Details", "Cases", new { area = "Hrdb", id = jc.Id }, null)</td>
+                        <td>@hrdbCase.SubOfficeDesc</td>
+                        <td style="white-space: nowrap;">@string.Format("{0:yyyy-MM-dd HH:mm}", hrdbCase.RegistryDt)</td>
+                        <td style="white-space: nowrap; text-align: center;">
+                            @foreach (Event e in jc.Events)
+                            {
+                                <a class="btn" href="@Url.Action("Details", "Events", new { area = "Profiling", id = e.Id })" target="_blank">
+                                    <i class="icon-ok-circle"></i> @e.Id
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

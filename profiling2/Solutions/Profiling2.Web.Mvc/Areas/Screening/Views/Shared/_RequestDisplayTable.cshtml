@@ -1,0 +1,68 @@
+﻿@using System.Linq
+@using Profiling2.Domain.Scr;
+@using Profiling2.Domain.Scr.Attach;
+@using Profiling2.Domain.Scr.Person;
+@using Profiling2.Domain.Scr.PersonEntity;
+@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels;
+@{
+  Request request = ViewBag.Request;
+}
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <h3>
+                @(!string.IsNullOrEmpty(request.RequestName) ? request.RequestName : "(no request name)")
+                @if (request.Archive)
+                {
+                    <small>(archived)</small>
+                }
+                </h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Reference Number</th>
+            <td>@request.ReferenceNumber</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>@request.RequestType</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>@request.RequestName</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>@request.Notes</td>
+        </tr>
+        <tr>
+            <th>Entity</th>
+            <td>@request.RequestEntity</td>
+        </tr>
+        <tr>
+            <th>Respond By</th>
+            <td>@(new RequestView(request).RespondBy)</td>
+        </tr>
+        <tr>
+            <th>Attachments</th>
+            <td>
+                @if (request.RequestAttachments != null && request.RequestAttachments.Where(x => !x.Archive).Any())
+                {
+                    <ul>
+                        @foreach (RequestAttachment ra in request.RequestAttachments.Where(x => !x.Archive))
+                        {
+                            <li>@Html.ActionLink(ra.Attachment.FileName, "Download", "Attachments", new { area = "Screening", requestId = ra.Request.Id, id = ra.Attachment.Id }, null)</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <span class="muted">There are no attachments.</span>
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>

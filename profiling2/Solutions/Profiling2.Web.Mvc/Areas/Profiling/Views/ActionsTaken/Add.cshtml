@@ -1,0 +1,78 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model ActionTakenViewModel
+@{
+    Layout = "";
+}
+
+@using (Html.BeginForm("Add", "ActionsTaken", new { area = "Profiling", eventId = Model.EventId }, FormMethod.Post, new { id = "modal-form", @class = "form-horizontal" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4>Add Action Taken</h4>
+    </div>
+    <div class="modal-body">
+        <div id="validation-errors"></div>
+        @Html.HiddenFor(x => x.EventId)
+    
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">Event *</label>
+                <div class="controls">
+                    <span class="input-xxlarge uneditable-input">@Model.EventHeadline</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Subject</label>
+                <div class="controls">
+                    @Html.HiddenFor(x => x.SubjectPersonId, new { @class = "input-xxlarge" })
+                    <i class="accordion-toggle icon-info-sign" title="The subject of this action.  Click on 'Persons' to the left for search tips."></i>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Action Taken *</label>
+                <div class="controls">
+                    @Html.DropDownListFor(x => x.ActionTakenTypeId, Model.ActionTakenTypes, new { @class = "input-xxlarge" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Object</label>
+                <div class="controls">
+                    @Html.HiddenFor(x => x.ObjectPersonId, new { @class = "input-xxlarge" })
+                    <i class="accordion-toggle icon-info-sign" title="The object of this action.  Click on 'Persons' to the left for search tips."></i>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Start Date</label>
+                <div class="controls">
+                    <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfStart, new { @class = "input-mini" })
+                    <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfStart, new { @class = "input-mini" })
+                    <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfStart, new { @class = "input-mini" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">End Date</label>
+                <div class="controls">
+                    <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfEnd, new { @class = "input-mini" })
+                    <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfEnd, new { @class = "input-mini" })
+                    <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfEnd, new { @class = "input-mini" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Commentary</label>
+                <div class="controls">
+                    @Html.TextAreaFor(x => x.Commentary, new { @class = "input-xxlarge" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Notes</label>
+                <div class="controls">
+                    @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <a id="modal-action-taken-add-button" class="btn btn-primary">Save</a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    </div>
+}

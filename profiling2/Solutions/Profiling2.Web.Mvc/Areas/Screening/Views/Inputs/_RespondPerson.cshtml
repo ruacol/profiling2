@@ -1,0 +1,100 @@
+﻿@using Profiling2.Domain;
+@using Profiling2.Domain.Prf.Persons;
+@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Scr;
+@using Profiling2.Domain.Scr.Person;
+@using Profiling2.Infrastructure.Security;
+@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels;
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels;
+@model RespondViewModel
+@{
+  RequestPerson rp = ViewBag.rp;
+}
+<table class="table table-condensed table-bordered">
+  <thead>
+    <tr>
+      <td colspan="3">
+        <div class="pull-right">
+          <button class="btn btn-mini save-individual" data-id="@rp.Id" title="Click to save color coding, reason, and commentary for this profile only.">Save Progress</button>
+        </div>
+        <small>@rp.Person.CurrentRank</small>
+        <strong id="person-name-@rp.Id">
+          @if (ViewBag.HasProfileAccess)
+          {
+            @Html.ActionLink(rp.Person.Name, "Details", "Persons", new { id = rp.Person.Id, area = "Profiling" }, new { target = "_blank", title = "Click to see profile and previous screenings in new window" })
+          }
+          else
+          {
+            @rp.Person.Name
+          }
+        </strong>
+        <small>@rp.Person.MilitaryIDNumber</small>
+        @foreach (Career c in rp.Person.GetCurrentCareers())
+        {
+          <br /><small>@c.FunctionUnitSummary</small>
+        }
+        @if (!string.IsNullOrEmpty(rp.Notes))
+        {
+          <p>@rp.Notes</p>
+        }
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    @if (rp.Person.ActiveScreenings.Any() && string.Equals(ViewBag.User.GetScreeningEntity().ScreeningEntityName, ScreeningEntity.JHRO))
+    {
+      <tr>
+        <td colspan="3">
+          <ul class="unstyled">
+            @{
+              IList<ActiveScreening> activeScreenings = rp.Person.ActiveScreenings.OrderByDescending(x => x.DateActivelyScreened).ToList();
+            } 
+            @for (int i=0; i < activeScreenings.Count; i++)
+            {
+              ActiveScreening s = activeScreenings[i];
+              <li
+                @if (i != 0)
+                {
+                  <text>class="actives-@rp.Id collapse"</text>
+                }
+              >
+                Actively screened on @string.Format("{0:yyyy-MM-dd}", s.DateActivelyScreened)
+                @if (s.Request != null)
+                {
+                  @:for screening request @Html.ActionLink(s.Request.Headline, "Details", "Requests", new { id = s.Request.Id, area = "Screening" }, new { target = "_blank" }). 
+                }
+                @if (!string.IsNullOrEmpty(s.Notes))
+                {
+                  @:(@s.Notes) 
+                }
+                @if (i == 0 && activeScreenings.Count > 1)
+                {
+                  <a data-toggle="collapse" data-target=".actives-@rp.Id" class="accordion-toggle" style="margin-left: 10px; font-size: smaller;">Show more...</a>
+                }
+              </li> 
+            }
+          </ul>
+        </td>
+      </tr>
+    }
+    <tr>
+      <td>Color</td><td>Reason</td><td>Commentary</td>
+    </tr>
+    <tr>
+      <td>
+        @Html.Hidden("Responses.Index", rp.Id)
+        @Html.Hidden("Responses[" + rp.Id + "].key", rp.Id)
+        @Html.Hidden("Responses[" + rp.Id + "].value.Id", Model.Responses[rp.Id].Id)
+        @Html.Hidden("Responses[" + rp.Id + "].value.RequestPersonID", Model.Responses[rp.Id].RequestPersonID)
+        @Html.Hidden("Responses[" + rp.Id + "].value.Version", Model.Responses[rp.Id].Version)
+        @Html.DropDownList("Responses[" + rp.Id + "].value.ScreeningResultID", Model.Responses[rp.Id].ScreeningResults, new { @class = "screening-result input-small span12" })
+      </td>
+      <td>
+        @Html.TextArea("Responses[" + rp.Id + "].value.Reason", Model.Responses[rp.Id].Reason, new { style = "height: 100%;", @class = "input-xlarge span12", rows = 6 })
+      </td>
+      <td>
+        @Html.TextArea("Responses[" + rp.Id + "].value.Commentary", Model.Responses[rp.Id].Commentary, new { style = "height: 100%;", @class = "input-xlarge span12", rows = 6 })
+      </td>
+    </tr>
+  </tbody>
+</table>

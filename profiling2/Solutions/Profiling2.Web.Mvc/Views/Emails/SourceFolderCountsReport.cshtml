@@ -1,0 +1,35 @@
+﻿@using Profiling2.Domain.DTO
+@{
+    IDictionary<string, SourceFolderDTO> counts = (IDictionary<string, SourceFolderDTO>)ViewBag.Counts;
+}
+@if (counts != null && counts.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Folder</th>
+                <th>Files</th>
+                <th>Latest</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<string, SourceFolderDTO> kvp in counts)
+            {
+                <tr>
+                    <td>@kvp.Key</td>
+                    <td class="value">@kvp.Value.NumFiles</td>
+                    <td class="value">
+                        @if (kvp.Value.LatestFileDate.HasValue)
+                        {
+                            @string.Format("{0:yyyy-MM-dd HH:mm}", kvp.Value.LatestFileDate.Value)
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There are no folders to count.</p>
+}

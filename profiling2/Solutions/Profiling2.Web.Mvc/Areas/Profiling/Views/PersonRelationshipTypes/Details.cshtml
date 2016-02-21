@@ -1,0 +1,67 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Persons
+@model PersonRelationshipType
+@{
+    ViewBag.Title = Model.PersonRelationshipTypeName;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("relationships-table", {
+      bServerSide: false
+    });
+
+    $("#delete-button").click(function(e) {
+        bootbox.confirm("This function will only be deleted if it has 0 relationships. Continue?", function(response) {
+        if (response === true)
+            window.location.href = "@(Request.ApplicationPath + "/")Profiling/PersonRelationshipTypes/Delete/@Model.Id";
+        });
+    });
+  }); 
+}
+
+<h2>
+    @Model.PersonRelationshipTypeName
+    @Html.ActionLink("Edit", "Edit", "PersonRelationshipTypes", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini" })
+    <button id="delete-button" class="btn btn-mini btn-danger">Delete</button>
+</h2>
+
+<p>This person relationship type is @(Model.IsCommutative ? string.Empty : " not ") commutative.</p>
+
+
+<dl>
+    <dt>Code</dt><dd class="muted">@Model.Code</dd>
+    @if (!string.IsNullOrEmpty(Model.Notes))
+    {
+      <dt>Notes</dt>
+      <dd>@Model.Notes</dd>
+    }
+</dl>
+
+<hr />
+
+<h3>Relationships</h3>
+
+<table id="relationships-table" class="table table-bordered table-condensed">
+  <thead>
+    <tr>
+      <th>Subject</th>
+      <th>Relationship Type</th>
+      <th>Object</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (PersonRelationship r in Model.PersonRelationships)
+    {
+      <tr>
+        <td>
+            <a href="@Url.Action("Details", "Persons", new { area = "Profiling", id = r.SubjectPerson.Id })#relationships" target="_blank">@r.SubjectPerson.Name</a>
+        </td>
+        <td>@r.PersonRelationshipType.PersonRelationshipTypeName</td>
+        <td>
+            <a href="@Url.Action("Details", "Persons", new { area = "Profiling", id = r.ObjectPerson.Id })#relationships" target="_blank">@r.ObjectPerson.Name</a>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

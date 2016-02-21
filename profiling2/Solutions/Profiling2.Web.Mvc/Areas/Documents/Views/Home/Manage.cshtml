@@ -1,0 +1,63 @@
+﻿@using Profiling2.Domain.Prf.Documentation;
+@{
+    ViewBag.Title = "Manage";
+    ViewBag.NoSidebar = true;
+}
+
+<h2>Manage</h2>
+
+<hr />
+
+<h3>Tags</h3>
+
+<p>A tags groups a collection of files.  A user must have the associated permission to be able to view documents of that tag.</p>
+<p>@Html.ActionLink("Create Tag", "CreateTag", new { area = "Documents" } , new { @class = "btn" })</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Permission</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DocumentationFileTag tag in ViewBag.Tags)
+        {
+            <tr>
+                <td>@Html.ActionLink(tag.Name, "EditTag", new { id = @tag.Id }, null)</td>
+                <td>@tag.AdminPermission.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Files</h3>
+
+<p>When uploading a file, select a tag from the above list for your file to be associated with.  The file will appear under that tag's name.</p>
+<p>@Html.ActionLink("Create File", "CreateFile", new { area = "Documents" } , new { @class = "btn" })</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>File</th>
+            <th>Uploaded</th>
+            <th>Tag</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DocumentationFile file in ViewBag.Files)
+        {
+            <tr>
+                <td>@file.Title</td>
+                <td>@file.Description</td>
+                <td>@file.FileName <p class="muted">last modified: @file.LastModifiedDate</p></td>
+                <td>@file.UploadedBy <p class="muted">uploaded date: @file.UploadedDate</p></td>
+                <td>@file.DocumentationFileTag.Name</td>
+                <td>@Html.ActionLink("Delete", "DeleteFile", new { id = @file.Id, area = "Documents" }, new { @class = "btn" })</td>
+            </tr>
+        }
+    </tbody>
+</table>

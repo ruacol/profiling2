@@ -1,0 +1,24 @@
+﻿@using Profiling2.Domain.Prf.Careers
+@model IList<Rank>
+
+<table id="ranks-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Name (FR)</th>
+      <th>Sort Order</th>
+      <th>Individuals</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Rank r in Model.OrderBy(x => x.SortOrder))
+    {
+      <tr>
+        <td style="white-space: nowrap;">@Html.ActionLink(r.RankName, "Details", new { id = r.Id })</td>
+        <td style="white-space: nowrap;">@r.RankNameFr</td>
+        <td>@r.SortOrder</td>
+        <td>@r.Careers.Select(x => x.Person).Distinct().Count()</td>
+      </tr>
+    }
+  </tbody>
+</table>

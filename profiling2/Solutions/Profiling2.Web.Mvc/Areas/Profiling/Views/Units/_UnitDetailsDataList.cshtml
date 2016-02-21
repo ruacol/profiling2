@@ -1,0 +1,50 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Prf.Units
+@model Unit
+
+<dl class="dl-horizontal">
+  <dt>Organization</dt>
+  <dd>
+    @if (Model.Organization != null)
+    {
+      @Model.Organization
+    }
+    else
+    {
+      <span class="muted">No known organization.</span>
+    }
+  </dd>
+  <dt>Current Commander</dt>
+  <dd>
+    @Html.Partial("_CommanderList", (IList<Career>)ViewBag.Commanders)
+  </dd>
+  <dt>Current Deputy Commander/s</dt>
+  <dd>
+    @Html.Partial("_CommanderList", (IList<Career>)ViewBag.DeputyCommanders)
+  </dd>
+  <dt>Start Date</dt>
+  <dd>
+      @Html.DateLabel(Model.YearOfStart, Model.MonthOfStart, Model.DayOfStart)
+  </dd>
+  <dt>End Date</dt>
+  <dd>
+      @Html.DateLabel(Model.YearOfEnd, Model.MonthOfEnd, Model.DayOfEnd)
+  </dd>
+  <dt>Background Information</dt>
+  <dd>
+    @if (!string.IsNullOrEmpty(Model.BackgroundInformation))
+    {
+      @Html.Raw(Model.BackgroundInformation.Replace("\r\n", "<br />").Replace("\n", "<br />"))
+    }
+    else
+    {
+      <span class="muted">No background information.</span>
+    }
+  </dd>
+@if (!string.IsNullOrEmpty(Model.Notes))
+{
+  <dt>Notes</dt>
+  <dd>@Model.Notes</dd>
+}
+</dl>

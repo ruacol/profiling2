@@ -1,0 +1,74 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@model IList<SourceDTO>
+@{
+    ViewBag.Title = "Extensionless Sources";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("button.get").click(function(e) {
+      var id = $(e.target).data('id');
+      $.ajax({
+        url: '@(Request.ApplicationPath + "/")Sources/Extension/GuessContentType/' + id,
+        type: 'GET',
+        beforeSend: function() {
+          $("#content-type-" + id).append("<p>getting...</p>");
+        },
+        success: function(data) {
+          $("#content-type-" + id).html(data);
+
+          $("#content-type-" + id).append("<button id='set-" + id + "' type='button' class='btn btn-mini set' data-id='" + id + "'>Set</button>");
+          _.defer(function() {
+            $("#set-" + id).click(function(e) {
+              var setId = $(e.target).data('id');
+              $.ajax({
+                url: '@(Request.ApplicationPath + "/")Sources/Extension/SetFileExtension/' + id,
+                type: 'GET',
+                beforeSend: function() {
+                  $("#content-type-" + id).append("<p>setting...</p>");
+                },
+                success: function() {
+                  $("#content-type-" + id).html("<p>Set!</p>");
+                }
+              });
+            });
+          });
+        }
+      });
+    });
+  });
+}
+
+<h2>Extensionless Sources</h2>
+
+<p>@Model.Count sources with no value in their FileExtension field (used by MSSQL full-text indexing).  
+    These sources have been imported, but are not indexed due to this missing metadata.</p>
+
+<ul>
+    <li>Click the 'Get' button to detect the content type; if successful, click the 'Set' button that will appear to set the file extension for this source.
+    The source will then be indexed by MSSQL and appear in search results, as well as be previewable.</li>
+    <li>Once set, click the source's ID number to open its info page - check whether its file name has been updated with its new extension, and whether it is previewable.</li>
+</ul>
+
+<hr />
+
+<table class="table table-bordered table-condensed">
+    <thead>
+        <tr><th>Id</th><th>Name</th><th>Date</th><th>Content Type</th></tr>
+    </thead>
+    <tbody>
+        @foreach (SourceDTO dto in Model)
+        {
+            <tr>
+                <td><a href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@dto.SourceID" target="_blank">@dto.SourceID</a></td>
+                <td>
+                    @dto.SourceName
+                    <br />
+                    @dto.SourcePath
+                </td>
+                <td>@dto.FileDateTimeStamp</td>
+                <td id="content-type-@dto.SourceID"><button type="button" class="btn btn-mini get" data-id="@dto.SourceID">Get</button></td>
+            </tr>
+        }
+    </tbody>
+</table>

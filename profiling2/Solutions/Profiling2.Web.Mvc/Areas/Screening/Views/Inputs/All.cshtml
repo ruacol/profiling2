@@ -1,0 +1,69 @@
+﻿@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels;
+@model IList<ScreeningRequestPersonEntityDataTableView>
+@{
+    ViewBag.Title = "All Responses By " + ViewBag.ScreeningEntity.ScreeningEntityName;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("responses-table", {
+      bServerSide: false,
+      aaSorting: [ [ 7, 'desc' ] ]
+    });
+  }); 
+}
+
+<h2>All Responses By @ViewBag.ScreeningEntity.ScreeningEntityName</h2>
+
+<p>The following is a list of all screening responses submitted by @ViewBag.ScreeningEntity.ScreeningEntityName to the ODSRSG Rule of Law as of @string.Format("{0:yyyy/MM/dd HH:mm}", DateTime.Now).</p>
+
+<hr />
+
+<table id="responses-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Submitted</th>
+      <th>Person</th>
+      <th>Matricule</th>
+      <th>Color</th>
+      <th>Reason</th>
+      <th>Commentary</th>
+      <th>Request</th>
+      <th>Last Modified</th>
+      <th>Last Modified By</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (ScreeningRequestPersonEntityDataTableView r in Model)
+    {
+      <tr>
+        <td>@string.Format("{0:yyyy-MM-dd HH:mm}" , r.ResponseDate)</td>
+        <td>@Html.ActionLink(r.PersonName, "Details", "Persons", new { id = r.PersonId, area = "Profiling" }, null)</td>
+        <td>@r.PersonIDNumber</td>
+        <td>
+          @if (string.Equals(r.ScreeningResultName, "Red"))
+          {
+            <span class="label label-important">Red</span>
+          }
+          else if (string.Equals(r.ScreeningResultName, "Yellow"))
+          {
+            <span class="label label-warning">Yellow</span>
+          }
+          else if (string.Equals(r.ScreeningResultName, "Green"))
+          {
+            <span class="label label-success">Green</span>
+          }
+          else
+          {
+            @r.ScreeningResultName
+          }
+        </td>
+        <td>@r.Reason</td>
+        <td>@r.Commentary</td>
+        <td>@Html.ActionLink(r.RequestHeadline, "Details", "Requests", new { id = r.RequestId, area = "Screening" }, null)</td>
+        <td>@string.Format("{0:yyyy-MM-dd HH:mm}", r.LastModified)</td>
+        <td>@r.User</td>
+      </tr>
+    }
+  </tbody>
+</table>

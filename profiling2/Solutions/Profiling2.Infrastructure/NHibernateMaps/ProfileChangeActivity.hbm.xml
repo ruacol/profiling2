@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <sql-query name="PRF_SP_Summaries_ProfileChangeActivity_NHibernate"  callable="true" >
+    <query-param name="PersonID" type="System.Int32"/>
+
+    <return-scalar type="System.Int32" column="LogNo" />
+    <return-scalar type="System.String" column="Who"/>
+    <return-scalar type="System.String" column="What"/>
+    <return-scalar type="System.String" column="When"/>
+    <return-scalar type="System.String" column="PreviousValues" />
+    <return-scalar type="System.String" column="NonProfilingChange" />
+
+    <!--<return class="Profiling2.Domain.Prf.Persons.PersonChangeActivityDTO">
+      <return-property name="LogNo" column="Log #"/>
+      <return-property name="Who" column="Who"/>
+      <return-property name="What" column="What"/>
+      <return-property name="When" column="When"/>
+      <return-property name="PreviousValues" column="Previous Values"/>
+      <return-property name="NonProfilingChange" column="Non-Profiling Change"/>
+    </return>-->
+
+    exec PRF_SP_Summaries_ProfileChangeActivity_NHibernate @PersonID=:PersonID
+  </sql-query>
+</hibernate-mapping>

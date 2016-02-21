@@ -1,0 +1,60 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Web.Mvc.Areas.System.Controllers.ViewModels
+@{
+    ViewBag.Title = "Match Persons";
+    IList<SearchForPersonDTO> Results = (IList<SearchForPersonDTO>)ViewData["results"];
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.MatchPersonsRouter();
+        Backbone.history.start();
+    });
+}
+
+<h2>Match Persons</h2>
+
+<p><a href="@Url.Content("../../Content/files/persons.csv")">Download</a> CSV template.</p>
+
+@using (Html.BeginForm("MatchPersons", "Persons", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <fieldset>
+        <legend>Upload File</legend>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-error">
+                @Html.ValidationSummary()
+            </div>
+        }
+        <div class="control-group">
+            <label class="control-label">CSV File</label>
+            <div class="controls">
+                <input type="file" name="file" id="file" />
+            </div>
+        </div>
+    </fieldset>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Match</button>
+    </div>
+}
+
+@if (Results != null)
+{
+    <h4>Names to be matched</h4>
+    <table class="table table-bordered">
+        <tr>
+            <th>ID number</th><th>First Name</th><th>Last Name</th><th>Candidate</th>
+        </tr>
+        @foreach (SearchForPersonDTO dto in Results)
+        {
+            <tr class="to-be-matched">
+                <td>@dto.MilitaryIDNumber</td>
+                <td>@dto.FirstName</td>
+                <td>@dto.LastName</td>
+                <td></td>
+            </tr>
+        }
+    </table>
+}

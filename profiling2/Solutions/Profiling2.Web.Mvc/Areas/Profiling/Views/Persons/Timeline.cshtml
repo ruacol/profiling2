@@ -1,0 +1,36 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@model Person
+@{
+    ViewBag.Title = "Timeline";
+}
+@section styles
+{
+    @Html.RenderCssBundle("~/Content/timeline/timeline.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+}
+@section scriptSources
+{
+    @Html.RenderJsBundle("~/Scripts/timeline.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var timeline = new TL.Timeline('timeline', 
+            '@Url.Action("TimelineJson", "Persons", new { area = "Profiling", id = Model.Id })', 
+            { start_at_end: "true", hash_bookmark: true, timenav_height_percentage: 60, marker_width_min: 200 });
+    });
+}
+
+<h2>Timeline</h2>
+
+<h3>@Model.Name</h3>
+
+<div class="clearfix">
+    <p class="pull-left">
+        <small>Any career, relationship, event, or action taken without any dates is not included here for obvious reasons.</small>
+    </p>
+    <p class="pull-right">@Html.ActionLink("Back to profile", "Details", "Persons", new { area = "Profiling", id = Model.Id }, new { @class = "btn" })</p>
+</div>
+
+<hr />
+
+<div id="timeline" style="width: 100%; height: 600px"></div>

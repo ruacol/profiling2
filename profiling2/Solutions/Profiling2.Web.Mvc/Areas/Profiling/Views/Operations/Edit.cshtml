@@ -1,0 +1,31 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model OperationViewModel
+@{
+    ViewBag.Title = "Edit Operation";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.BasicSelect({
+      el: "#NextOperationId",
+      placeholder: "Search by operation name...",
+      nameUrl: "@(Request.ApplicationPath + "/")Profiling/Operations/Name/",
+      getUrl: "@(Request.ApplicationPath + "/")Profiling/Operations/Json"
+    });
+  }); 
+}
+
+<h2>Edit Operation</h2>
+
+<hr />
+
+@using (Html.BeginForm("Edit", "Operations", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.Partial("_OperationForm", Model)
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @Html.ActionLink("Back", "Details", "Operations", new { area = "Profiling", id = Model.Id }, new { @class = "btn" })
+    </div>
+}

@@ -1,0 +1,51 @@
+﻿@using Profiling2.Domain.Prf.Events
+@model IList<Event>
+@{
+    ViewBag.Title = "With Cases";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("event-table", {
+      bServerSide: false,
+      aoColumns: [ { sType: "title-numeric" }, null, null ]
+    });
+  }); 
+}
+
+<h2>With Cases</h2>
+
+<p>List of Events with references to case codes in its linked source commentaries.</p>
+<p>@Html.ActionLink("Link Cases", "LinkCases", "Events", new { area = "Profiling" }, new { @class = "btn" })</p>
+
+<hr />
+
+<table class="table table-bordered" id="event-table">
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Linked Cases</th>
+            <th>Unlinked Cases</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Event e in Model)
+        {
+            <tr>
+                <td><span title="@e.Id">@Html.ActionLink(e.Id.ToString(), "Details", "Events", new { area = "Profiling", id = e.Id }, null)</span></td>
+                <td>
+                    @foreach (Profiling2.Domain.Prf.Sources.JhroCase jc in e.JhroCases)
+                    {
+                        @Html.ActionLink(jc.CaseNumber, "Case", "Hrdb", new { area = "Profiling", id = jc.Id }, new { @class = "label", style = "margin-right: 5px;" })
+                    }
+                </td>
+                <td>
+                    @foreach (string code in e.GetCaseCodesInEventSources())
+                    {
+                        @Html.ActionLink(code, "Case", "Hrdb", new { area = "Profiling", CaseNumber = code }, new { @class = "label", style = "margin-right: 5px;" })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

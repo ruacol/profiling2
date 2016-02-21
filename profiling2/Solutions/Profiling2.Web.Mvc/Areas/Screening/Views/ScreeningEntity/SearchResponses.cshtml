@@ -1,0 +1,24 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Domain.Scr.PersonEntity
+@{
+    ViewBag.Title = "Search Screening Responses";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.SearchResponsesRouter({ screeningEntityName: "@ViewData["screeningEntity"]" });
+        Backbone.history.start();
+    });
+}
+
+<h2>Search Screening Responses</h2>
+
+<p>
+    This form will search the text of all screening responses by your screening entity (@ViewData["screeningEntity"]).  
+    Only the most recent response for each person is searched.
+    This includes responses that have been saved, but where the request has not been formally submitted.
+</p>
+
+<hr />
+
+<div id="responses-table-div"></div>

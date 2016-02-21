@@ -1,0 +1,75 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Infrastructure.Security
+@using Profiling2.Web.Mvc.Areas.Screening.Controllers
+@{
+    ViewBag.Title = "Events";
+}
+@section styles
+{
+  @Html.RenderCssBundle("~/Content/leaflet.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <!--[if lte IE 8]>
+      @Html.RenderCssBundle("~/Content/leaflet.ie.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <![endif]-->
+}
+@section scriptSources
+{
+  @Html.RenderJsBundle("~/Scripts/leaflet.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+}
+@section scripts
+{
+  $(document).ready(function() {
+      var router = new Profiling.Routers.EventIndexRouter({
+        permissions: {
+          canChangeEvents: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeEvents).ToJsBool())
+        }
+      });
+      Backbone.history.start();
+  }); 
+}
+
+<div class="btn-toolbar">
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeEvents))
+    {
+        <div id="event-menu" class="btn-group">
+            @Html.ActionLink("Merge Events", "Merge", "Events", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+        </div>
+    }
+    <div class="btn-group">
+        @Html.ActionLink("Categories", "Index", "Violations", null, new { @class = "btn btn-mini" })
+        @Html.ActionLink("Tags", "Index", "Tags", null, new { @class = "btn btn-mini" })
+    </div>
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanApproveEvents))
+    {
+        <div class="btn-group">
+            @Html.ActionLink("Approvals", "Approvals", "Events", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+        </div>
+    }
+</div>
+
+<h2>Events</h2>
+
+<div class="clearfix" style="clear: both;">
+    <hr />
+
+    <h4>Search tips</h4>
+
+    <div>
+      <p>
+          Search terms are by default ANDed together (each term being mandatory).  Search is not case sensitive.
+      </p>
+      <p class="lead">
+          Search includes case code, event categories, narratives, location, as well as start and end dates.
+      </p>
+      Internal ID number search:
+      <ul>
+          <li><span class="text-info">Id:100</span> will return the unit with the internal Id of 100.</li>
+          <li><span class="text-info">Id:[100 TO 200]</span> will return those units with internal Ids between 100 and 200.</li>
+      </ul>
+      Location:
+      <ul>
+          <li><span class="text-info">Location:Goma</span> will return all events with the word 'goma' in the location text.</li>
+      </ul>
+
+    </div>
+
+</div>

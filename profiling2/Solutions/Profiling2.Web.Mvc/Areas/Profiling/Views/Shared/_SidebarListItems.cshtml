@@ -1,0 +1,161 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Infrastructure.Security
+
+<li class="nav-header accordion-toggle" data-toggle="collapse" data-target=".profiling-items">Profiling</li>
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources)
+    && ((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchAllSources))
+{
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "Index") &&
+            string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Sources"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Sources", "Index", "Sources", new { area = "Profiling" }, new { target = "_blank", title = "Opens in new window", @class = "profiling-items collapse in" }))
+    </li>
+  
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "Search") &&
+            string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Sources"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Sources (alt)", "Search", "Sources", new { area = "Profiling" }, new { target = "_blank", title = "Opens in new window", @class = "profiling-items collapse in" }))
+    </li>
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchPersons))
+{
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Persons"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Persons", "Index", "Persons", new { area = "Profiling" }, new { @class = "profiling-items collapse in" }))
+    </li>
+}
+    
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents))
+{
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Violations")
+            || string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Events"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Events", "Index", "Events", new { area = "Profiling" }, new { @class = "profiling-items collapse in" }))
+    </li>
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchUnits))
+{
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Operations"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Operations", "Index", "Operations", new { area = "Profiling" }, new { @class = "profiling-items collapse in" }))
+    </li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Units") 
+            || string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Hierarchies"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Units", "Index", "Units", new { area = "Profiling" }, new { @class = "profiling-items collapse in" }))
+    </li>
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersons))
+{
+    <li class="nav-header accordion-toggle" data-toggle="collapse" data-target=".maintenance-items">Maintenance</li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "ActionTakenTypes"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Action Taken Types", "Index", "ActionTakenTypes", new { area = "Profiling" }, new { @class = "maintenance-items collapse in" }))
+    </li>
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Ethnicities"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Ethnicities", "Index", "Ethnicities", new { area = "Profiling" }, new { @class = "maintenance-items collapse in" }))
+    </li>
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Roles"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Functions", "Index", "Roles", new { area = "Profiling" }, new { @class = "maintenance-items collapse in" }))
+    </li>
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Locations"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Locations", "Index", "Locations", new { area = "Profiling" }, new { @class = "maintenance-items collapse in" }))
+    </li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Organizations"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Organizations", "Index", "Organizations", new { area = "Profiling" }, new { @class = "maintenance-items collapse in" }))
+    </li>
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "PersonRelationshipTypes"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Person Relationship Types", "Index", "PersonRelationshipTypes", new { area = "Profiling" }, new { @class = "maintenance-items collapse in" }))
+    </li>
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Ranks"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Ranks", "Index", "Ranks", new { area = "Profiling" }, new { @class = "maintenance-items collapse in" }))
+    </li>
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Regions"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Pre-2015 Provinces", "Index", "Regions", new { area = "Profiling" }, new { @class = "maintenance-items collapse in" }))
+    </li>
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewPersonReports))
+{
+    <li class="nav-header accordion-toggle" data-toggle="collapse" data-target=".manage-items">Manage</li>
+        
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Home")
+            && string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "Counts"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Counts", "Counts", "Home", new { area = "Profiling" }, new { @class = "manage-items collapse in" }))
+    </li>
+}

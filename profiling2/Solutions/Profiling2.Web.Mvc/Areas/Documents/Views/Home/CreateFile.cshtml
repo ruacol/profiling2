@@ -1,0 +1,36 @@
+﻿@using Profiling2.Web.Mvc.Areas.Documents.Controllers.ViewModels
+@model DocumentationFileViewModel
+@{
+    ViewBag.Title = "Create File";
+    ViewBag.NoSidebar = true;
+}
+@section scripts
+{
+    $(document).ready(function() {
+        $("#FileData").change(function() {
+            if (window.File) {
+                if ($("#FileData")[0].files.length > 0) {
+                    var file = $("#FileData")[0].files[0];
+
+                    if (file.size > 51200000) {
+                        bootbox.alert("Warning: " + file.name + " may be larger than the allowable upload limit.");
+                    }
+
+                    $("#LastModifiedDate").val(moment(file.lastModifiedDate).format('LLL'));
+                }
+            } else {
+                // browsers that don't support HTML5 File API...
+                bootbox.alert("Your browser doesn't support HTML5 File API.  Your file will upload, but will not have any date associated with it.  If possible, please close and return to this page using a modern browser.");
+            }
+        });
+    });
+}
+
+<h2>Create File</h2>
+
+<hr />
+
+@using (Html.BeginForm("CreateFile", "Home", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    @Html.Partial("_FileForm")
+}

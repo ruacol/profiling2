@@ -1,0 +1,21 @@
+﻿@using Profiling2.Web.Mvc.Areas.Hrdb.Controllers.ViewModels
+@model JhroCaseViewModel
+@{
+    Layout = "";
+    ViewBag.Title = "Create Case Code";
+}
+
+@using (Html.BeginForm("CreateModal", "Cases", FormMethod.Post, new { id = "jhro-case-create-form" }))
+{
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4>Create Case Code</h4>
+  </div>
+  <div class="modal-body form-horizontal">
+    @Html.Partial("_JhroCaseForm", Model)
+  </div>
+  <div class="modal-footer">
+    <a id="modal-jhro-case-create-button" class="btn btn-primary">Save</a>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  </div>
+}

@@ -1,0 +1,59 @@
+﻿@using Profiling2.Web.Mvc.Areas.Screening.Controllers
+@using Profiling2.Domain.Scr
+@{
+    ViewBag.Title = "Requests Requiring Response";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.RequestTableRouter({ 
+          dataTablesAjaxSource: "@(Request.ApplicationPath + "/")Screening/Inputs/DataTables", 
+          dataTablesActionUrl: "@(Request.ApplicationPath + "/")Screening/Inputs/Respond/"
+        });
+        Backbone.history.start();
+    });
+}
+
+<h2>
+  Requests Requiring Response
+</h2>
+
+<div id="intro-help">
+  @if (ViewBag.UserScreeningEntities.Count > 0)
+  {
+    <div class="alert alert-info">
+      Your screening entity:
+      @foreach (ScreeningEntity se in ViewBag.UserScreeningEntities)
+      {
+        <strong>@Html.ActionLink(se.ToString(), "Details", "ScreeningEntity", new { id = se.Id }, null)</strong>
+        if (!se.Equals(ViewBag.UserScreeningEntities[ViewBag.UserScreeningEntities.Count - 1]))
+        {
+          @:, 
+        }
+      }
+    </div>
+
+    <p>
+      @Html.ActionLink("All Screening Responses", "All", "Inputs", new { area = "Screening" }, new { @class = "btn" })
+      @Html.ActionLink("Search Responses", "SearchResponses", "ScreeningEntity", new { area = "Screening" }, new { @class = "btn" })
+    </p>
+  }
+  else
+  {
+    <div class="alert">You do not have a screening entity!  Please contact an administrator.</div>
+  }
+
+  <p>This page lists all screening requests relating to your screening entity that have not been responded to.</p>
+  <p>Once a request has been screened, you may monitor its progress using the @Html.ActionLink("Requests", "Index", "Requests", new { area = "Screening" }, null)
+  interface, available on the left under 'Manage'.</p>
+
+  <hr />
+</div>
+
+<div id="requests-table-div" class="clearfix"></div>
+
+<div class="clearfix">
+  <hr />
+
+  @Html.Partial("_CasesForDiscussion")
+</div>

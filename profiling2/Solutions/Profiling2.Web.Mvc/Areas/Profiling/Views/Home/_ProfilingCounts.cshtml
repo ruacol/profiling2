@@ -1,0 +1,53 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Domain.DTO
+@model ProfilingCountsView
+
+@if (ViewBag.ShowHeadings)
+{
+    <div class="span3">
+        <table class="table table-bordered">
+            <tr><th>Profiles</th></tr>
+            @foreach (KeyValuePair<ProfileStatus, int> kvp in Model.ProfileStatus.Where(x => x.Key.ProfileStatusName != ProfileStatus.FARDC_2007_LIST))
+            {
+                <tr><td>@kvp.Key.ToString()</td></tr>
+            }
+            <tr><th>Total Profiles</th></tr>
+            <tr><td>@ProfileStatus.FARDC_2007_LIST</td></tr>
+            <tr><th>Organizations</th></tr>
+            <tr><th>Careers</th></tr>
+            <tr><th>Events</th></tr>
+            <tr><th>Person Responsibilities</th></tr>
+            <tr><th>Organization Responsibilities</th></tr>
+            <tr><th>Sources</th></tr>
+        </table>
+    </div>
+}
+
+<div class="span2">
+    <table class="table table-bordered table-stats">
+        <tr>
+            <td class="value">
+                <strong>@Model.AsOfDate</strong>
+            </td>
+        </tr>
+        @foreach (KeyValuePair<ProfileStatus, int> kvp in Model.ProfileStatus.Where(x => x.Key.ProfileStatusName != ProfileStatus.FARDC_2007_LIST))
+        {
+            <tr><td class="value">@kvp.Value</td></tr>
+        }
+        <tr><td class="value">@Model.ProfileStatus.Where(x => x.Key.ProfileStatusName != ProfileStatus.FARDC_2007_LIST).Sum(x => x.Value)</td></tr>
+        @if (Model.ProfileStatus.Where(x => x.Key.ProfileStatusName == ProfileStatus.FARDC_2007_LIST).Any())
+        {
+            <tr>
+                <td class="value">
+                    @Model.ProfileStatus.Where(x => x.Key.ProfileStatusName == ProfileStatus.FARDC_2007_LIST).First().Value
+                </td>
+            </tr>
+        }
+        <tr><td class="value">@Model.Organization</td></tr>
+        <tr><td class="value">@Model.Career</td></tr>
+        <tr><td class="value">@Model.Event</td></tr>
+        <tr><td class="value">@Model.PersonResponsibility</td></tr>
+        <tr><td class="value">@Model.OrganizationResponsibility</td></tr>
+        <tr><td class="value">@Model.Source</td></tr>
+    </table>
+</div>

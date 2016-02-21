@@ -1,0 +1,32 @@
+﻿@using Profiling2.Domain.Prf.Units
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model UnitHierarchyViewModel
+@{
+    ViewBag.Title = ViewBag.CurrentUnit.UnitName;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    var router = new Profiling.Routers.HierarchyRouter({
+      addParent: @((ViewBag.CurrentUnit.Id != Model.ParentUnitId).ToString().ToLower()),
+      addChild: @((ViewBag.CurrentUnit.Id != Model.UnitId).ToString().ToLower())
+    });
+    Backbone.history.start();
+  }); 
+}
+
+@Html.Partial("_UnitHeading", (Unit)ViewBag.CurrentUnit)
+
+<h3>Add Child Unit</h3>
+
+<hr />
+
+@using (Html.BeginForm("CreateChild", "Hierarchies", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.Partial("_UnitHierarchyForm", Model)
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add</button>
+        @Html.ActionLink("Back", "Details", "Units", new { area = "Profiling", id = ViewBag.CurrentUnit.Id }, new { @class = "btn" })
+    </div>
+}

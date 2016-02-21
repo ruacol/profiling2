@@ -1,0 +1,132 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Infrastructure.Security
+
+<li class="nav-header accordion-toggle" data-toggle="collapse" data-target=".screening-items">Screening</li>
+
+@if (User.IsInRole(AdminRole.ScreeningRequestInitiator))
+{
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Initiate"))
+        {
+            @:class="active"
+        }
+    >
+      @(Html.ActionLink("Initiate", "Index", "Initiate", new { area = "Screening" }, new { @class = "screening-items collapse in" }))
+    </li>
+}
+
+@if (User.IsInRole(AdminRole.ScreeningRequestValidator))
+{ 
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Validate"))
+        {
+            @:class="active"
+        }
+    >
+      @(Html.ActionLink("Validate", "Index", "Validate", new { area = "Screening" }, new { @class = "screening-items collapse in" }))
+    </li>
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanPerformScreeningInput))
+{
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Inputs")
+            || string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "ScreeningEntity"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Conditionality Participants' Input", "Index", "Inputs", new { area = "Screening" }, new { @class = "screening-items collapse in" }))
+    </li>
+}
+
+@if (User.IsInRole(AdminRole.ScreeningRequestConsolidator))
+{
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Consolidate"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Consolidate", "Index", "Consolidate", new { area = "Screening" }, new { @class = "screening-items collapse in" }))
+    </li>
+}
+
+@if (User.IsInRole(AdminRole.ScreeningRequestFinalDecider))
+{
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Finalize"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Finalize", "Index", "Finalize", new { area = "Screening" }, new { @class = "screening-items collapse in" }))
+    </li>
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanAdministrate)
+    || User.IsInRole(AdminRole.ScreeningRequestInitiator)
+    || User.IsInRole(AdminRole.ScreeningRequestValidator)
+    || ((PrfPrincipal)User).HasPermission(AdminPermission.CanPerformScreeningInput)
+    || User.IsInRole(AdminRole.ScreeningRequestConsolidator)
+    || User.IsInRole(AdminRole.ScreeningRequestFinalDecider))
+{
+    <li class="nav-header accordion-toggle" data-toggle="collapse" data-target=".manage-items">Manage</li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Requests"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Requests", "Index", "Requests", new { area = "Screening" }, new { @class = "manage-items collapse in" }))
+    </li>
+  
+    if (User.IsInRole(AdminRole.ScreeningRequestConsolidator) || User.IsInRole(AdminRole.ScreeningRequestFinalDecider) || ((PrfPrincipal)User).HasPermission(AdminPermission.CanAdministrate))
+    {
+      <li
+          @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Home")
+            && string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "Charts"))
+          {
+              @:class="active"
+          }
+      >
+          @(Html.ActionLink("Charts", "Charts", "Home", new { area = "Screening" }, new { @class = "manage-items collapse in" }))
+      </li>
+    
+      <li
+          @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Home")
+            && string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "Counts"))
+          {
+              @:class="active"
+          }
+      >
+          @(Html.ActionLink("Counts", "Counts", "Home", new { area = "Screening" }, new { @class = "manage-items collapse in" }))
+      </li>
+    }
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanAdministrate))
+{
+    <li class="nav-header accordion-toggle" data-toggle="collapse" data-target=".admin-items">Admin</li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Home")
+        && string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "FinalDecisions"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Final Decisions", "FinalDecisions", "Home", new { area = "Screening" }, new { @class = "admin-items collapse in" }))
+    </li>
+        
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Home")
+        && string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "ScreeningEntityCounts"))
+        {
+            @:class="active"
+        }
+    >
+        @(Html.ActionLink("Screening Entity Counts", "ScreeningEntityCounts", "Home", new { area = "Screening" }, new { @class = "admin-items collapse in" }))
+    </li>
+}

@@ -1,0 +1,173 @@
+﻿@using Profiling2.Domain.DTO
+@using Profiling2.Domain.Scr
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model DateViewModel
+@{
+  ViewBag.Title = "Screening Counts";
+  IDictionary<string, int> CountsByRequestEntity = ViewBag.CountsByRequestEntity;
+  IDictionary<RequestEntity, int> CountsByIndividualRequestEntity = ViewBag.CountsByIndividualRequestEntity;
+  IDictionary<ScreeningResult, int> CountsByResult = ViewBag.CountsByResult;
+  IDictionary<ScreeningResult, int> CountsByIndividualResult = ViewBag.CountsByIndividualResult;
+  IDictionary<RequestType, int> CountsByRequestType = ViewBag.CountsByRequestType;
+  IDictionary<ScreeningEntity, ScreeningEntityStatisticDTO> ScreeningEntityStatistics = ViewBag.ScreeningEntityStatistics;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("#StartDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+    $("#EndDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+  });
+}
+
+<h2 class="hidden-print">Screening Counts</h2>
+
+<p class="hidden-print">Select the date period in which to retrieve screening counts.  Start Date is inclusive, End Date is exclusive.</p>
+
+<div class="clearfix hidden-print" style="margin-top: 20px;">
+  @using (Html.BeginForm("Counts", "Home", new { area = "Screening" }, FormMethod.Post, new { @class = "form-horizontal" }))
+  {
+    <div class="control-group">
+      <label class="control-label">Start Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.StartDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">End Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.EndDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Go</button>
+      </div>
+    </div>
+  }
+</div>
+
+@if (CountsByRequestEntity != null || CountsByIndividualRequestEntity  != null || CountsByResult != null || CountsByIndividualResult != null || CountsByRequestType != null)
+{
+  <hr class="hidden-print" />
+  
+  <p class="visible-print" style="display: none;"><strong>Date period from @Model.StartDate (inclusive) to @Model.EndDate (exclusive).</strong></p>
+    
+  <div class="clearfix">
+    <h4>Screenings Performed</h4>
+    <p>For the purposes of these figures a screening is where a final decision was made about an individual during a screening request,
+    which must have been completed.</p>
+    <p>An individual who may have been screened more than once is counted once for each screening.</p>
+  </div>
+  <div class="clearfix">
+    <div class="span3 pull-left">
+      <table class="table table-bordered table-stats" style="margin-top: 15px;">
+        <tr>
+          <th colspan="2">Request Entity</th>
+        </tr>
+        @foreach (KeyValuePair<string, int> kvp in CountsByRequestEntity)
+        {
+          <tr>
+            <td>@kvp.Key</td>
+            <td class="value">@kvp.Value</td>
+          </tr>
+        }
+        <tr>
+          <td>Total</td>
+          <td class="value">@CountsByRequestEntity.Values.Sum()</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="span3 pull-left">
+      <table class="table table-bordered table-stats" style="margin-top: 15px;">
+        <tr>
+          <th colspan="2">Screening Result</th>
+        </tr>
+        @foreach (KeyValuePair<ScreeningResult, int> kvp in CountsByResult)
+        {
+          <tr>
+            <td>@kvp.Key</td>
+            <td class="value">@kvp.Value</td>
+          </tr>
+        }
+        <tr>
+          <td>Total</td>
+          <td class="value">@CountsByResult.Values.Sum(x => x)</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+    
+  <div class="clearfix">
+    <h4>Individuals Screened</h4>
+    <p>For the purposes of these figures a screening is where a final decision was made about an individual during a screening request,
+    which must have been completed.</p>
+  </div>
+  <div class="clearfix">
+    <div class="span3 pull-left">
+      <table class="table table-bordered table-stats" style="margin-top: 15px;">
+        <tr>
+          <th colspan="2">Request Entity</th>
+        </tr>
+        @foreach (KeyValuePair<RequestEntity, int> kvp in CountsByIndividualRequestEntity)
+        {
+          <tr>
+            <td>@kvp.Key.RequestEntityName</td>
+            <td class="value">@kvp.Value</td>
+          </tr>
+        }
+        <tr>
+          <td>Total</td>
+          <td class="value">@CountsByIndividualRequestEntity.Values.Sum(x => x)</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="span3 pull-left">
+      <table class="table table-bordered table-stats" style="margin-top: 15px;">
+        <tr>
+          <th colspan="2">Screening Result</th>
+        </tr>
+        @foreach (KeyValuePair<ScreeningResult, int> kvp in CountsByIndividualResult)
+        {
+          <tr>
+            <td>@kvp.Key</td>
+            <td class="value">@kvp.Value</td>
+          </tr>
+        }
+        <tr>
+          <td>Total</td>
+          <td class="value">@CountsByIndividualResult.Values.Sum(x => x)</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  
+  <div class="clearfix">
+    <h4>Requests Completed</h4>
+    <p>Requests counted here have passed through all stages of the conditionality workflow up to completion (i.e. not including
+    requests that were rejected, deleted, or are currently in progress).</p>
+  </div>
+  <div class="clearfix">
+    <div class="span3 pull-left">
+      <table class="table table-bordered table-stats" style="margin-top: 15px;">
+        <tr>
+          <th colspan="2">Request Type</th>
+        </tr>
+        @foreach (KeyValuePair<RequestType, int> kvp in CountsByRequestType)
+        {
+          <tr>
+            <td title="@kvp.Key.Notes">@kvp.Key.RequestTypeName</td>
+            <td class="value">@kvp.Value</td>
+          </tr>
+        }
+        <tr>
+          <td>Total</td>
+          <td class="value">@CountsByRequestType.Values.Sum(x => x)</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+}

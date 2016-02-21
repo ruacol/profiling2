@@ -1,0 +1,22 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model UnitViewModel
+@{
+  Layout = "";
+  ViewBag.Title = "Edit Unit";
+}
+
+@using (Html.BeginForm("EditModal", "Units", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4>Edit Unit</h4>
+  </div>
+  <div class="modal-body form-horizontal">
+    @Html.Partial("_UnitForm", Model)
+  </div>
+  <div class="modal-footer">
+    <a id="modal-unit-edit-button-@Model.Id" class="btn btn-primary">Save</a>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  </div>
+}

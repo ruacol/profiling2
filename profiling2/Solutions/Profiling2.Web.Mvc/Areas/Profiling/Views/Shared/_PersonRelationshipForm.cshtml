@@ -1,0 +1,71 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model PersonRelationshipViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<div id="validation-errors"></div>
+
+<p>
+The format should follow the subject verb object format.  In other words, SUBJECT relationship OBJECT, e.g. JOHN is a business associate of JIM.
+</p>
+
+<fieldset>
+    @Html.HiddenFor(x => x.Id)
+    <div class="control-group">
+        <label class="control-label">
+            Subject
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.SubjectPersonId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The subject person in the relationship."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Relationship
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.PersonRelationshipTypeId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The relationship between the subject and object persons."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Object
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.ObjectPersonId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The object person in the relationship."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Start Date</label>
+        <div class="controls">
+            <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfStart, new { @class = "input-mini" })
+            <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfStart, new { @class = "input-mini" })
+            <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfStart, new { @class = "input-mini" })
+            <i class="accordion-toggle icon-info-sign" title="The date (yyyy-mm-dd) when this relationship started.  If parts of the date are not known, they can be left blank, for example 2009 - - 29."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">End Date</label>
+        <div class="controls">
+            <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfEnd, new { @class = "input-mini" })
+            <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfEnd, new { @class = "input-mini" })
+            <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfEnd, new { @class = "input-mini" })
+            <i class="accordion-toggle icon-info-sign" title="The date (yyyy-mm-dd) when this relationship ended.  If parts of the date are not known, they can be left blank, for example 2009 - - 29."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Notes</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="Notes about this relationship."></i>
+        </div>
+    </div>
+</fieldset>

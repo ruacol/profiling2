@@ -1,0 +1,60 @@
+﻿@using Profiling2.Domain
+@using Profiling2.Web.Mvc.Areas.System.Controllers.ViewModels
+@using Lucene.Net.Search
+@using Lucene.Net.Documents
+@model SearchViewModel
+@{
+    ViewBag.Title = "Unit Search";
+    IList<LuceneSearchResult> Results = (IList<LuceneSearchResult>)ViewData["results"];
+}
+
+<h2>Search</h2>
+
+@using (Html.BeginForm("UnitSearch", "Lucene", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <fieldset>
+        <legend>Search</legend>
+        <div class="control-group">
+            <label class="control-label">Search term</label>
+            <div class="controls">
+                @Html.TextBoxFor(x => x.Term, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+    </fieldset>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+}
+
+@if (Results != null)
+{
+    <table class="table">
+        <tr>
+            <th>Id</th><th>Name</th><th>Background Information</th><th>Organization</th><th>Score</th>
+        </tr>
+        @foreach (LuceneSearchResult result in Results)
+        {
+            <tr>
+                @foreach (string key in new string[] { "Id", "Name", "BackgroundInformation", "Organization" })
+                {
+                    <td
+                      @if (string.Equals(key, "Name"))
+                      {
+                        @:style="white-space: nowrap;"   
+                      }    
+                    >
+                        @if (result.FieldValues.ContainsKey(key))
+                        {
+                            foreach (string s in result.FieldValues[key])
+                            {
+                                @s <br />
+                            }
+                        }
+                    </td>
+                }
+                <td>@result.Score</td>
+            </tr>
+        }
+    </table>
+}

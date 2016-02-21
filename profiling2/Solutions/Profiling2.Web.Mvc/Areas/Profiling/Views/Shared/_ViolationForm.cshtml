@@ -1,0 +1,49 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model ViolationViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+<div class="alert alert-error">
+    @Html.ValidationSummary()
+</div>
+}
+    
+<fieldset>
+    <legend></legend>
+    <div class="control-group">
+        <label class="control-label">Name *</label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.Name, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Keywords *
+            <i class="icon-info-sign" title="Comma-separated list of phrases, each of which is used to match this violation against an event name."></i>
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.Keywords, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Description</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Description, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Parent Category</label>
+        <div class="controls">
+            @Html.DropDownListFor(x => x.ParentViolationID, Model.ParentViolations, string.Empty, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            HRDDP Interest
+            <i class="icon-info-sign" title="This denotes whether this violation type is filtered when viewing a human rights record."></i>
+        </label>
+        <div class="controls">
+            @Html.CheckBoxFor(x => x.ConditionalityInterest, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+</fieldset>

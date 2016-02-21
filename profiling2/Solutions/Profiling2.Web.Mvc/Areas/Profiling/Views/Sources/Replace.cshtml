@@ -1,0 +1,23 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model SourceFileDataViewModel
+@{
+    ViewBag.Title = "Replace FileData";
+}
+
+<h2>Replace FileData for @Model.SourceName</h2>
+
+<hr />
+
+@using (Html.BeginForm("Replace", "Sources", new { area = "Profiling" }, FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <div class="control-group">
+        <label class="control-label">File data</label>
+        <div class="controls">
+            <input type="file" id="FileData" name="FileData" />
+        </div>
+    </div>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Replace</button>
+    </div>
+}

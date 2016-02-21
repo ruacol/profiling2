@@ -1,0 +1,99 @@
+﻿@using Profiling2.Domain
+@using Profiling2.Web.Mvc.Areas.System.Controllers.ViewModels
+@using Lucene.Net.Search
+@using Lucene.Net.Documents
+@model SearchViewModel
+@{
+    ViewBag.Title = "Source Search";
+    IList<LuceneSearchResult> Results = (IList<LuceneSearchResult>)ViewData["results"];
+    IDictionary<IDictionary<string, string>, long> Facets = (IDictionary<IDictionary<string, string>, long>)ViewData["facets"];
+}
+
+<h2>Search</h2>
+
+@using (Html.BeginForm("SourceSearch", "Lucene", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <fieldset>
+        <legend>Search</legend>
+        <div class="control-group">
+            <label class="control-label">Search term</label>
+            <div class="controls">
+                @Html.TextBoxFor(x => x.Term, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+    </fieldset>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+}
+
+@if (Facets != null)
+{
+    <h3>Facets</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th><th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<IDictionary<string, string>, long> kvp in Facets)
+            {
+                <tr>
+                    <td>
+                        @foreach (KeyValuePair<string, string> kvp2 in kvp.Key)
+                        {
+                            @kvp2.Key<text>: </text>@kvp2.Value
+                            <br />
+                        }
+                    </td>
+                    <td>@kvp.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Results != null)
+{
+    <h3>Results</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th><th>Name</th><th>FileDateTimeStamp</th><th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (LuceneSearchResult result in Results)
+            {
+                <tr>
+                    @foreach (string key in new string[] { "Id", "SourceName", "FileDateTimeStamp" })
+                    {
+                        <td>
+                            @if (result.FieldValues.ContainsKey(key))
+                            {
+                                foreach (string s in result.FieldValues[key])
+                                {
+                                    if (string.Equals(key, "FileDateTimeStamp"))
+                                    {
+                                        @string.Format("{0:yyyy-MM-dd}", new DateTime(long.Parse(s)))
+                                    }
+                                    else
+                                    {
+                                        @s
+                                    }
+                                    <br />
+                                }
+                            }
+                        </td>
+                    }
+                    <td>@result.Score</td>
+                </tr>
+                <tr>
+                    <td colspan="4">@Html.Raw(result.HighlightFragment)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,114 @@
+﻿@using Profiling2.Web.Mvc.Areas.Sources.Controllers.ViewModels
+@model FeedingSourceViewModel
+@{
+    ViewBag.Title = "Approve Feeding Source";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        new Profiling.MultiSelect({
+            el: "#AuthorIds",
+            placeholder: 'Search by author name...',
+            nameUrl: "@(Request.ApplicationPath + "/")Sources/Authors/Name/",
+            getUrl: '@(Request.ApplicationPath + "/")Sources/Authors/Get'
+        });
+    
+        new Profiling.MultiSelect({
+            el: "#OwnerIds",
+            placeholder: 'Search by owner name...',
+            nameUrl: "@(Request.ApplicationPath + "/")Sources/Owners/Name/",
+            getUrl: '@(Request.ApplicationPath + "/")Sources/Owners/All'
+        });
+
+        view = new Profiling.Views.SourceAuthorCreateFormView({
+          modalId: 'modal-source-author-create',
+          modalUrl: "@(Request.ApplicationPath + "/")Sources/Authors/CreateModal",
+          modalSaveButton: 'modal-source-author-create-button'
+        });
+        $("#label-authors").prepend(view.render().el);
+    });
+}
+
+<h2>Approve Source</h2>
+
+<p>Approving this file will insert it into the main pool of sources, becoming searchable in the source search interface.  It will be OCR scanned if eligible.</p>
+
+<p>It should then be attached to any appropriate Persons, Events, Units or Operations.</p>
+
+<hr />
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<h3>@Model.Name</h3>
+
+@if (Model.Approved)
+{
+    <p class="alert alert-info">This source has already been approved.</p>
+    
+    @Html.ActionLink("Back", "Index", "Feeding", new { area = "Sources" }, new { @class = "btn" })
+}
+else
+{
+    using (Html.BeginForm("Approve", "Feeding", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div class="control-group">
+            <label class="control-label">Last Modified Date</label>
+            <div class="controls">
+                <span class="uneditable-input input-xxlarge">@string.Format("{0: d MMM yyyy HH:mm}", Model.FileModifiedDateTime)</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Upload</label>
+            <div class="controls">
+                <span class="uneditable-input input-xxlarge">Uploaded by @Model.UploadedBy on @string.Format("{0: d MMM yyyy HH:mm}", Model.UploadDate)</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Restricted?</label>
+            <div class="controls">
+                @Html.CheckBoxFor(x => x.Restricted)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Read Only?</label>
+            <div class="controls">
+                @Html.CheckBoxFor(x => x.IsReadOnly)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Public?</label>
+            <div class="controls">
+                @Html.CheckBoxFor(x => x.IsPublic)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Upload Notes</label>
+            <div class="controls">
+                @Html.TextAreaFor(x => x.UploadNotes, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" id="label-authors">Authors</label>
+            <div class="controls">
+                @Html.HiddenFor(x => x.AuthorIds, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" id="label-owners">Owners</label>
+            <div class="controls">
+                @Html.HiddenFor(x => x.OwnerIds, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+    
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Approve</button>
+            @Html.ActionLink("Download", "Download", "Feeding", new { area = "Sources", id = Model.Id }, new { @class = "btn" })
+            @Html.ActionLink("Back", "Index", "Feeding", new { area = "Sources" }, new { @class = "btn" })
+        </div>
+    }
+}

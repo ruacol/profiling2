@@ -1,0 +1,70 @@
+﻿@using Profiling2.Web.Mvc.Areas.Sources.Controllers.ViewModels
+@model FeedingSourceViewModel
+@{
+    ViewBag.Title = "Rename Feeding Source";
+}
+
+<h2>Rename Source</h2>
+
+<p>Rename this file.</p>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.Partial("_RawValidationSummary")
+    </div>
+}
+
+<h3>@Model.Name</h3>
+
+@if (Model.Approved || Model.Rejected)
+{
+    <div class="alert alert-error">
+        File is already approved and imported into database, or is rejected.
+    </div>
+    
+    <p>@Html.ActionLink("Back", "Index", "Feeding", new { area = "Sources" }, new { @class = "btn" })</p>
+}
+else
+{
+    using (Html.BeginForm("Rename", "Feeding", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <table class="table table-bordered" style="width: auto;">
+            @if (Model.Restricted)
+            {
+                <tr>
+                    <td colspan="2">
+                        File is <span class="label label-important"><small>RESTRICTED</small></span>
+                    </td>
+                </tr>
+            }
+            @if (Model.IsPublic)
+            {
+                <tr>
+                    <td colspan="2">
+                        File is <span class="label"><small>PUBLIC</small></span>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th>Name</th>
+                <td>@Html.TextBoxFor(x => x.Name, new { @class = "input-xxlarge" })</td>
+            </tr>
+            <tr>
+                <th>Last Modified Date</th>
+                <td>@string.Format("{0: d MMM yyyy HH:mm:ss}", Model.FileModifiedDateTime)</td>
+            </tr>
+            <tr>
+                <th>Upload</th>
+                <td>
+                    Uploaded by @Model.UploadedBy on @string.Format("{0: d MMM yyyy HH:mm}", Model.UploadDate)
+                </td>
+            </tr>
+        </table>
+    
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Rename</button>
+            @Html.ActionLink("Back", "Index", "Feeding", new { area = "Sources" }, new { @class = "btn" })
+        </div>
+    }
+}

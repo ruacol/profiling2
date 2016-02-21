@@ -1,0 +1,130 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.DTO
+@using Profiling2.Infrastructure.Security
+@using Profiling2.Web.Mvc.Areas.Sources.Controllers
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources))
+{
+    <li class="nav-header accordion-toggle" data-toggle="collapse" data-target=".sources-items">Sources</li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "All") &&
+            string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "Browse"))
+        {
+            @:class="active"
+        }
+    >
+        @Html.ActionLink("Browse", "Browse", "All", new { area = "Sources" }, new { @class = "sources-items collapse in" })
+    </li>
+    
+    if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchAllSources)
+        && ((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchRestrictedSources))
+    {
+        <li
+            @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "Cases") &&
+                string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "All"))
+            {
+                @:class="active"
+            }
+        >
+            @Html.ActionLink("Cases", "Cases", "All", new { area = "Sources" }, new { @class = "sources-items collapse in" })
+        </li>
+    }
+    
+    if (((PrfPrincipal)User).HasPermission(AdminPermission.CanUploadSources))
+    {
+        <li
+            @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Feeding"))
+            {
+                @:class="active"
+            }
+        >
+            @Html.ActionLink("Feeding", "Index", "Feeding", new { area = "Sources" }, new { @class = "sources-items collapse in" })
+        </li>
+    }
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanAdministrate))
+{    
+    <li class="nav-header accordion-toggle" data-toggle="collapse" data-target=".manage-items">Manage</li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "Folders") && 
+            string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "SourceAdmin"))
+        {
+            @:class="active"
+        }
+    >
+        @Html.ActionLink("Folders", "Folders", "SourceAdmin", new { area = "Sources" }, new { @class = "manage-items collapse in" })
+    </li>
+
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Extension"))
+        {
+            @:class="active"
+        }
+    >
+        @Html.ActionLink("Extensionless Sources", "Index", "Extension", new { area = "Sources" }, new { @class = "manage-items collapse in" })
+    </li>
+
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Ocr"))
+        {
+            @:class="active"
+        }
+    >
+        @Html.ActionLink("OCR", "Index", "Ocr", new { area = "Sources", days = 10 }, new { @class = "manage-items collapse in" })
+    </li>
+
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Owners"))
+        {
+            @:class="active"
+        }
+    >
+        @Html.ActionLink("Owners", "Index", "Owners", new { area = "Sources" }, new { @class = "manage-items collapse in" })
+    </li>
+
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Previews"))
+        {
+            @:class="active"
+        }
+    >
+        @Html.ActionLink("Previews", "Index", "Previews", new { area = "Sources" }, new { @class = "manage-items collapse in" })
+    </li>
+      
+    <li class="nav-header accordion-toggle" data-toggle="collapse" data-target=".duplicates-items">Duplicates</li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "DuplicatesByHash") && 
+            string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "SourceAdmin"))
+        {
+            @:class="active"
+        }
+    >
+        @Html.ActionLink("By Hash", "DuplicatesByHash", "SourceAdmin", new { area = "Sources" }, new { @class = "duplicates-items collapse in" })
+    </li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "DuplicatesByIgnored") && 
+            string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "SourceAdmin"))
+        {
+            @:class="active"
+        }
+    >
+        @Html.ActionLink("By Ignored", "DuplicatesByIgnored", "SourceAdmin", new { area = "Sources" }, new { @class = "duplicates-items collapse in" })
+    </li>
+    
+    <li
+        @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("action").RawValue, "DuplicatesByName") && 
+            string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "SourceAdmin"))
+        {
+            @:class="active"
+        }
+    >
+        @Html.ActionLink("By Name", "DuplicatesByName", "SourceAdmin", new { area = "Sources" }, new { @class = "duplicates-items collapse in" })
+    </li>
+}
+
+

@@ -1,0 +1,140 @@
+﻿@using System.Collections
+@using NHibernate.Envers
+@using Profiling2.Domain
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model DateViewModel
+@{
+  ViewBag.Title = "Created and Modified Profiles";
+  IList<AdminUser> Users = ((IList<AdminUser>)ViewBag.Users);
+  IList<object[]> createdProfiles = ViewBag.CreatedProfiles;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("#StartDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+    $("#EndDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+  });
+}
+
+<h2>Created and Modified Profiles</h2>
+
+<p>Select the date period in which to retrieve created and modified profiles. Start Date is inclusive, End Date is exclusive.</p>
+
+<div class="clearfix">
+  @using (Html.BeginForm("Changed", "Persons", FormMethod.Post, new { @class = "form-horizontal" }))
+  {
+    <div class="control-group">
+      <label class="control-label">Start Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.StartDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">End Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.EndDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Go</button>
+      </div>
+    </div>
+  }
+</div>
+
+@if (createdProfiles != null || ViewBag.ModifiedProfiles != null)
+{
+<hr />
+  
+<h3>Created</h3>
+  
+<p>@createdProfiles.Count profiles created.</p>
+<p class="muted"><small>Created profiles with no status means that that profile was created using the old system (before circa May 2013), and no data
+from the time of creation remains (i.e. it could have changed since then).  The person's current name is listed for readability.</small></p>
+
+<blockquote>
+    <p>
+        Note that for the purposes of statistics, this list of created profiles includes those that may have been subsequently deleted or merged; and does not include
+        profiles whose status was converted from a non-valid one (e.g. 'FARDC 2007 List') to a valid one ('Completed', 'In progress', or 'Rough outline').
+    </p>
+</blockquote>
+    
+<table class="table table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>Who</th>
+      <th>When</th>
+      <th>Person ID</th>
+      <th>Person Name</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (object[] row in ViewBag.CreatedProfiles)
+    {
+      string personId = string.Empty;
+      string personName = string.Empty;
+      string personStatus = string.Empty;
+      if (row[0] != null)
+      {
+        Person person = (Person)row[0];
+        personId = person.Id.ToString();
+        personName = person.Name;
+        personStatus = person.ProfileStatus.ToString();
+      }
+      else if (row.Length == 4)
+      {
+        personId = row[2].ToString();
+        personName = (string)row[3];
+        personStatus = string.Empty;
+      }
+      REVINFO revinfo = (REVINFO)row[1];
+      IList<AdminUser> users = Users.Where(x => x.IsUser(revinfo.UserName)).ToList();
+      <tr>
+        <td style="white-space: nowrap;" title="@(users.Any() ? users.First().UserID : string.Empty)">@(users.Any() ? users.First().UserName : revinfo.UserName)</td>
+        <td style="white-space: nowrap;">@string.Format("{0:yyyy/MM/dd HH:mm:ss}", revinfo.REVTSTMP)</td>
+        <td style="white-space: nowrap;">@Html.ActionLink(personId, "Details", "Persons", new { id = personId, area = "Profiling" }, null)</td>
+        <td>@personName</td>
+        <td>@personStatus</td>
+      </tr>
+    }
+  </tbody>
+</table>
+  
+<h3>Modified</h3>
+
+<p>@ViewBag.ModifiedProfiles.Count profiles modified.</p>
+<p class="muted"><small>Modified profiles with no status means that that profile was modified using the old system (see note above), and no data
+from the time of modification remains (i.e. it could have changed since then).  The person's current name is listed for readability.</small></p>
+
+<table class="table table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>Who</th>
+      <th>When</th>
+      <th>Person ID</th>
+      <th>Person Name</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (ModifiedProfilesAuditDTO dto in ViewBag.ModifiedProfiles)
+    {
+      IList<AdminUser> users = Users.Where(x => x.IsUser(dto.Who)).ToList();
+      <tr>
+        <td style="white-space: nowrap;" title="@(users.Any() ? users.First().UserID : string.Empty)">@(users.Any() ? users.First().UserName : dto.Who)</td>
+        <td style="white-space: nowrap;">@string.Format("{0:yyyy/MM/dd HH:mm:ss}", dto.When)</td>
+        <td style="white-space: nowrap;">@Html.ActionLink(dto.PersonID, "Details", "Persons", new { id = dto.PersonID, area = "Profiling" }, null)</td>
+        <td>@dto.Person</td>
+        <td>@dto.Status</td>
+      </tr>
+    }
+  </tbody>
+</table>
+  
+}

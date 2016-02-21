@@ -1,0 +1,13 @@
+﻿@using Profiling2.Domain.Prf.Careers
+@model IList<Rank>
+@{
+    ViewBag.Title = "Army Ranks";
+}
+
+<h2>Army Ranks</h2>
+
+<p>Sorted ranks of land and air forces (sort order between 0 and 100 exclusive).</p>
+
+<hr />
+
+@Html.Partial("_RankTable")

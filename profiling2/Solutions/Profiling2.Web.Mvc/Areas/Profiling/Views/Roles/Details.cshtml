@@ -1,0 +1,67 @@
+﻿@using Profiling2.Domain.Prf.Careers
+@model Role
+@{
+    ViewBag.Title = Model.RoleName;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("careers-table", {
+      bServerSide: false
+    });
+
+    $("#delete-button").click(function(e) {
+      bootbox.confirm("This function will only be deleted if it has 0 careers. Continue?", function(response) {
+        if (response === true)
+          window.location.href = "@(Request.ApplicationPath + "/")Profiling/Roles/Delete/@Model.Id";
+      });
+    });
+  }); 
+}
+
+<h2>
+  @Model.RoleName
+  @if (!string.IsNullOrEmpty(Model.RoleNameFr))
+  {
+    <small>(@Model.RoleNameFr)</small>
+  }
+  @Html.ActionLink("Edit", "Edit", "Roles", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini" })
+  <button id="delete-button" class="btn btn-mini btn-danger">Delete</button>
+</h2>
+
+@if (!string.IsNullOrEmpty(Model.Description))
+{
+  <p>@Model.Description</p>
+}
+@if (!string.IsNullOrEmpty(Model.Notes))
+{
+  <p class="muted">@Model.Notes</p>
+}
+
+<p>@Model.Careers.Count careers, @Model.Careers.Select(x => x.Person).Distinct().Count() individuals.</p>
+
+<hr />
+
+<h3>Careers</h3>
+
+<table id="careers-table" class="table table-bordered table-condensed">
+  <thead>
+    <tr>
+      <th>Person</th>
+      <th>Function</th>
+      <th><span class="muted">Job</span></th>
+      <th>Unit</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Career c in Model.Careers)
+    {
+      <tr>
+        <td>@Html.ActionLink(c.Person.Name, "Details", "Persons", new { area = "Profiling", id = c.Person.Id }, null)</td>
+        <td>@c.Role</td>
+        <td><span class="muted">@c.Job</span></td>
+        <td>@c.Unit</td>
+      </tr>
+    }
+  </tbody>
+</table>

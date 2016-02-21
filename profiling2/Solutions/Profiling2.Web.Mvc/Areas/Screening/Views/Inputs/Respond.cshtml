@@ -1,0 +1,85 @@
+﻿@using Profiling2.Domain;
+@using Profiling2.Domain.Prf.Persons;
+@using Profiling2.Domain.Scr;
+@using Profiling2.Domain.Scr.Person;
+@using Profiling2.Infrastructure.Security;
+@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels;
+@model RespondViewModel
+@{
+  ViewBag.Title = "Respond to Screening Request";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.RequestRespondRouter({ requestId: @ViewBag.Request.Id });
+        Backbone.history.start();
+    });
+}
+
+<h2>
+  Respond to Screening Request
+  &nbsp;
+  @Html.ActionLink("Request History", "Details", "Requests", new { id = ViewBag.Request.Id, area = "Screening" }, new { @class = "btn btn-mini", target = "_blank" })
+</h2>
+
+@if (ViewBag.User.GetScreeningEntity() == null)
+{
+  <div class="alert">You are not a member of any screening entity.</div>
+}
+else if (!ViewBag.Request.HasResponded(ViewBag.User.GetScreeningEntity().ScreeningEntityName))
+{
+  <div class="alert">This request has not yet been responded to.</div>
+
+  @Html.Partial("_RequestDisplayTable")
+
+  if (ViewBag.Request.Units != null && ViewBag.Request.Units.Count > 0)
+  {
+      <h3>Units</h3>
+      @Html.Partial("_RequestUnits", (IList<RequestUnit>)ViewBag.Request.Units)
+  }
+    
+  <h3>Persons to Screen</h3>
+  
+  if (ViewBag.HasProfileAccess)
+  {
+    <p>Click person's name to view profile including previous screenings.</p>
+  }
+
+  if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+  {
+    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+  }
+
+  if (!ViewData.ModelState.IsValid)
+  {
+    <div class="alert alert-error">
+      @Html.ValidationSummary()
+    </div>
+  }
+
+  using (Html.BeginForm("Respond", "Inputs", FormMethod.Post, new { @class = "form-horizontal", id = "main-form" }))
+  {
+    IList<RequestPerson> rps = ViewBag.Request.Persons;
+    foreach (RequestPerson rp in rps.Where(x => !x.Archive && Model.Responses.ContainsKey(x.Id)).OrderBy(x => x.Id))
+    {
+        ViewBag.rp = rp;
+        @Html.Partial("_RespondPerson")
+    }
+    
+    @Html.HiddenFor(m => m.SubmitResponse)
+    
+    <div class="form-actions">
+      <button id="btn-final" type="submit" class="btn btn-primary">Response Complete</button>
+      @Html.ActionLink("Back", "Index", "Inputs", new { area = "Screening" }, new { @class = "btn" })
+    </div>
+  }
+
+}
+else
+{
+  <div class="alert alert-info">This request has been responded to.</div>
+    
+  <div class="form-actions">
+    @Html.ActionLink("Back", "Index", "Inputs", new { area = "Screening" }, new { @class = "btn" })
+  </div>
+}

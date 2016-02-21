@@ -1,0 +1,97 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@{
+    ViewBag.Title = @Model.SourceName;
+}
+
+<h2>@Model.SourceName</h2>
+
+<table class="table table-bordered table-hover table-condensed">
+    <tr>
+        <td>ID</td>
+        <td>@Model.Id</td>
+    </tr>
+    <tr>
+        <td>Full Reference</td>
+        <td>@Model.FullReference</td>
+    </tr>
+    <tr>
+        <td>Source Path</td>
+        <td>@Model.SourcePath</td>
+    </tr>
+    <tr>
+        <td>Source Date</td>
+        <td>@Model.SourceDate</td>
+    </tr>
+    <tr>
+        <td>Archive</td>
+        <td>@Model.Archive</td>
+    </tr>
+    <tr>
+        <td>Notes</td>
+        <td>@Model.Notes</td>
+    </tr>
+    <tr>
+        <td>File Extension</td>
+        <td>@Model.FileExtension</td>
+    </tr>
+    <tr>
+        <td>File Language</td>
+        <td>@Model.FileLanguage</td>
+    </tr>
+    <tr>
+        <td>Restricted</td>
+        <td>@Model.IsRestricted</td>
+    </tr>
+    <tr>
+        <td>File DateTimeStamp</td>
+        <td>@Model.FileDateTimeStamp</td>
+    </tr>
+</table>
+
+<h3>Imported</h3>
+
+<table class="table table-bordered table-hover table-condensed">
+    <tr>
+        <th>Path</th>
+        <th>Modified Path</th>
+        <th>Had Password</th>
+        <th>Import Date</th>
+    </tr>
+
+    @foreach (AdminSourceImport h in Model.AdminSourceImports)
+    {
+    <tr>
+        <td>@h.SourcePath</td>
+        <td>@h.ModifiedPath</td>
+        <td>@h.HadPassword</td>
+        <td>@h.ImportDate</td>
+    </tr>
+    }
+</table>
+
+<h3>Reviews</h3>
+
+<table class="table table-bordered table-hover table-condensed">
+    <tr>
+        <th>Admin Source Search</th>
+        <th>Reviewed</th>
+        <th>Is Relevant</th>
+        <th>Was Previewed</th>
+        <th>Was Downloaded</th>
+        <th>Archive</th>
+        <th>Notes</th>
+    </tr>
+
+    @foreach (AdminReviewedSource h in Model.AdminReviewedSources)
+    {
+    <tr>
+        <td>@Html.ActionLink(h.AdminSourceSearch.SearchDateTime.ToString(), "Details", "AdminSourceSearches", new { id = h.AdminSourceSearch.Id, area = "Profiling" }, null)</td>
+        <td>@h.ReviewedDateTime</td>
+        <td>@h.IsRelevant</td>
+        <td>@h.WasPreviewed</td>
+        <td>@h.WasDownloaded</td>
+        <td>@h.Archive</td>
+        <td>@h.Notes</td>
+    </tr>
+    }
+</table>

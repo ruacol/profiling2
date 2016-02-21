@@ -1,0 +1,69 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<table>
+    <tr>
+        <td>Searched By</td>
+        <td>@Model.SearchedByAdminUser</td>
+    </tr>
+    <tr>
+        <td>Search Date</td>
+        <td>@Model.SearchDateTime</td>
+    </tr>
+    <tr>
+        <td>Matching Sources</td>
+        <td>@Model.NumOfMatchingSources</td>
+    </tr>
+    <tr>
+        <td>Archive</td>
+        <td>@Model.Archive</td>
+    </tr>
+</table>
+
+<h3>Search Terms</h3>
+
+<table>
+    <tr>
+        <td>Or</td>
+        <td>@Model.OrSearchTerms</td>
+    </tr>
+    <tr>
+        <td>And</td>
+        <td>@Model.AndSearchTerms</td>
+    </tr>
+    <tr>
+        <td>Exclude</td>
+        <td>@Model.ExcludeSearchTerms</td>
+    </tr>
+</table>
+
+<h3>Reviews</h3>
+
+<table>
+    <tr>
+        <th>Source</th>
+        <th>Reviewed</th>
+        <th>Is Relevant</th>
+        <th>Was Previewed</th>
+        <th>Was Downloaded</th>
+        <th>Archive</th>
+        <th>Notes</th>
+    </tr>
+
+    @foreach (AdminReviewedSource h in Model.AdminReviewedSources)
+    {
+    <tr>
+        <td>@Html.ActionLink(h.Source.SourceName, "Details", "Sources", new { id = h.Source.Id }, null)</td>
+        <td>@h.ReviewedDateTime</td>
+        <td>@h.IsRelevant</td>
+        <td>@h.WasPreviewed</td>
+        <td>@h.WasDownloaded</td>
+        <td>@h.Archive</td>
+        <td>@h.Notes</td>
+    </tr>
+    }
+</table>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <sql-query name="PRF_SP_Reports_ProfilesModifiedLastWeek_NHibernate"  callable="true" >
+    <query-param name="StartDate" type="System.DateTime"/>
+    <query-param name="EndDate" type="System.DateTime"/>
+    
+    <return-scalar type="System.String" column="Who" />
+    <return-scalar type="System.DateTime" column="When" />
+    <return-scalar type="System.String" column="PersonID" />
+    <return-scalar type="System.String" column="Person" />
+
+    exec PRF_SP_Reports_ProfilesModifiedLastWeek_NHibernate @StartDate=:StartDate, @EndDate=:EndDate
+  </sql-query>
+</hibernate-mapping>

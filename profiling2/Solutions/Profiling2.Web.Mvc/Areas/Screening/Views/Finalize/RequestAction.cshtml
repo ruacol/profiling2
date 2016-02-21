@@ -1,0 +1,222 @@
+﻿@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Prf.Persons;
+@using Profiling2.Domain.Scr;
+@using Profiling2.Domain.Scr.Attach;
+@using Profiling2.Domain.Scr.Person;
+@using Profiling2.Domain.Scr.PersonEntity;
+@using Profiling2.Domain.Scr.PersonRecommendation;
+@using Profiling2.Infrastructure.Security;
+@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels;
+@model FinalizeViewModel
+@{
+  ViewBag.Title = "Finalize Screening Request";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        $("#Finalize").val(false);
+
+        $("td.screening-result").each(function(i, el) {
+            if (/red/i.test($(el).text())) {
+                $(el).css('backgroundColor', 'red');
+                $(el).css('color', 'black');
+            } else if (/yellow/i.test($(el).text())) {
+                $(el).css('backgroundColor', 'yellow');
+                $(el).css('color', 'black');
+            } else if (/green/i.test($(el).text())) {
+                $(el).css('backgroundColor', 'green');
+                $(el).css('color', 'white');
+            } else {
+                $(el).css('backgroundColor', '');
+                $(el).css('color', 'black');
+            }
+        });
+
+        $("select.screening-result").each(function(i, el) {
+            Profiling.setInputColor(el);
+        }).change(function() {
+            Profiling.setInputColor(this);
+        });
+
+        $("select.screening-support-status").each(function(i, el) {
+            Profiling.setSupportStatusInputColor(el);
+        }).change(function() {
+            Profiling.setSupportStatusInputColor(this);
+        });
+
+        $("#secondary-sidebar")
+          .addClass("well").css("bottom", "70px")
+          .append("<button type='submit' class='btn'>Save Commentary</button>")
+          .click(function() {
+            $("#main-form").submit();
+            return false;
+        });
+
+        $("#btn-final").click(function() {
+            $("#Finalize").val(true);
+        });
+    });
+}
+
+<h2>
+  Finalize Screening Request
+  <button type="button" class="btn btn-mini" data-toggle="collapse" data-target="#intro-help" title="Click to toggle help"><i class="icon-question-sign"></i></button>
+</h2>
+
+<div id="intro-help" class="collapse out">
+  <p>
+    Screening responses from conditionality participants are finalized by the ODSRSG.  Key features of this screen:
+  </p>
+  <ul>
+    <li>Results and support statuses are prepopulated from the person's screening request recommendation</li>
+    <li>Previous Screenings - View your previous final decisions</li>
+    <li>Profile - Navigate to a limited profile where you can view aliases, personal information, career history and relationships.</li>
+  </ul>
+  <p>
+    You may periodically save your work using the 'Save Commentary' button at the bottom of the page.  Saving the 
+    commentary <em>does not</em> complete the request.
+  </p>
+  <p>
+    Once a request is finalized and the Finished button has been pressed, an email alert is automatically sent to:
+    <ul>
+      <li>the individual who initiated the request</li>
+      <li>members of the initiator's requesting entity</li>
+      <li>all conditionality participants</li>
+    </ul>
+  </p>
+  <hr />
+</div>
+
+@if (ViewBag.Request.RequiresFinalDecision)
+{
+    <div class="alert">This request has not yet been finalized.</div>
+
+    @Html.Partial("_RequestDisplayTable")
+
+    if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+    {
+      <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+    }
+
+    if (!ViewData.ModelState.IsValid)
+    {
+      <div class="alert alert-error">
+        @Html.ValidationSummary()
+      </div>
+    }
+    
+    if (ViewBag.Request.Units != null && ViewBag.Request.Units.Count > 0)
+    {
+      <h3>Units</h3>
+      @Html.Partial("_RequestUnits", (IList<RequestUnit>)ViewBag.Request.Units)
+    }
+
+    <h3>Screened Persons</h3>
+
+    using (Html.BeginForm("RequestAction", "Finalize", FormMethod.Post, new { @class = "form-horizontal", @id = "main-form" }))
+    {
+      var width = Math.Floor(100.0 / (ViewBag.ScreeningEntities.Length + 2));
+      IList<RequestPerson> rps = ViewBag.Request.Persons;
+      foreach (RequestPerson rp in rps.Where(x => !x.Archive).OrderBy(x => x.Id))
+      {
+        <table class="table table-condensed table-bordered">
+          <thead>
+            <tr>
+              <td colspan="@(ViewBag.ScreeningEntities.Length + 2)">
+                <small>@rp.Person.CurrentRank</small>
+                <strong>@rp.Person.Name</strong>
+                <small>@rp.Person.MilitaryIDNumber</small>
+                @foreach (Career c in rp.Person.GetCurrentCareers())
+                {
+                    <br /><small>@c.FunctionUnitSummary</small>
+                }
+                <div class="pull-right">
+                  @Html.ActionLink("Profile", "Details", "Persons", new { area = "Profiling", id = rp.Person.Id }, new { @class = "btn btn-mini", target = "_blank" })
+                </div>
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            @if (!string.IsNullOrEmpty(rp.Notes))
+            {
+              <tr>
+                <td colspan="@(ViewBag.ScreeningEntities.Length + 2)">@rp.Notes</td>
+              </tr>
+            }
+            <tr>
+              @foreach (string entity in ViewBag.ScreeningEntities)
+              {
+                  ScreeningRequestPersonEntity srpe = rp.GetScreeningRequestPersonEntity(entity);
+                <td class="screening-result" style="width: @width%;">
+                  @(srpe != null ? srpe.ToString() : entity)
+                </td>
+              }
+              @{
+                ScreeningRequestPersonRecommendation srpr = rp.GetScreeningRequestPersonRecommendation();
+                <td class="screening-result" style="width: @width%;">
+                  @(srpr != null ? srpr.ToString() : "PWG")
+                </td>
+              }
+              <td>
+                @Html.Hidden("FinalDecisions.Index", rp.Id)
+                @Html.Hidden("FinalDecisions[" + rp.Id + "].key", rp.Id)
+                @Html.Hidden("FinalDecisions[" + rp.Id + "].value.Id", Model.FinalDecisions[rp.Id].Id)
+                @Html.Hidden("FinalDecisions[" + rp.Id + "].value.RequestPersonID", Model.FinalDecisions[rp.Id].RequestPersonID)
+                @Html.Hidden("FinalDecisions[" + rp.Id + "].value.Version", Model.FinalDecisions[rp.Id].Version)
+                @Html.DropDownList("FinalDecisions[" + rp.Id + "].value.ScreeningResultID", Model.FinalDecisions[rp.Id].ScreeningResults, new { @class = "screening-result span12" })
+                @Html.DropDownList("FinalDecisions[" + rp.Id + "].value.ScreeningSupportStatusID", Model.FinalDecisions[rp.Id].ScreeningSupportStatuses, new { @class = "screening-support-status span12" })
+              </td>
+            </tr>
+            <tr>
+              @foreach (string entity in ViewBag.ScreeningEntities)
+              {
+                  ScreeningRequestPersonEntity srpe = rp.GetScreeningRequestPersonEntity(entity);
+                <td style="width: @width%; background-color: #f9f9f9;" title="@(srpe != null && srpe.MostRecentHistory != null ? srpe.MostRecentHistory.ToString() : "")">
+                  @if (srpe != null && !string.IsNullOrEmpty(srpe.Reason))
+                  {
+                    @Html.Raw(srpe.Reason.Replace("\n", "<br />"));
+                  }
+                </td>
+              }
+              <td rowspan="2" style="width: @width%; background-color: #f9f9f9;" title="@(srpr != null && srpr.MostRecentHistory != null ? srpr.MostRecentHistory.ToString() : "")">
+                @if (srpr != null && !string.IsNullOrEmpty(srpr.Commentary))
+                {
+                  @Html.Raw(srpr.Commentary.Replace("\n", "<br />"));
+                }
+              </td>
+              <td rowspan="2">
+                @Html.TextArea("FinalDecisions[" + rp.Id + "].value.Commentary", Model.FinalDecisions[rp.Id].Commentary, new { style = "height: 100%;", @class = "span12" })
+              </td>
+            </tr>
+            <tr>
+              @foreach (string entity in ViewBag.ScreeningEntities)
+              {
+                  ScreeningRequestPersonEntity srpe = rp.GetScreeningRequestPersonEntity(entity);
+                <td style="width: @width%; background-color: #f9f9f9;">
+                  @if (srpe != null && !string.IsNullOrEmpty(srpe.Commentary))
+                  {
+                    @Html.Raw(srpe.Commentary.Replace("\n", "<br />"));
+                  }
+                </td>
+              }
+            </tr>
+          </tbody>
+        </table>
+      }
+    
+      @Html.HiddenFor(m => m.Finalize)
+    
+      <div class="form-actions">
+          <button id="btn-final" type="submit" class="btn btn-primary">Finished</button>
+          @Html.ActionLink("Back", "Index", "Finalize", new { area = "Screening" }, new { @class = "btn" })
+      </div>
+    }
+}
+else
+{
+    <div class="alert alert-info">This request has been finalized.</div>
+    
+    <div class="form-actions">
+        @Html.ActionLink("Back", "Index", "Finalize", new { area = "Screening" }, new { @class = "btn" })
+    </div>
+}

@@ -1,0 +1,25 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@model IList<Person>
+@{
+  ViewBag.Title = "Unrecognised Ids";
+}
+
+<h2>Unrecognised Ids</h2>
+
+<p>@Model.Count</p>
+
+<table class="table condensed">
+  <thead>
+    <tr>
+      <th>ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Person p in Model.OrderBy(x => x.MilitaryIDNumber))
+    {
+      <tr>
+        <td>@Html.ActionLink(p.MilitaryIDNumber, "Details", "Persons", new { id = p.Id, area = "Profiling" }, new { target = "_blank" })</td>
+      </tr>
+    }
+  </tbody>
+</table>

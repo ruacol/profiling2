@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Archived Users";
+}
+
+@section scripts
+{
+    $(document).ready(function() {
+        var view = new Profiling.Views.UsersIndexView({ url: "@(Request.ApplicationPath + "/")System/Users/DataTablesArchived" });
+        $("#users-index").html(view.render().el);
+    });
+}
+
+<h2>Archived Users</h2>
+
+<hr />
+
+<div class="row-fluid">
+    <div id="users-index" class="span12"></div>
+</div>

@@ -1,0 +1,17 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model ViolationViewModel
+@{
+    ViewBag.Title = "Create Event Category";
+}
+
+<h2>Create Event Category</h2>
+
+@using (Html.BeginForm("Create", "Violations", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.Partial("_ViolationForm", Model)
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @Html.ActionLink("Back to categories", "Index", "Violations", new { area = "Profiling" }, new { @class = "btn" })
+    </div>
+}

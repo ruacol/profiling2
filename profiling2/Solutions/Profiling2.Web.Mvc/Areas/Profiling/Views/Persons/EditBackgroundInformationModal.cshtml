@@ -1,0 +1,31 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model PersonViewModel
+@{
+  Layout = "";
+  ViewBag.Title = "Edit Background Information";
+}
+
+@using (Html.BeginForm("EditBackgroundInformationModal", "Persons", FormMethod.Post))
+{
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4>Edit Background Information for @Model.Name</h4>
+  </div>
+  <div class="modal-body form-horizontal">
+    <p>Enter some background information for @Model.Name.  The information contained here may optionally be included in confidential exports of this profile.</p>
+    <p>Only <em>@AdminPermission.CanChangePersonBackground</em> permission holders may edit this text.</p>
+    <div class="control-group">
+      <label class="control-label">
+        Background information
+      </label>
+      <div class="controls">
+        @Html.TextAreaFor(x => x.BackgroundInformation, new { @class = "input-xxlarge", rows = "10" })
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a id="modal-background-information-save-button" class="btn btn-primary">Save</a>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  </div>
+}

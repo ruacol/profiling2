@@ -1,0 +1,17 @@
+﻿@using Profiling2.Domain.Prf.Sources;
+@model SourceIndexLog
+@{
+    ViewBag.Title = "Log";
+}
+
+<h2>Log</h2>
+
+<p>Source info page: <a href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@Model.SourceID">@Model.SourceID</a>.</p>
+
+<p>Log on @string.Format("{0:yyyy-MM-dd HH:mm}", Model.DateTime).</p>
+
+<p>@Model.LogSummary</p>
+
+<pre>
+    @Model.Log
+</pre>

@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A7CF78E4-9D89-4B8C-B960-03D71CD307F5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Profiling2.Migrations</RootNamespace>
+    <AssemblyName>Profiling2.Migrations</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentMigrator, Version=1.1.1.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\FluentMigrator.1.1.1.0\lib\40\FluentMigrator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Migrations\201407170937_AddUnitAlias.cs" />
+    <Compile Include="Migrations\201306251237_MoveUnitHierarchyOrganizationAudit.cs" />
+    <Compile Include="Migrations\201301231524_CreatedTimestamps.cs" />
+    <Compile Include="Migrations\201301231549_CreatedTriggers.cs" />
+    <Compile Include="Migrations\201301251202_Violation.cs" />
+    <Compile Include="Migrations\201301251235_EventViolation.cs" />
+    <Compile Include="Migrations\201302011702_ViolationKeywords.cs" />
+    <Compile Include="Migrations\201302111847_LengthenViolationKeywords.cs" />
+    <Compile Include="Migrations\201302131648_Envers.cs" />
+    <Compile Include="Migrations\201302191439_CompleteRequestDuplicates.cs" />
+    <Compile Include="Migrations\201302200921_AuditSources.cs" />
+    <Compile Include="Migrations\201303011212_AuditPersonResponsibility.cs" />
+    <Compile Include="Migrations\201303011420_AuditPerson.cs" />
+    <Compile Include="Migrations\201303011653_RemovePersonResponsibilityTriggerCounts.cs" />
+    <Compile Include="Migrations\201303021728_AuditOrganization.cs" />
+    <Compile Include="Migrations\201303021727_AuditOrganizationResponsibility.cs" />
+    <Compile Include="Migrations\201303021729_AuditUnit.cs" />
+    <Compile Include="Migrations\201303041046_CreatedColumnOrganizationResponsibility.cs" />
+    <Compile Include="Migrations\201303110943_AddScreeningRequestPermission.cs" />
+    <Compile Include="Migrations\201303110959_FilterRequestEntities.cs" />
+    <Compile Include="Migrations\201303121005_RemovePersonAliasTriggerCounts.cs" />
+    <Compile Include="Migrations\201303121203_RemovePersonSourceTriggerCounts.cs" />
+    <Compile Include="Migrations\201303121731_RemovePersonPhotoTriggers.cs" />
+    <Compile Include="Migrations\201303131544_RemovePersonRelationshipTriggerCounts.cs" />
+    <Compile Include="Migrations\201303141502_RemoveCareerTriggerCounts.cs" />
+    <Compile Include="Migrations\201303151649_RemoveActionTakenTriggerCounts.cs" />
+    <Compile Include="Migrations\201303151728_AuditStuff.cs" />
+    <Compile Include="Migrations\201303191601_FixAuditProc.cs" />
+    <Compile Include="Migrations\201303191818_FixREVINFOPrimaryKey.cs" />
+    <Compile Include="Migrations\201303201111_DuplicateSearchPersonCountProc.cs" />
+    <Compile Include="Migrations\201303201159_AuditPersonPhotos.cs" />
+    <Compile Include="Migrations\201303220936_DuplicatePersonAuditProc.cs" />
+    <Compile Include="Migrations\201303221727_SearchPersonNHibernate.cs" />
+    <Compile Include="Migrations\201303261701_EventSuggestionCountNHibernate.cs" />
+    <Compile Include="Migrations\201304021656_SearchPersonNHibernateTune.cs" />
+    <Compile Include="Migrations\201304011229_AddFunctionTable.cs" />
+    <Compile Include="Migrations\201304031210_PopulateFunctions.cs" />
+    <Compile Include="Migrations\201304041154_RelaxCareerNotNulls.cs" />
+    <Compile Include="Migrations\201304041458_SearchPersonNHibernateAddCount.cs" />
+    <Compile Include="Migrations\201304041656_AddCareerFlags.cs" />
+    <Compile Include="Migrations\201305061423_AddRoleFunctionCols.cs" />
+    <Compile Include="Migrations\201305071640_InitAuditTrail.cs" />
+    <Compile Include="Migrations\201305101539_DenullLocation.cs" />
+    <Compile Include="Migrations\201305131559_NullableDatePeriods.cs" />
+    <Compile Include="Migrations\201305151740_UpdatePersonProfileCareerProcs.cs" />
+    <Compile Include="Migrations\201305271039_NullableDatesPersonRelationship.cs" />
+    <Compile Include="Migrations\201305281733_ZeroDates.cs" />
+    <Compile Include="Migrations\201306041143_AuditMoreTables.cs" />
+    <Compile Include="Migrations\201306050853_AuditLocationEthnicityRegion.cs" />
+    <Compile Include="Migrations\201306051648_RemoveFunctionTable.cs" />
+    <Compile Include="Migrations\201306111620_RemoveFunctionFromCareerProcs.cs" />
+    <Compile Include="Migrations\201306171034_FixSPRequestRespond.cs" />
+    <Compile Include="Migrations\201306191648_RequestRespondBy.cs" />
+    <Compile Include="Migrations\201306241511_MoveUnitHierarchyOrganization.cs" />
+    <Compile Include="Migrations\201306251810_AddToRequestGetStoredProc.cs" />
+    <Compile Include="Migrations\201306261153_MoveOrganizationUnitHierarchyProcs.cs" />
+    <Compile Include="Migrations\201306271043_NullableLocationUnitHierarchy.cs" />
+    <Compile Include="Migrations\201307031532_UnitLocationTable.cs" />
+    <Compile Include="Migrations\201307041604_DeletedProfilesProc.cs" />
+    <Compile Include="Migrations\201307041756_AuditUnitHierarchyAndLocation.cs" />
+    <Compile Include="Migrations\201307081457_ModifiedProfilesProc.cs" />
+    <Compile Include="Migrations\201307081542_AddSortToRoleRank.cs" />
+    <Compile Include="Migrations\201307151701_AddActiveScreening.cs" />
+    <Compile Include="Migrations\201307231655_FixCareerProcOrdering.cs" />
+    <Compile Include="Migrations\201307261823_UpdateScreeningRequestPersonEntityHistoryGetProcs.cs" />
+    <Compile Include="Migrations\201308061636_AddUnitChangedUnitHierarchyType.cs" />
+    <Compile Include="Migrations\201308261631_RemoveLocationProvince.cs" />
+    <Compile Include="Migrations\201308291442_UpdateModifiedProfilesProc.cs" />
+    <Compile Include="Migrations\201309180853_UpdateRequestStatusNames.cs" />
+    <Compile Include="Migrations\201310291052_VersionPersonEntityAndRecommendation.cs" />
+    <Compile Include="Migrations\201310311020_AddOriginalFileDataColumn.cs" />
+    <Compile Include="Migrations\201311081228_EventNameAllowNull.cs" />
+    <Compile Include="Migrations\201311111116_FixProvinceReferenceInEventStoredProc.cs" />
+    <Compile Include="Migrations\201311121416_CreateJhroDbTables.cs" />
+    <Compile Include="Migrations\201311141602_AddUniqueIndexToPersonPhoto.cs" />
+    <Compile Include="Migrations\201311270843_AddSameEthnicityTable.cs" />
+    <Compile Include="Migrations\201312051554_SetFileExtensionForOcrSources.cs" />
+    <Compile Include="Migrations\201312101120_VersionPersonFinalDecision.cs" />
+    <Compile Include="Migrations\201312261531_RemoveActionTakenUniqueIndex.cs" />
+    <Compile Include="Migrations\201405271536_AddActiveScreeningToPersonMergeSP.cs" />
+    <Compile Include="Migrations\201406061551_RemoveProvinceFromEventSearchSP.cs" />
+    <Compile Include="Migrations\201406131703_AddPersonMergeSPForNHibernate.cs" />
+    <Compile Include="Migrations\201406161556_FixEventMergeSP.cs" />
+    <Compile Include="Migrations\201407041045_AddCareerAbsent.cs" />
+    <Compile Include="Migrations\201407071024_AddAbsentToCareerStoredProcs.cs" />
+    <Compile Include="Migrations\201407080937_AddUniqueIndexToObjectSourceTables.cs" />
+    <Compile Include="Migrations\201407081045_AddFeedingSource.cs" />
+    <Compile Include="Migrations\201407151731_AddRejectedToFeedingSource.cs" />
+    <Compile Include="Migrations\201407171723_AddUnitSource.cs" />
+    <Compile Include="Migrations\201407241611_AddUnitMergeSPForNHibernate.cs" />
+    <Compile Include="Migrations\201407280939_AddOperationTable.cs" />
+    <Compile Include="Migrations\201407281014_AddOperationAliasTable.cs" />
+    <Compile Include="Migrations\201407281020_AddOperationUnitJoinTable.cs" />
+    <Compile Include="Migrations\201408051757_AuditEventSourceAndRelationships.cs" />
+    <Compile Include="Migrations\201408061053_FixEventSourceAndRelationshipAuditTimestamp.cs" />
+    <Compile Include="Migrations\201408061505_AddUploadNotesToFeedingSource.cs" />
+    <Compile Include="Migrations\201408131512_AuditPersonRelationshipType.cs" />
+    <Compile Include="Migrations\201408140939_AddPersonRelationshipTypeCode.cs" />
+    <Compile Include="Migrations\201409011617_AddSourceReadOnly.cs" />
+    <Compile Include="Migrations\201409101412_AddSourceIndexLog.cs" />
+    <Compile Include="Migrations\201409111015_ExtendSourceIndexLogColumn.cs" />
+    <Compile Include="Migrations\201409221714_AddUnitDates.cs" />
+    <Compile Include="Migrations\201409251158_AddPublicSummaryToPerson.cs" />
+    <Compile Include="Migrations\201410131435_AddRestrictedNotesTable.cs" />
+    <Compile Include="Migrations\201411041033_AddDatesToUnitOperations.cs" />
+    <Compile Include="Migrations\201411051350_AddPermissionTables.cs" />
+    <Compile Include="Migrations\201411060831_AddEmailColumnToUser.cs" />
+    <Compile Include="Migrations\201411061024_AddUserRoles.cs" />
+    <Compile Include="Migrations\201411071456_AddSourceHashColumn.cs" />
+    <Compile Include="Migrations\201411261700_PopulateSourceHash.cs" />
+    <Compile Include="Migrations\201412020906_TR_SetNoCountOn.cs" />
+    <Compile Include="Migrations\201412021444_AddOperationSource.cs" />
+    <Compile Include="Migrations\201412031222_FixScreeningRoleNames.cs" />
+    <Compile Include="Migrations\201412031648_ChangeHashColumnToBinary.cs" />
+    <Compile Include="Migrations\201412231709_AddViolationConditionalityInterest.cs" />
+    <Compile Include="Migrations\201412301433_AddSourceLog.cs" />
+    <Compile Include="Migrations\201501021646_AddCommanderCheckboxesToFunctions.cs" />
+    <Compile Include="Migrations\201501050951_LengthenSourceLogColumn.cs" />
+    <Compile Include="Migrations\201501121004_AddSourceForExportTable.cs" />
+    <Compile Include="Migrations\201502171402_AddEventMergeSPForNHibernate.cs" />
+    <Compile Include="Migrations\201503131001_RbacRefactor.cs" />
+    <Compile Include="Migrations\201503181119_AddPermissions.cs" />
+    <Compile Include="Migrations\201503241646_RemoveSourceExportTables.cs" />
+    <Compile Include="Migrations\201503251040_AddSourceAttributes.cs" />
+    <Compile Include="Migrations\201503251533_AddAllSourcePermission.cs" />
+    <Compile Include="Migrations\201503271201_AddFeedingSourceAttributes.cs" />
+    <Compile Include="Migrations\201504091035_AddSourceOwningEntityTables.cs" />
+    <Compile Include="Migrations\201504131506_AddFeedingSourceOwnerAttributes.cs" />
+    <Compile Include="Migrations\201505081556_DeduplicateEventViolations.cs" />
+    <Compile Include="Migrations\201505081557_AddCatsToPersonResponsibility.cs" />
+    <Compile Include="Migrations\201505151731_PrimaryKeyForUnitOperationAUD.cs" />
+    <Compile Include="Migrations\201505191036_MakeSourceFullReferenceNotNull.cs" />
+    <Compile Include="Migrations\201505191643_RemoveMimeTypeTable.cs" />
+    <Compile Include="Migrations\201505210946_CodifySuggestionFeatures.cs" />
+    <Compile Include="Migrations\201505281601_AddSwaScreeningEntity.cs" />
+    <Compile Include="Migrations\201506021501_AddRequestUnitTable.cs" />
+    <Compile Include="Migrations\201506011519_AddViewBackgroundPermission.cs" />
+    <Compile Include="Migrations\201506021741_AddViewPersonRelationshipsPermission.cs" />
+    <Compile Include="Migrations\201506030922_AddEventApprovalTable.cs" />
+    <Compile Include="Migrations\201506031015_AddCanApproveEventPermission.cs" />
+    <Compile Include="Migrations\201506051359_AddHrddpScreeningResults.cs" />
+    <Compile Include="Migrations\201506151848_FixUnitMergeSP.cs" />
+    <EmbeddedResource Include="Migrations\Scripts\201507101641_FixEventMergeSP.sql" />
+    <Compile Include="Migrations\201507101641_AddEventApprovalToAndFixEventMergeSP.cs" />
+    <Compile Include="Migrations\201507271236_AddSeveralPermissions.cs" />
+    <Compile Include="Migrations\201508041613_AddRestrictedNotesToPersonMergeSP.cs" />
+    <Compile Include="Migrations\201510061229_FixPersonMergeExistingPersonSource.cs" />
+    <Compile Include="Migrations\201510291045_EventVerifiedStatus.cs" />
+    <Compile Include="Migrations\201510301152_AddPersonResponsibilityType.cs" />
+    <Compile Include="Migrations\201510301621_CategoriseActionTakenTypes.cs" />
+    <Compile Include="Migrations\201511171224_AddNewProvinces.cs" />
+    <Compile Include="Migrations\201511241118_AddDocumentationFileEntities.cs" />
+    <Compile Include="Migrations\201511260858_AddCanViewAndSearchRequestsPermission.cs" />
+    <Compile Include="Migrations\201512021115_AddColumnsToJhroCaseTable.cs" />
+    <Compile Include="Migrations\201512040915_AddNominatedColumnToCareerTable.cs" />
+    <Compile Include="Migrations\201512080943_AddOperationNameChange.cs" />
+    <Compile Include="Migrations\201512171223_AddJhroCaseToEventMergeSP.cs" />
+    <Compile Include="Migrations\201512281642_AddIsCommandToUnitOperationTable.cs" />
+    <Compile Include="Migrations\201512291145_MakeEventCaseRelationshipManyToMany.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Seeds\201301230939_PRF_seeds.cs" />
+    <Compile Include="Seeds\201301231052_SCR_seeds.cs" />
+    <Compile Include="Seeds\201505191702_SeedViolationTable.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="201301221832_schema.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="20130128_MONUCPersonnelInfo_schema.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201512291215_UpdateEventMergeSP.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201510061229_SP_PersonMerge_NHibernate.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201508041613_SP_PersonMerge_NHibernate.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201506151848_FixUnitMergeSP.sql" />
+    <EmbeddedResource Include="Seeds\PRF_Violation_seed.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201502171402_SP_EventMerge_NHibernate.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201412020906_TR_PopulateSourceHashSetNoCountOn.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201411261700_TR_PopulateSourceHash.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201407241611_SP_UnitMerge_NHibernate.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201407071024_SP_UpdatePersonCareerInformation.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201407071024_SP_UpdatePersonCurrentPosition.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201406161556_SP_EventMerge.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201406131703_SP_PersonMerge_NHibernate.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201406061551_SP_Search_SearchForEvent.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201405271536_SP_PersonMerge.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201308291442_UpdateModifiedProfilesProc.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201311111116_SP_GetEventProfile_EventInformation.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201307261822_SP_ScreeningRequestPersonEntityHistoryGet.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201307261820_SP_ScreeningRequestPersonEntityHistoryGetOther.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201306261153_GetUnitHierarchyProc.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201306261153_GetUnitHierarchyRecordProc.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201306261153_SearchForUnitProc.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201307081457_ModifiedProfilesProc.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201307041604_DeletedProfilesProc.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201306251809_SP_RequestGet.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201306171033_SP_RequestRespond.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201305151739_GetPersonProfile_CareerInformation.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201305151740_GetPersonProfile_CurrentPosition.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201304041458_SearchPersonNHibernate.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201304021656_SearchPersonNHibernateTune.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303261701_EventSuggestionCountNHibernate.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303221727_SearchPersonNHibernate.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303201111_SearchPersonCountNHibernate.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303220936_DuplicatePersonAuditProc.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303191601_FixAuditProc.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303151649_ActionTakenDeleteTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303151649_ActionTakenUpdateTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303141502_CareerDeleteTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303141502_CareerInsertTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303141502_CareerUpdateTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303131544_PersonRelationshipDeleteTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303131544_PersonRelationshipUpdateTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303121731_PersonPhotoDeleteTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303121731_PersonPhotoUpdateTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303121203_PersonSourceDeleteTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303121203_PersonSourceUpdateTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303121005_PersonAliasDeleteTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303121005_PersonAliasUpdateTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303110959_FilterRequestEntities.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303110943_SCR_SP_RequestGetForMyRequests.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303110943_SCR_SP_RequestGetForMyArchivedRequests.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303011653_PersonResponsibilityUpdateTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201303011653_PersonResponsibilityDeleteTrigger.sql" />
+    <EmbeddedResource Include="Migrations\Scripts\201302191439_CompleteRequestDuplicates.sql" />
+    <EmbeddedResource Include="Seeds\201301231052_SCR_seeds.sql" />
+    <EmbeddedResource Include="Seeds\201301230939_PRF_seeds.sql" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

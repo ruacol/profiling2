@@ -1,0 +1,62 @@
+﻿@using System.Collections
+@using NHibernate.Envers
+@using Profiling2.Domain
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Persons
+@using KellermanSoftware.CompareNetObjects
+@{
+  ViewBag.Title = "Deleted Profiles";
+  IList<AdminUser> Users = ((IList<AdminUser>)ViewBag.Users);
+}
+
+<h2>Deleted Profiles</h2>
+
+<table class="table table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>Who</th>
+      <th>When</th>
+      <th>Person ID</th>
+      <th>Person Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (object[] row in ViewBag.AuditTrail)
+    {
+      Person person = (Person)row[0];
+      REVINFO revinfo = (REVINFO)row[1];
+      IList<AdminUser> users = Users.Where(x => x.IsUser(revinfo.UserName)).ToList();
+      <tr>
+        <td style="white-space: nowrap;" title="@(users.Any() ? users.First().UserID : string.Empty)">@(users.Any() ? users.First().UserName : string.Empty)</td>
+        <td style="white-space: nowrap;">@string.Format("{0:yyyy/MM/dd HH:mm:ss}", revinfo.REVTSTMP)</td>
+        <td style="white-space: nowrap;">@person.Id</td>
+        <td>@person.Name</td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<table class="table table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>Who</th>
+      <th>When</th>
+      <th>Person ID</th>
+      <th>Person Name</th>
+      <th>Non Profiling Change</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (DeletedProfilesAuditDTO dto in ((IList<DeletedProfilesAuditDTO>)ViewBag.OldAuditTrail).OrderByDescending(x => x.WhenDate.Value))
+    {
+      IList<AdminUser> users = Users.Where(x => x.IsUser(dto.Who)).ToList();
+      <tr>
+        <td style="white-space: nowrap;" title="@(users.Any() ? users.First().UserID : dto.Who)">@(users.Any() ? users.First().UserName : dto.Who)</td>
+        <td style="white-space: nowrap;">@(dto.WhenDate.HasValue ? string.Format("{0:yyyy/MM/dd HH:mm:ss}", dto.WhenDate) : dto.When)</td>
+        <td style="white-space: nowrap;">@dto.PersonID</td>
+        <td>@dto.Person</td>
+        <td>@dto.NonProfilingChange</td>
+      </tr>
+    }
+  </tbody>
+</table>

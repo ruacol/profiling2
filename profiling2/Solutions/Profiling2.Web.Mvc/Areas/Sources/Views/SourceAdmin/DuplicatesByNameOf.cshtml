@@ -1,0 +1,75 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@model IDictionary<SourceDTO, IList<SourceDTO>>
+@{
+  ViewBag.Title = "Duplicates Of " + Request.Params["SourceName"];
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("duplicates-table", {
+      bServerSide: false
+    });
+  }); 
+}
+
+<h2>Duplicates Of @Request.Params["SourceName"]</h2>
+
+<p>The table below shows all sources with the name @Request.Params["SourceName"].</p>
+
+<p>If there are any that are the same size, clicking the Merge button below will archive the duplicates, and migrate their reviews, attached persons and 
+attached events to the first imported source.</p>
+
+<p>@Html.ActionLink("Merge", "MergeDuplicatesByNameOf", "SourceAdmin", new { area = "Sources", SourceName = Request.Params["SourceName"] }, new { @class = "btn btn-mini" })</p>
+
+<hr />
+
+<table id="duplicates-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Path</th>
+      <th>File Date</th>
+      <th>Size</th>
+      <th>Import Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (KeyValuePair<SourceDTO, IList<SourceDTO>> kvp in Model)
+    {
+      <tr>
+        <td>
+          <a href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@kvp.Key.SourceID" target="_blank">
+            @kvp.Key.SourceID
+          </a>
+        </td>
+        <td>@kvp.Key.SourcePath</td>
+        <td>@kvp.Key.FileDateTimeStamp</td>
+        <td>@kvp.Key.FileSize</td>
+        <td>@kvp.Key.SourceDate</td>
+      </tr>
+      if (kvp.Value.Any())
+      {
+        <tr>
+          <td colspan="8">The following duplicates will be archived and their reviews/attachments merged into the above source.</td>
+        </tr>
+        foreach (SourceDTO s in kvp.Value)
+        {
+          <tr>
+            <td>
+              <a href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@s.SourceID" target="_blank">
+                @s.SourceID
+              </a>
+            </td>
+            <td>@s.SourcePath</td>
+            <td>@s.FileDateTimeStamp</td>
+            <td>@s.FileSize</td>
+            <td>@s.SourceDate</td>
+          </tr>
+        }
+        <tr>
+          <td colspan="8">End list of duplicates.</td>
+        </tr>
+      }
+    }
+  </tbody>
+</table>

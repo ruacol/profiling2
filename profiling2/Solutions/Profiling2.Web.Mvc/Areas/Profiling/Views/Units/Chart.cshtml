@@ -1,0 +1,27 @@
+﻿@using Profiling2.Domain.Prf.Units
+@model Unit
+@{
+    ViewBag.Title = Model.UnitName;
+}
+@section scriptSources
+{
+  <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+}
+@section scripts
+{
+  if (typeof google !== 'undefined') {
+    google.load('visualization', '1.0', { packages: ['orgchart'] });
+  } else {
+    bootbox.alert("Failed to load Google APIs; charts may not work.");
+  }
+  $(document).ready(function() {
+      var router = new Profiling.Routers.UnitChartRouter({ unitId: @Model.Id });
+      Backbone.history.start();
+  });
+}
+
+@Html.Partial("_UnitHeading")
+
+<p>Unit hierarchy chart.</p>
+
+<div id="chart_div"></div>

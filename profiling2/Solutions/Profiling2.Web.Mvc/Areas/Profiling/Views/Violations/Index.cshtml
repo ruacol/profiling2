@@ -1,0 +1,38 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Infrastructure.Security
+@{
+    ViewBag.Title = "Event Categories";
+    IList<Violation> roots = (IList<Violation>)ViewBag.Roots;
+}
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeEvents))
+{
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            @Html.ActionLink("Create", "Create", "Violations", null, new { @class = "btn btn-mini" })
+        </div>
+        <div class="btn-group">
+            @Html.ActionLink("Preview categories auto-mapping", "Automap", "Events", null, new { @class = "btn btn-mini" })
+        </div>
+    </div>
+}
+
+<h2>Event Categories</h2>
+
+<hr />
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>No.&nbsp;Events</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Violation root in roots.OrderBy(x => x.Name))
+        {
+            @Html.Partial("_ViolationRow", root)
+        }
+    </tbody>
+</table>

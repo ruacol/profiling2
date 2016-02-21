@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Stats";
+}
+
+<h2>Stats</h2>
+
+<p>@ViewData["numNonArchivedSources"] non archived sources, of which @ViewData["numUnindexableSources"] are not indexable (media content types and ignored file extensions).</p>
+
+<p>@ViewData["numIndexLogs"] sources indexed.</p>
+
+<p>@ViewData["numIndexLogErrors"] with errors.</p>

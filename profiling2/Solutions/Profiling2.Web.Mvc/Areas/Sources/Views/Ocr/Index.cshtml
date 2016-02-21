@@ -1,0 +1,62 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@model IList<SourceDTO>
+@{
+    ViewBag.Title = "OCR Scannable Sources";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    var dataTable = new Profiling.DataTable("sources-table", {
+      bServerSide: false,
+      fnRowCallback: function(nRow, aData, iDisplayIndex) {
+        $("button.scan", nRow).click(function(e) {
+          var id = $(e.target).data('id');
+          $.ajax({
+            url: '@(Request.ApplicationPath + "/")Sources/Ocr/Scan/' + id,
+            type: 'GET',
+            beforeSend: function() {
+              $("#scan-" + id).append("<p>scanning...</p>");
+            },
+            success: function(data) {
+              $("#scan-" + id).html(data);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+              $("#scan-" + id).html(errorThrown);
+            }
+          });
+        });
+      }
+    });
+    
+  });
+}
+
+<h2>OCR Scannable Sources</h2>
+
+<p>Showing sources imported during the last @Request.QueryString["days"] days with the potential for OCR.</p>
+
+<p>@Html.ActionLink("Scan previous " + Request.QueryString["days"] + " days", "ScanScannableSources", "Ocr", new { area = "Sources", days = Request.QueryString["days"] }, new { @class = "btn btn-mini" })</p>
+
+<hr />
+
+<table id="sources-table" class="table table-bordered table-condensed">
+    <thead>
+        <tr><th>Id</th><th>Name</th><th>Date</th><th>Extension</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (SourceDTO dto in Model)
+        {
+            <tr>
+                <td>@dto.SourceID</td>
+                <td>
+                    <a href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@dto.SourceID" target="_blank">@dto.SourceName</a>
+                    <br />
+                    @dto.SourcePath
+                </td>
+                <td>@dto.FileDateTimeStamp</td>
+                <td>@dto.FileExtension</td>
+                <td id="scan-@dto.SourceID"><button type="button" class="btn btn-mini scan" data-id="@dto.SourceID">Scan</button></td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,54 @@
+﻿@using System.Linq;
+@using Profiling2.Domain.Prf;
+@using Profiling2.Domain.Prf.Sources;
+@using Profiling2.Infrastructure.Security;
+@{
+    ViewBag.Title = "Browse Sources";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.ExplorerBrowseRouter({ 
+            permissions: {
+              canViewAndSearchSources: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources).ToJsBool())
+            }
+        });
+        Backbone.history.start();
+    });
+}
+
+<h2>Browse Sources</h2>
+
+<p>
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources)
+        && ((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchAllSources))
+    {
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Browse <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="#"><small>(Show All)</small></a>
+                </li>
+                @foreach (SourceOwningEntity soe in ViewBag.SourceOwningEntities)
+                {
+                    <li>
+                        <a href="#path/@soe.SourcePathPrefix"><small>@soe.Name</small></a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div class="btn-group">
+            <a class="btn" href="#">Browse</a>
+        </div>
+    }
+
+    <div class="btn-group">
+        <a class="btn" href="#search">Search</a>
+    </div>
+</p>
+
+<div id="paths"></div>
+<div id="content"></div>

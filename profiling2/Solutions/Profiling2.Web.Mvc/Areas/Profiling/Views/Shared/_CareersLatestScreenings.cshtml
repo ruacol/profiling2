@@ -1,0 +1,87 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Prf.Units
+@using Profiling2.Domain.Scr
+@using Profiling2.Domain.Scr.PersonEntity
+@{
+  IList<Career> careers = ViewBag.Careers;
+}
+
+<p>Click a screening result label to view the reasoning, or go to the corresponding screening request.</p>
+
+<table id="screenings-table" class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Function</th>
+      <th>Unit</th>
+      @foreach (ScreeningEntity se in ViewBag.ScreeningEntities)
+      {
+        <th>@se</th>
+      }
+      <th>Support Status</th>
+      <th>Completed</th>
+    </tr>
+  </thead>
+  <tbody>
+  @foreach (Person p in careers.Select(x => x.Person).Distinct().Where(x => !string.IsNullOrEmpty(x.LatestScreeningResult)))
+  {
+    Career c = careers.Where(x => x.Person == p).OrderBy(x => x.GetSortDate()).Last();
+    <tr>
+      <td>@Html.ActionLink(p.Name, "Details", "Persons", new { id = p.Id, area = "Profiling" }, new { target = "_blank" })</td> 
+      <td>
+        @if (c.IsCurrentCareer)
+        {
+          <span class="label"><small>CURRENT</small></span>
+        }
+        &nbsp;@c.Function
+      </td>
+      <td>
+        @{
+          ViewBag.ParentNameChanges = c.Unit.GetParentChangedNameUnitHierarchiesRecursive(new List<UnitHierarchy>()).Distinct().ToList();
+          ViewBag.ChildNameChanges = c.Unit.GetChildChangedNameUnitHierarchiesRecursive(new List<UnitHierarchy>()).Distinct().ToList();
+          if (Model.GetType() == typeof(Operation))
+          {
+              ViewBag.DateEntity = c.Unit.UnitOperations.Where(x => x.Operation == Model).First();
+          }
+          else
+          {
+              ViewBag.DateEntity = c.Unit;
+          }
+        }
+        @Html.Partial("_UnitNameForOperations", c.Unit)
+      </td>
+      @foreach (ScreeningEntity se in ViewBag.ScreeningEntities)
+      {
+          ScreeningRequestPersonEntity r = p.GetLatestScreeningEntityResponse(se.ScreeningEntityName);
+          <td>
+            @if (r != null)
+            {
+                <span class="srpe-result accordion-toggle" data-selector="#screening-request-person-entity-@r.Id">
+                    @Html.ScreeningResultLabel(r.ScreeningResult.ToString())
+                </span>
+                <div id="screening-request-person-entity-@r.Id" data-request-id="@r.RequestPerson.Request.Id" style="display: none;">
+                    <h4>@r.RequestPerson.Request.Headline</h4>
+                    @if (string.IsNullOrEmpty(r.Reason))
+                    {
+                        <p class="muted">No reasoning recorded.</p>
+                    }
+                    else
+                    {
+                        <p>@r.Reason</p>
+                    }
+                    @if (!string.IsNullOrEmpty(r.Notes))
+                    {
+                        <p class="muted"><small>@r.Notes</small></p>
+                    }
+                </div>
+            }
+          </td>
+      }
+      <td>@p.LatestScreeningResult</td>
+      <td style="white-space: nowrap;">@string.Format("{0:yyyy-MM-dd HH:mm}", p.LatestScreeningFinalDecisionDate)</td>
+    </tr>
+  }
+  </tbody>
+</table>

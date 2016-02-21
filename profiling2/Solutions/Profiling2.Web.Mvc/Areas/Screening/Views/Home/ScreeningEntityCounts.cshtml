@@ -1,0 +1,99 @@
+﻿@using Profiling2.Domain.DTO
+@using Profiling2.Domain.Scr
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model DateViewModel
+@{
+  ViewBag.Title = "Screening Entity Counts";
+  IDictionary<ScreeningEntity, ScreeningEntityStatisticDTO> ScreeningEntityStatistics = ViewBag.ScreeningEntityStatistics;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("#StartDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+    $("#EndDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+  });
+}
+
+<h2 class="hidden-print">Screening Entity Counts</h2>
+
+<p class="hidden-print">Select the date period in which to retrieve screening counts.  Start Date is inclusive, End Date is exclusive.</p>
+
+<div class="clearfix hidden-print" style="margin-top: 20px;">
+  @using (Html.BeginForm("ScreeningEntityCounts", "Home", new { area = "Screening" }, FormMethod.Post, new { @class = "form-horizontal" }))
+  {
+    <div class="control-group">
+      <label class="control-label">Start Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.StartDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">End Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.EndDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Go</button>
+      </div>
+    </div>
+  }
+</div>
+
+@if (ScreeningEntityStatistics != null)
+{
+  <hr class="hidden-print" />
+  
+  <p class="visible-print" style="display: none;"><strong>Date period from @Model.StartDate (inclusive) to @Model.EndDate (exclusive).</strong></p>
+    
+  <div class="clearfix">
+    <h4>Screening Entity Statistics</h4>
+    <p>These tables list the number of times that the consolidation phase and final decision results agreed with each screening entity's result.</p>
+  </div>
+    foreach (ScreeningEntity entity in ScreeningEntityStatistics.Keys)
+    {
+      <div class="clearfix">
+        <div class="span5 pull-left">
+          <table class="table table-bordered table-stats" style="margin-top: 15px;">
+            <tr>
+              <th colspan="5">@entity.ScreeningEntityName</th>
+            </tr>
+              <tr>
+                  <th></th><th>Green</th><th>Yellow</th><th>Red</th><th>Agreement Rate</th>
+              </tr>
+              <tr>
+                  <td>Conditionality Group</td>
+                  @foreach (string colour in new string[] { "Green", "Yellow", "Red" })
+                  {
+                      <td>
+                          Agreed:&nbsp;@ScreeningEntityStatistics[entity].ConditionalityGroupDifferences.Where(x => x.ScreeningResult == colour).First().NumAgreed
+                          <br />
+                          Disagreed:&nbsp;@ScreeningEntityStatistics[entity].ConditionalityGroupDifferences.Where(x => x.ScreeningResult == colour).First().NumDisagreed
+                      </td>
+                  }
+                  <td>@ScreeningEntityStatistics[entity].ConditionalityGroupAgreedPercent%</td>
+              </tr>
+              <tr>
+                  <td>Final Decision</td>
+                  @foreach (string colour in new string[] { "Green", "Yellow", "Red" })
+                  {
+                      <td>
+                          Agreed:&nbsp;@ScreeningEntityStatistics[entity].FinalDecisionDifferences.Where(x => x.ScreeningResult == colour).First().NumAgreed
+                          <br />
+                          Disagreed:&nbsp;@ScreeningEntityStatistics[entity].FinalDecisionDifferences.Where(x => x.ScreeningResult == colour).First().NumDisagreed
+                      </td>
+                  }
+                  <td>@ScreeningEntityStatistics[entity].FinalDecisionAgreedPercent%</td>
+              </tr>
+              <tr>
+                  <td>Total</td>
+                  <td colspan="4">@ScreeningEntityStatistics[entity].TotalPersonScreenings</td>
+              </tr>
+          </table>
+        </div>
+      </div>
+    }
+}

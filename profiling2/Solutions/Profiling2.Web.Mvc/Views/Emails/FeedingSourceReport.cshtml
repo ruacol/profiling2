@@ -1,0 +1,32 @@
+﻿@using Profiling2.Domain.Contracts.Tasks.Sources
+@{
+    IDictionary<string, FeedingSourceStat> stats = (IDictionary<string, FeedingSourceStat>)ViewBag.Stats;
+}
+@if (stats != null && stats.Keys.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Uploaded</th>
+                <th>Approved</th>
+                <th>Rejected</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<string, FeedingSourceStat> kvp in stats)
+            {
+                <tr>
+                    <td>@kvp.Key</td>
+                    <td class="value">@kvp.Value.Uploaded</td>
+                    <td class="value">@kvp.Value.Approved</td>
+                    <td class="value">@kvp.Value.Rejected</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There was no source feeding activity.</p>   
+}

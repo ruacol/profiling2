@@ -1,0 +1,272 @@
+﻿@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Prf.Persons;
+@using Profiling2.Domain.Scr;
+@using Profiling2.Domain.Scr.Attach;
+@using Profiling2.Domain.Scr.Person;
+@using Profiling2.Domain.Scr.PersonEntity;
+@using Profiling2.Infrastructure.Security;
+@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels;
+@model ConsolidateViewModel
+@{
+    ViewBag.Title = "Consolidate Screening Request";
+}
+@section styles
+{
+    <style>
+        div[id^="help-profile-status-"] { display: none; }
+    </style>
+}
+@section scripts
+{
+    $(document).ready(function() {
+        $("#SendForFinalDecision").val(false);
+        $("td.screening-result").each(function(i, el) {
+            if (/red/i.test($(el).text())) {
+                $(el).css('backgroundColor', 'red');
+                $(el).css('color', 'black');
+            } else if (/yellow/i.test($(el).text())) {
+                $(el).css('backgroundColor', 'yellow');
+                $(el).css('color', 'black');
+            } else if (/green/i.test($(el).text())) {
+                $(el).css('backgroundColor', 'green');
+                $(el).css('color', 'white');
+            } else {
+                $(el).css('backgroundColor', '');
+                $(el).css('color', 'black');
+            }
+        });
+        $("select.screening-result").each(function(i, el) {
+            Profiling.setInputColor(el);
+        }).change(function() {
+            Profiling.setInputColor(this);
+        });
+        $("#secondary-sidebar")
+          .addClass("well").css("bottom", "70px")
+          .append("<button type='submit' class='btn'>Save Commentary</button>")
+          .click(function() {
+            $("#main-form").submit();
+            return false;
+        });
+        $("#btn-final").click(function() {
+            $("#SendForFinalDecision").val(true);
+        });
+        $("a.request-profile").click(function(e) {
+            var requestPersonId = $(e.target).data("id");
+            $.ajax({
+              url: '@(Request.ApplicationPath + "/")Screening/Consolidate/RequestProfile/' + requestPersonId,
+              type: 'GET',
+              success: function(data, textStatus, xhr) {
+                $(e.target).replaceWith("<span style='text-decoration: line-through;'>Profile Requested</span>");
+                bootbox.alert("The request for this profile has been sent to the Profiling Team.");
+              },
+              error: function(xhr, textStatus) {
+                bootbox.alert(xhr.responseText);
+              }
+            });
+            return false;
+        });
+        $("em.profile-status").uitooltip({
+          show: false,
+          hide: false,
+          position: {
+            my: "left+15 center",
+            at: "right center"
+          },
+          items: "[data-selector]",
+          content: function() {
+            selector = $(this).data("selector");
+            return $(selector).html();
+          }
+        });
+        $(".nominate-box").each(function(i, el) {
+          $(el).change(function(e) {
+            var requestPersonId = $(e.target).data("id");
+            var url;
+            if ($(e.target).is(":checked")) {
+              url = '@(Request.ApplicationPath + "/")Screening/Consolidate/Nominate/' + requestPersonId;
+            } else {
+              url = '@(Request.ApplicationPath + "/")Screening/Consolidate/WithdrawNomination/' + requestPersonId;
+            }
+            $.ajax({
+              url: url,
+              type: 'GET',
+              error: function(xhr, textStatus) {
+                bootbox.alert(xhr.responseText);
+              }
+            });
+          });
+        });
+    });
+}
+
+<h2>
+  Consolidate Screening Request
+  <button type="button" class="btn btn-mini" data-toggle="collapse" data-target="#intro-help" title="Click to toggle help"><i class="icon-question-sign"></i></button>
+</h2>
+
+<div id="intro-help" class="collapse out">
+  <p>
+    Screening responses from screening entities are consolidated by the ODSRSG.  A screening request can be consolidated without any
+    input from screening entities.  If a person has been screened before, their consolidation commentary box will be initialized with 
+    the commentary from their previous consolidation.  Key consolidation features:
+  </p>
+  <ul>
+    <li>Previous Screenings - View your previous consolidation inputs</li>
+    <li>Limited Profile - Navigate to a limited profile where you can view aliases, personal information, career history and relationships.</li>
+  </ul>
+  <p>
+    As you consolidate, you may periodically save your work using the 'Save Commentary' button at the bottom of the page.  Saving the 
+    commentary <em>does not</em> forward the request for final decision.
+  </p>
+  <hr />
+</div>
+
+@if (ViewBag.Request.RequiresConsolidation)
+{
+    <div class="alert">This request has not yet been consolidated.</div>
+
+    @Html.Partial("_RequestDisplayTable")
+
+    if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+    {
+        <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+    }
+
+    if (!ViewData.ModelState.IsValid)
+    {
+      <div class="alert alert-error">
+        @Html.ValidationSummary()
+      </div>
+    }
+    
+    if (ViewBag.Request.Units != null && ViewBag.Request.Units.Count > 0)
+    {
+      <h3>Units</h3>
+      @Html.Partial("_RequestUnits", (IList<RequestUnit>)ViewBag.Request.Units)
+    }
+
+    <h3>Screened Persons</h3>
+
+    using (Html.BeginForm("RequestAction", "Consolidate", FormMethod.Post, new { @class = "form-horizontal", @id = "main-form" }))
+    {
+        IList<RequestPerson> rps = ViewBag.Request.Persons;
+        foreach (RequestPerson rp in rps.Where(x => !x.Archive).OrderBy(x => x.Id))
+        {
+            <table class="table table-condensed table-bordered">
+                <thead>
+                    <tr>
+                        <td colspan="@(ViewBag.ScreeningEntities.Length + 1)">
+                            <small>@rp.Person.CurrentRank</small>
+                            <strong>@rp.Person.Name</strong>
+                            <small>@rp.Person.MilitaryIDNumber</small>
+                            @foreach (Career c in rp.Person.GetCurrentCareers())
+                            {
+                                <br /><small>@c.FunctionUnitSummary</small>
+                            }
+                            <div class="pull-right">
+                                @Html.ActionLink("Profile", "Details", "Persons", new { area = "Profiling", id = rp.Person.Id } , new { @class = "btn btn-mini", target = "_blank" })
+                            </div>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!string.IsNullOrEmpty(rp.Notes))
+                    {
+                        <tr>
+                            <td colspan="@(ViewBag.ScreeningEntities.Length + 1)">@rp.Notes</td>
+                        </tr>
+                    }
+                    <tr>
+                        @foreach (string entity in ViewBag.ScreeningEntities)
+                        {
+                            ScreeningRequestPersonEntity srpe = rp.GetScreeningRequestPersonEntity(entity);
+                            <td class="screening-result" style="width: @(100/(ViewBag.ScreeningEntities.Length + 1))%;">
+                                @(srpe != null ? srpe.ToString() : entity)
+                            </td>
+                        }
+                        <td>
+                            @Html.Hidden("Recommendations.Index", rp.Id)
+                            @Html.Hidden("Recommendations[" + rp.Id + "].key", rp.Id)
+                            @Html.Hidden("Recommendations[" + rp.Id + "].value.Id", Model.Recommendations[rp.Id].Id)
+                            @Html.Hidden("Recommendations[" + rp.Id + "].value.RequestPersonID", Model.Recommendations[rp.Id].RequestPersonID)
+                            @Html.Hidden("Recommendations[" + rp.Id + "].value.Version", Model.Recommendations[rp.Id].Version)
+                            @Html.DropDownList("Recommendations[" + rp.Id + "].value.ScreeningResultID", Model.Recommendations[rp.Id].ScreeningResults, new { @class = "screening-result span12" })
+                        </td>
+                    </tr>
+                    <tr>
+                        @foreach (string entity in ViewBag.ScreeningEntities)
+                        {
+                            ScreeningRequestPersonEntity srpe = rp.GetScreeningRequestPersonEntity(entity);
+                            <td style="width: @(100/(ViewBag.ScreeningEntities.Length + 1))%; background-color: #f9f9f9;" title="@(srpe != null && srpe.MostRecentHistory != null ? srpe.MostRecentHistory.ToString() : "")">
+                                @if (srpe != null && !string.IsNullOrEmpty(srpe.Reason))
+                                {
+                                  <p><strong>Reason</strong></p>
+                                  @Html.Raw(srpe.Reason.Replace("\n", "<br />"));
+                                }
+                            </td>
+                        }
+                        <td rowspan="2">
+                            @Html.TextArea("Recommendations[" + rp.Id + "].value.Commentary", Model.Recommendations[rp.Id].Commentary, new { style = "height: 100%;", @class = "span12" })
+                        </td>
+                    </tr>
+                    <tr>
+                        @foreach (string entity in ViewBag.ScreeningEntities)
+                        {
+                            ScreeningRequestPersonEntity srpe = rp.GetScreeningRequestPersonEntity(entity);
+                            <td style="width: @(100/(ViewBag.ScreeningEntities.Length + 1))%; background-color: #f9f9f9;">
+                                @if (srpe != null && !string.IsNullOrEmpty(srpe.Commentary))
+                                {
+                                  <p><strong>Commentary</strong></p>
+                                  @Html.Raw(srpe.Commentary.Replace("\n", "<br />"));
+                                }
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                      <td colspan="@(ViewBag.ScreeningEntities.Length + 1)" style="text-align: right;">
+                        <div class="form-inline">
+                          <label class="checkbox">
+                            <input type="checkbox" class="nominate-box" data-id="@rp.Id" @(rp.IsNominated ? "checked=checked" : string.Empty) /> Nominate for Conditionality Meeting
+                          </label>
+                        </div>
+                        <div data-toggle="collapse" data-target="#profiling-info-@rp.Id" style="cursor: pointer; margin-left: 5px;">
+                          <i class="icon-info-sign"></i>
+                          Profiling
+                        </div>
+                        <div id="profiling-info-@rp.Id" class="collapse out">
+                          Profile status is <em class="profile-status" data-selector="#help-profile-status-@rp.Person.ProfileStatus.ProfileStatusName.ToLower().Replace(' ', '_')">@rp.Person.ProfileStatus</em> with <strong>@rp.Person.Careers.Count</strong> career segments 
+                          and <strong>@rp.Person.PersonResponsibilities.Count</strong> human rights events.
+                          <a href="#" class="request-profile" data-id="@rp.Id">Request Profile</a>.
+                        </div>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    
+        <div id="help-profile-status-@ProfileStatus.ROUGH_OUTLINE.ToLower().Replace(' ', '_')">
+          Rough outline profiles require significant modifications before they are released to ensure they are up to date and comprehensive.
+        </div>
+        <div id="help-profile-status-@ProfileStatus.IN_PROGRESS.ToLower().Replace(' ', '_')">
+          In progress profiles require moderate modifications before they are released to ensure they are up to date and comprehensive.
+        </div>
+        <div id="help-profile-status-@ProfileStatus.COMPLETE.ToLower().Replace(' ', '_')">
+          Complete profiles may require small modifications before they are released to ensure they are up to date and comprehensive.
+        </div>
+    
+        @Html.HiddenFor(m => m.SendForFinalDecision)
+    
+        <div class="form-actions">
+            <button id="btn-final" type="submit" class="btn btn-primary">Send for Final Decision</button>
+            @Html.ActionLink("Back", "Index", "Consolidate", new { area = "Screening" }, new { @class = "btn" })
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-info">This request has been consolidated.</div>
+    
+    <div class="form-actions">
+        @Html.ActionLink("Back", "Index", "Consolidate", new { area = "Screening" }, new { @class = "btn" })
+    </div>
+}

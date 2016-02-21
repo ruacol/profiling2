@@ -1,0 +1,27 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model IList<Location>
+@{
+    ViewBag.Title = "Map";
+}
+@section styles
+{
+  @Html.RenderCssBundle("~/Content/leaflet.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <!--[if lte IE 8]>
+      @Html.RenderCssBundle("~/Content/leaflet.ie.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <![endif]-->
+}
+@section scriptSources
+{
+  @Html.RenderJsBundle("~/Scripts/leaflet.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+}
+@section scripts
+{
+  $(document).ready(function() {
+    var view = new Profiling.Views.LocationMapView();
+    $("h2").after(view.render().el);
+  }); 
+}
+
+<h2>Map</h2>
+

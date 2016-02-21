@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Feeding";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.FeedingIndexRouter();
+        Backbone.history.start();
+    });
+}
+
+<h2>Feeding</h2>
+
+<p>
+  Steps for feeding new sources into the database:
+</p>
+<ol>
+  <li>Upload the file using the Upload button on this page;</li>
+  <li>Wait for your file to be approved for insertion into the 'main' collection of sources by another user;</li>
+  <li>Once it has been approved, attach it to the relevant Person, Event, Unit or Operation.</li>
+</ol>
+<p>For approvers:</p>
+<ol>
+    <li>Download the file if necessary for inspection, using the actions menu;</li>
+    <li>Rename the file if necessary, using the actions menu;</li>
+    <li>Approve or reject the file, using the status menu. </li>
+</ol>
+
+<p>
+    @Html.ActionLink("Upload", "Upload", "Feeding", new { area = "Sources" }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Report", "Report", "Feeding", new { area = "Sources" }, new { @class = "btn" })
+</p>
+
+<hr />
+
+<p>For approved sources, click the file name to go to the source's information page.</p>
+
+<p>To attach a source to a person, event, unit or operation, use the Person, Event, Unit or Operation interfaces respectively.</p>
+
+<div id="feeding-sources"></div>

@@ -1,0 +1,65 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@model IList<SourceDTO>
+@{
+    ViewBag.Title = "Duplicates By Ignored";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("duplicates-table", {
+      bServerSide: false
+    });
+  }); 
+}
+
+<h2>Duplicates By Ignored</h2>
+
+<p>
+  The Document Import Tool used to import sources now ignores these file extensions: 
+  @foreach (string s in ViewBag.IgnoredFileExtensions)
+  {
+    <span>@s &nbsp;</span>
+  }
+</p>
+
+<p>However some files of these types may still exist in the database.  
+These may be safely deleted as long as they are not attached to events or persons, and have not been reviewed (downloaded, previewed).
+The button below will delete from the database those sources that have not been reviewed.</p>
+
+<p>
+  @Html.ActionLink("Delete all sources with ignored file extensions", "DeleteIgnored", "SourceAdmin", new { area = "Sources" }, new { @class = "btn btn-mini" })
+</p>
+
+<hr />
+
+<table id="duplicates-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Path</th>
+      <th>File Date</th>
+      <th>Import Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (SourceDTO s in Model)
+    {
+      <tr>
+        <td>
+          <a href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@s.SourceID" target="_blank">
+            @s.SourceID
+          </a>
+        </td>
+        <td>@s.SourceName</td>
+        <td>@s.SourcePath</td>
+        <td>@s.FileDateTimeStamp</td>
+        <td>@s.SourceDate</td>
+        <td>
+          @Html.ActionLink("Delete", "Delete", "SourceAdmin", new { area = "Sources", id = s.SourceID }, new { @class = "btn btn-mini"})
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

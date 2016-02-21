@@ -1,0 +1,19 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model PersonRestrictedNoteViewModel
+
+<div id="validation-errors"></div>
+
+<p>
+  Add a note that will only be visible to <em>@AdminPermission.CanViewAndChangePersonRestrictedNotes</em> holders.
+</p>
+
+@Html.HiddenFor(x => x.PersonId)
+<fieldset>
+    <div class="control-group">
+        <label class="control-label">Note</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Note, new { @class = "input-xxlarge", rows = "5" })
+        </div>
+    </div>
+</fieldset>

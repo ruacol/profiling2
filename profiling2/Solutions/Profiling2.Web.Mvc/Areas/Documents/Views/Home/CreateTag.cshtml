@@ -1,0 +1,15 @@
+﻿@using Profiling2.Web.Mvc.Areas.Documents.Controllers.ViewModels
+@model DocumentationFileTagViewModel
+@{
+    ViewBag.Title = "Create Tag";
+    ViewBag.NoSidebar = true;
+}
+
+<h2>Create Tag</h2>
+
+<hr />
+
+@using (Html.BeginForm("CreateTag", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.Partial("_TagForm")
+}

@@ -1,0 +1,60 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model UnitOperationViewModel
+@{
+    Layout = "";
+    ViewBag.Title = "Add Unit";
+}
+
+@using (Html.BeginForm("AddUnitModal", "Operations", FormMethod.Post, new { id = "unit-add-form" }))
+{
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4>Add Unit</h4>
+      <p>Add a new or existing unit to this operation.</p>
+  </div>
+  <div class="modal-body form-horizontal">
+    <div id="validation-errors"></div>
+    @Html.HiddenFor(x => x.OperationId)
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label">Unit</label>
+            <div class="controls">
+                @Html.HiddenFor(x => x.UnitId, new { @class = "input-xxlarge" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Is Command Unit?</label>
+            <div class="controls">
+                @Html.CheckBoxFor(x => x.IsCommandUnit)
+                <span class="help-inline">If checked, this unit's commanders will show as this operation's commanders.</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Operation</label>
+            <div class="controls">
+                <span class="input-xxlarge uneditable-input">@Model.OperationName</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Start Date</label>
+            <div class="controls">
+                <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfStart, new { @class = "input-mini" })
+                <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfStart, new { @class = "input-mini" })
+                <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfStart, new { @class = "input-mini" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">End Date</label>
+            <div class="controls">
+                <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfEnd, new { @class = "input-mini" })
+                <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfEnd, new { @class = "input-mini" })
+                <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfEnd, new { @class = "input-mini" })
+            </div>
+        </div>
+    </fieldset>
+  </div>
+  <div class="modal-footer">
+    <a id="modal-unit-add-button" class="btn btn-primary">Save</a>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  </div>
+}

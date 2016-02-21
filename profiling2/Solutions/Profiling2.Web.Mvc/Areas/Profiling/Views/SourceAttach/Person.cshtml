@@ -1,0 +1,73 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model PersonSourceViewModel
+@{
+    Layout = "";
+}
+
+@using (Html.BeginForm("Person", "SourceAttach", new { area = "Profiling", sourceId = Model.SourceId, id = Model.PersonId }, FormMethod.Post, new { id = "modal-form", @class = "form-horizontal" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4>
+            @if (Model.Id.HasValue)
+            {
+                @:Detach from Source
+            }
+            else
+            {
+                @:Attach to Source
+            }
+        </h4>
+    </div>
+    <div class="modal-body">
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.PersonId)
+        @Html.HiddenFor(x => x.SourceId)
+    
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">Person</label>
+                <div class="controls">
+                    <span class="input-xlarge uneditable-input">@ViewBag.Person.Name</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Source</label>
+                <div class="controls">
+                    <span class="input-xlarge uneditable-input">@ViewBag.Source.SourceName</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Reliability</label>
+                <div class="controls">
+                    @Html.DropDownListFor(x => x.ReliabilityId, Model.Reliabilities, new { @class = "input-large" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Commentary</label>
+                <div class="controls">
+                    @Html.TextAreaFor(x => x.Commentary, new { @class = "input-xlarge" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Notes</label>
+                <div class="controls">
+                    @Html.TextAreaFor(x => x.Notes, new { @class = "input-xlarge" })
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <a id="modal-button" class="btn btn-primary">
+            @if (Model.Id.HasValue)
+            {                                
+                @:Detach
+            }
+            else
+            {
+                @:Attach
+            }
+        </a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    </div>
+}

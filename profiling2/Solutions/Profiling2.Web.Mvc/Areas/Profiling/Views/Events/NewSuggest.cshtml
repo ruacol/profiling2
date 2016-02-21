@@ -1,0 +1,35 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@model IList<SuggestionEventForPersonDTO>
+@{
+    ViewBag.Title = "NewSuggest";
+}
+
+<h2>NewSuggest</h2>
+
+<table class="table table-bordered">
+  <tr>
+    <th>ID</th>
+    <th>Score</th>
+    <th>Features</th>
+    <th>Reason</th>
+  </tr>
+  @foreach (SuggestionEventForPersonDTO dto in Model.OrderByDescending(x => Convert.ToDouble(x.Score)))
+  {
+    <tr>
+      <td>@dto.EventID</td>
+      <td>@dto.Score</td>
+      <td>@dto.Features</td>
+      <td>
+        @if (dto.SuggestionReasons != null && dto.SuggestionReasons.Any())
+        {
+          <ul>
+          @foreach (string s in dto.SuggestionReasons)
+          {
+            <li>@s</li>
+          }
+          </ul>
+        }
+      </td>
+    </tr>
+  }
+</table>

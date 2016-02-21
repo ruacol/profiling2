@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8DEF56CD-601E-443C-9DCE-C4EC54C0B6A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Profiling2.Domain</RootNamespace>
+    <AssemblyName>Profiling2.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Build\Signing\Profiling2.snk</AssemblyOriginatorKeyFile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HrdbWebServiceClient, Version=0.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\HrdbWebServiceClient.0.2.4.0\lib\net45\HrdbWebServiceClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.3.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\CompareNETObjects.3.03.0.0\lib\net45\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\Packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\NHibernate.3.3.5.4000\lib\Net35\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate.Envers, Version=1.6.0.0, Culture=neutral, PublicKeyToken=e2c5b946037fb7f8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\NHibernate.Envers.1.6.0\lib\Net35\NHibernate.Envers.dll</HintPath>
+    </Reference>
+    <Reference Include="ScorePhrase, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\ScorePhrase.0.1.0.0\lib\net45\ScorePhrase.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpArch.Domain, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\SharpArch.Domain.2.0.4\lib\NET40\SharpArch.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebActivator">
+      <HintPath>..\..\Packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Common\AssemblyVersion.cs">
+      <Link>Properties\AssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AuditTrailDTO.cs" />
+    <Compile Include="Contracts\Export\Profiling\IWordExportEventService.cs" />
+    <Compile Include="Contracts\Export\Profiling\IWordExportPersonService.cs" />
+    <Compile Include="Contracts\IPostalEmailTasks.cs" />
+    <Compile Include="Contracts\Queries\Audit\IEventRevisionsQuery.cs" />
+    <Compile Include="Contracts\Queries\Audit\IHistoricalCareerQuery.cs" />
+    <Compile Include="Contracts\Queries\Audit\IOperationRevisionsQuery.cs" />
+    <Compile Include="Contracts\Queries\Audit\IPersonRevisionsQuery.cs" />
+    <Compile Include="Contracts\Queries\Audit\IUnitRevisionsQuery.cs" />
+    <Compile Include="Contracts\Queries\IActionTakenWantedQuery.cs" />
+    <Compile Include="Contracts\Queries\IAdminUserQueries.cs" />
+    <Compile Include="Contracts\Queries\IAttachedSourceQueries.cs" />
+    <Compile Include="Contracts\Queries\IEventQueries.cs" />
+    <Compile Include="Contracts\Queries\IJhroCaseQueries.cs" />
+    <Compile Include="Contracts\Queries\ILocationMergeQuery.cs" />
+    <Compile Include="Contracts\Queries\IPersonQueries.cs" />
+    <Compile Include="Contracts\Queries\ISourceCollectionsQuery.cs" />
+    <Compile Include="Contracts\Queries\IAdminSourceSearchQuery.cs" />
+    <Compile Include="Contracts\Queries\ICommandersQuery.cs" />
+    <Compile Include="Contracts\Queries\Audit\IAuditedEntityQuery.cs" />
+    <Compile Include="Contracts\Queries\IUnitQueries.cs" />
+    <Compile Include="Contracts\Queries\IFeedingSourceQuery.cs" />
+    <Compile Include="Contracts\Queries\IObjectSourceDuplicatesQuery.cs" />
+    <Compile Include="Contracts\Queries\IRequestPersonsQuery.cs" />
+    <Compile Include="Contracts\Queries\IScreeningEntityQueries.cs" />
+    <Compile Include="Contracts\Queries\ISourceLogQueries.cs" />
+    <Compile Include="Contracts\Queries\IRequestQueries.cs" />
+    <Compile Include="Contracts\Queries\Procs\IDeletedProfilesStoredProcQuery.cs" />
+    <Compile Include="Contracts\Queries\Procs\IModifiedProfilesStoredProcQuery.cs" />
+    <Compile Include="Contracts\Queries\Audit\IPersonAuditable.cs" />
+    <Compile Include="Contracts\Queries\Procs\IMergeStoredProcQueries.cs" />
+    <Compile Include="Contracts\Queries\Search\IEventSearchQuery.cs" />
+    <Compile Include="Contracts\Queries\Search\ISourceAuthorSearchQuery.cs" />
+    <Compile Include="Contracts\Queries\Stats\ICountsQuery.cs" />
+    <Compile Include="Contracts\Queries\Stats\IScreeningCountsQuery.cs" />
+    <Compile Include="Contracts\Queries\Search\ILocationSearchQuery.cs" />
+    <Compile Include="Contracts\Queries\Search\IOrganizationSearchQuery.cs" />
+    <Compile Include="Contracts\Queries\Procs\IPersonChangeActivityQuery.cs" />
+    <Compile Include="Contracts\Queries\IPersonDataTablesQuery.cs" />
+    <Compile Include="Contracts\Queries\Search\IPersonRelationshipTypeNameQuery.cs" />
+    <Compile Include="Contracts\Queries\Stats\IPersonStatisticsQuery.cs" />
+    <Compile Include="Contracts\Queries\Search\IRankSearchQuery.cs" />
+    <Compile Include="Contracts\Queries\Search\IRoleSearchQuery.cs" />
+    <Compile Include="Contracts\Queries\ISourceQueries.cs" />
+    <Compile Include="Contracts\Queries\ISourceDataTablesQuery.cs" />
+    <Compile Include="Contracts\Queries\Procs\ISuggestionEventForPersonQuery.cs" />
+    <Compile Include="Contracts\Queries\Search\IUnitSearchQuery.cs" />
+    <Compile Include="Contracts\Queries\IViolationDataTablesQuery.cs" />
+    <Compile Include="Contracts\Queries\IWantedTasks.cs" />
+    <Compile Include="Contracts\Queries\Stats\ISourceStatisticsQueries.cs" />
+    <Compile Include="Contracts\Queries\Suggestions\IEventInSameLocationSuggestionsQuery.cs" />
+    <Compile Include="Contracts\Queries\Suggestions\IOrganizationResponsibilitySuggestionsQuery.cs" />
+    <Compile Include="Contracts\Queries\Suggestions\ICareerLocationSuggestionsQuery.cs" />
+    <Compile Include="Contracts\Queries\Suggestions\IEventRelationshipSuggestionsQuery.cs" />
+    <Compile Include="Contracts\Queries\Suggestions\IPersonNameSuggestionsQuery.cs" />
+    <Compile Include="Contracts\Queries\Suggestions\IPersonRelationshipSuggestionsQuery.cs" />
+    <Compile Include="Contracts\Queries\Suggestions\ISourceSuggestionsQuery.cs" />
+    <Compile Include="Contracts\Search\IEventSearcher.cs" />
+    <Compile Include="Contracts\Search\ILuceneIndexer.cs" />
+    <Compile Include="Contracts\Search\IPersonSearcher.cs" />
+    <Compile Include="Contracts\Search\IRequestSearcher.cs" />
+    <Compile Include="Contracts\Search\IScreeningResponseIndexer.cs" />
+    <Compile Include="Contracts\Search\IScreeningResponseSearcher.cs" />
+    <Compile Include="Contracts\Search\ISourceSearcher.cs" />
+    <Compile Include="Contracts\Search\IUnitSearcher.cs" />
+    <Compile Include="Contracts\Services\IAsposeService.cs" />
+    <Compile Include="Contracts\Services\IEmailService.cs" />
+    <Compile Include="Contracts\Export\Screening\IPdfExportRequestForConditionalityParticipantService.cs" />
+    <Compile Include="Contracts\Export\Screening\IPdfExportRequestForInitiatorService.cs" />
+    <Compile Include="Contracts\Tasks\IActionTakenTasks.cs" />
+    <Compile Include="Contracts\Queries\Audit\IAdminAuditQuery.cs" />
+    <Compile Include="Contracts\Tasks\IAuditTasks.cs" />
+    <Compile Include="Contracts\Tasks\IBackgroundTasks.cs" />
+    <Compile Include="Contracts\Tasks\ICareerTasks.cs" />
+    <Compile Include="Contracts\Tasks\IDocumentationFileTasks.cs" />
+    <Compile Include="Contracts\Tasks\IEmailTasks.cs" />
+    <Compile Include="Contracts\Tasks\IEventMatchingTasks.cs" />
+    <Compile Include="Contracts\Tasks\IEventTasks.cs" />
+    <Compile Include="Contracts\Tasks\IOhchrWebServiceTasks.cs" />
+    <Compile Include="Contracts\Tasks\IPersonStatisticTasks.cs" />
+    <Compile Include="Contracts\Tasks\Sources\IFeedingSourceTasks.cs" />
+    <Compile Include="Contracts\Tasks\ILocationTasks.cs" />
+    <Compile Include="Contracts\Tasks\ILuceneTasks.cs" />
+    <Compile Include="Contracts\Tasks\IOrganizationTasks.cs" />
+    <Compile Include="Contracts\Tasks\IPersonTasks.cs" />
+    <Compile Include="Contracts\Tasks\IPhotoTasks.cs" />
+    <Compile Include="Contracts\Tasks\Screenings\IRequestAttachmentTasks.cs" />
+    <Compile Include="Contracts\Tasks\Screenings\IRequestPersonTasks.cs" />
+    <Compile Include="Contracts\Tasks\Screenings\IRequestTasks.cs" />
+    <Compile Include="Contracts\Tasks\IResponsibilityTasks.cs" />
+    <Compile Include="Contracts\Tasks\Screenings\IScreeningStatisticTasks.cs" />
+    <Compile Include="Contracts\Tasks\Screenings\IScreeningTasks.cs" />
+    <Compile Include="Contracts\Tasks\Sources\ISourceAttachmentTasks.cs" />
+    <Compile Include="Contracts\Tasks\Sources\ISourceContentTasks.cs" />
+    <Compile Include="Contracts\Tasks\Sources\ISourceManagementTasks.cs" />
+    <Compile Include="Contracts\Tasks\Sources\ISourcePermissionTasks.cs" />
+    <Compile Include="Contracts\Tasks\Sources\ISourceStatisticTasks.cs" />
+    <Compile Include="Contracts\Tasks\Sources\ISourceTasks.cs" />
+    <Compile Include="Contracts\Tasks\ISuggestionTasks.cs" />
+    <Compile Include="Contracts\Tasks\IUserTasks.cs" />
+    <Compile Include="DTO\ChangeActivityDTO.cs" />
+    <Compile Include="DTO\EntityLocationDateDTO.cs" />
+    <Compile Include="DTO\EntityUnitDateDTO.cs" />
+    <Compile Include="DTO\EventDataTableView.cs" />
+    <Compile Include="DTO\FeedingSourceDTO.cs" />
+    <Compile Include="DTO\ObjectSourceDuplicateDTO.cs" />
+    <Compile Include="DTO\PersonSourceDTO.cs" />
+    <Compile Include="DTO\ProfilingCountsView.cs" />
+    <Compile Include="DTO\ScreeningEntityStatisticDTO.cs" />
+    <Compile Include="DTO\SourceFolderDTO.cs" />
+    <Compile Include="DTO\ToBeConfirmedDTO.cs" />
+    <Compile Include="DTO\UnitDTO.cs" />
+    <Compile Include="Extensions\EntityAsOfDateExtensions.cs" />
+    <Compile Include="Extensions\EntityIncompleteDateExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="IAsOfDate.cs" />
+    <Compile Include="IIncompleteDate.cs" />
+    <Compile Include="LuceneSearchResult.cs" />
+    <Compile Include="Prf\Actions\ActionTaken.cs" />
+    <Compile Include="Prf\Actions\ActionTakenType.cs" />
+    <Compile Include="Prf\AdminAudit.cs" />
+    <Compile Include="Prf\AdminAuditType.cs" />
+    <Compile Include="Prf\AdminPermission.cs" />
+    <Compile Include="Prf\AdminRole.cs" />
+    <Compile Include="Prf\AdminUnknown.cs" />
+    <Compile Include="Prf\Careers\AdminCareerImport.cs" />
+    <Compile Include="Prf\Careers\AdminCareerImportType.cs" />
+    <Compile Include="Prf\Careers\Career.cs" />
+    <Compile Include="Prf\Careers\Rank.cs" />
+    <Compile Include="Prf\Careers\Role.cs" />
+    <Compile Include="Prf\Documentation\DocumentationFile.cs" />
+    <Compile Include="Prf\Documentation\DocumentationFileTag.cs" />
+    <Compile Include="Prf\Events\EventApproval.cs" />
+    <Compile Include="Prf\Events\EventSource.cs" />
+    <Compile Include="Prf\Events\EventVerifiedStatus.cs" />
+    <Compile Include="Prf\Events\Violation.cs" />
+    <Compile Include="Prf\Events\ViolationDataTableView.cs" />
+    <Compile Include="Prf\Organizations\Organization.cs" />
+    <Compile Include="Prf\Organizations\OrganizationAlias.cs" />
+    <Compile Include="Prf\Organizations\OrganizationPhoto.cs" />
+    <Compile Include="Prf\Organizations\OrganizationRelationship.cs" />
+    <Compile Include="Prf\Organizations\OrganizationRelationshipType.cs" />
+    <Compile Include="Prf\Organizations\OrganizationSource.cs" />
+    <Compile Include="Prf\Persons\ActiveScreening.cs" />
+    <Compile Include="Prf\Persons\AdminExportedPersonProfile.cs" />
+    <Compile Include="Prf\Persons\AdminPersonImport.cs" />
+    <Compile Include="Prf\Persons\AdminPersonImportType.cs" />
+    <Compile Include="Prf\AdminUser.cs" />
+    <Compile Include="Prf\Persons\DeletedProfilesAuditDTO.cs" />
+    <Compile Include="Prf\Persons\Ethnicity.cs" />
+    <Compile Include="Prf\Events\AdminExportedEventProfile.cs" />
+    <Compile Include="Prf\Events\Event.cs" />
+    <Compile Include="Prf\Events\EventRelationship.cs" />
+    <Compile Include="Prf\Events\EventRelationshipType.cs" />
+    <Compile Include="Prf\FileType.cs" />
+    <Compile Include="Prf\Language.cs" />
+    <Compile Include="Prf\Location.cs" />
+    <Compile Include="Prf\Persons\ModifiedProfilesAuditDTO.cs" />
+    <Compile Include="Prf\Persons\Person.cs" />
+    <Compile Include="Prf\Persons\PersonAlias.cs" />
+    <Compile Include="Prf\Persons\PersonChangeActivityDTO.cs" />
+    <Compile Include="Prf\Persons\PersonPhoto.cs" />
+    <Compile Include="Prf\Persons\PersonSource.cs" />
+    <Compile Include="Prf\Persons\SearchForPersonDTO.cs" />
+    <Compile Include="Prf\Persons\SuggestionEventForPersonDTO.cs" />
+    <Compile Include="Prf\Province.cs" />
+    <Compile Include="Prf\Responsibility\OrganizationResponsibility.cs" />
+    <Compile Include="Prf\Responsibility\OrganizationResponsibilityType.cs" />
+    <Compile Include="Prf\Responsibility\PersonResponsibility.cs" />
+    <Compile Include="Prf\Responsibility\PersonResponsibilityType.cs" />
+    <Compile Include="Prf\Photo.cs" />
+    <Compile Include="Prf\Persons\PersonRelationship.cs" />
+    <Compile Include="Prf\Persons\PersonRelationshipType.cs" />
+    <Compile Include="Prf\Persons\ProfileStatus.cs" />
+    <Compile Include="Prf\Region.cs" />
+    <Compile Include="Prf\Persons\PersonRestrictedNote.cs" />
+    <Compile Include="Prf\SearchTermDTO.cs" />
+    <Compile Include="Prf\Sources\AdminReviewedSource.cs" />
+    <Compile Include="Prf\Sources\AdminSourceSearch.cs" />
+    <Compile Include="Prf\Sources\FeedingSource.cs" />
+    <Compile Include="Prf\Sources\JhroCase.cs" />
+    <Compile Include="Prf\Sources\Reliability.cs" />
+    <Compile Include="Prf\Sources\Source.cs" />
+    <Compile Include="Prf\Sources\AdminSourceImport.cs" />
+    <Compile Include="Prf\Sources\BaseSourceDTO.cs" />
+    <Compile Include="Prf\Sources\SourceAuthor.cs" />
+    <Compile Include="Prf\Sources\SourceDTO.cs" />
+    <Compile Include="Prf\Sources\SourceLog.cs" />
+    <Compile Include="Prf\Sources\SourceOwningEntity.cs" />
+    <Compile Include="Prf\Sources\SourceSearchResultDTO.cs" />
+    <Compile Include="Prf\Sources\SourceIndexLog.cs" />
+    <Compile Include="Prf\Sources\SourceRelationship.cs" />
+    <Compile Include="Prf\Suggestions\AdminSuggestionFeaturePersonResponsibility.cs" />
+    <Compile Include="Prf\Suggestions\AdminSuggestionPersonResponsibility.cs" />
+    <Compile Include="Prf\Suggestions\FeatureProbabilityCalc.cs" />
+    <Compile Include="Prf\Suggestions\SuggestedFeature.cs" />
+    <Compile Include="Prf\Suggestions\SuggestedFeatureWithReason.cs" />
+    <Compile Include="Prf\Tag.cs" />
+    <Compile Include="Prf\Units\AdminUnitHierarchyImport.cs" />
+    <Compile Include="Prf\Units\AdminUnitHierarchyImportType.cs" />
+    <Compile Include="Prf\Units\AdminUnitImport.cs" />
+    <Compile Include="Prf\Units\AdminUnitImportType.cs" />
+    <Compile Include="Prf\Units\Operation.cs" />
+    <Compile Include="Prf\Units\OperationAlias.cs" />
+    <Compile Include="Prf\Units\OperationSource.cs" />
+    <Compile Include="Prf\Units\Unit.cs" />
+    <Compile Include="Prf\Units\UnitAlias.cs" />
+    <Compile Include="Prf\Units\UnitHierarchy.cs" />
+    <Compile Include="Prf\Units\UnitHierarchyType.cs" />
+    <Compile Include="Prf\Units\UnitLocation.cs" />
+    <Compile Include="Prf\Units\UnitOperation.cs" />
+    <Compile Include="Prf\Units\UnitSource.cs" />
+    <Compile Include="ReferenceNumber.cs" />
+    <Compile Include="RespondBy.cs" />
+    <Compile Include="REVINFO.cs" />
+    <Compile Include="RevinfoListener.cs" />
+    <Compile Include="Scr\Attach\Attachment.cs" />
+    <Compile Include="Scr\Attach\RequestAttachment.cs" />
+    <Compile Include="Scr\Attach\RequestAttachmentHistory.cs" />
+    <Compile Include="Scr\Attach\RequestAttachmentStatus.cs" />
+    <Compile Include="Scr\HistoryViewModel.cs" />
+    <Compile Include="Scr\PersonEntity\AdminScreeningRequestPersonEntityImport.cs" />
+    <Compile Include="Scr\PersonEntity\ScreeningRequestEntityResponse.cs" />
+    <Compile Include="Scr\PersonEntity\ScreeningRequestPersonEntity.cs" />
+    <Compile Include="Scr\PersonEntity\ScreeningRequestPersonEntityHistory.cs" />
+    <Compile Include="Scr\PersonFinalDecision\AdminScreeningRequestPersonFinalDecisionImport.cs" />
+    <Compile Include="Scr\PersonFinalDecision\Old\AdminPersonFinalDecisionImport.cs" />
+    <Compile Include="Scr\PersonFinalDecision\Old\PersonFinalDecision.cs" />
+    <Compile Include="Scr\PersonFinalDecision\Old\PersonFinalDecisionHistory.cs" />
+    <Compile Include="Scr\PersonFinalDecision\ScreeningRequestPersonFinalDecision.cs" />
+    <Compile Include="Scr\PersonFinalDecision\ScreeningRequestPersonFinalDecisionHistory.cs" />
+    <Compile Include="Scr\PersonFinalDecision\ScreeningSupportStatus.cs" />
+    <Compile Include="Scr\PersonRecommendation\AdminScreeningRequestPersonRecommendationImport.cs" />
+    <Compile Include="Scr\PersonRecommendation\ScreeningRequestPersonRecommendation.cs" />
+    <Compile Include="Scr\PersonRecommendation\ScreeningRequestPersonRecommendationHistory.cs" />
+    <Compile Include="Scr\Person\AdminRequestPersonImport.cs" />
+    <Compile Include="Scr\Person\RequestPerson.cs" />
+    <Compile Include="Scr\Person\RequestPersonHistory.cs" />
+    <Compile Include="Scr\Person\RequestPersonStatus.cs" />
+    <Compile Include="Scr\Request.cs" />
+    <Compile Include="Scr\RequestEntity.cs" />
+    <Compile Include="Scr\RequestHistory.cs" />
+    <Compile Include="Scr\Proposed\RequestProposedPerson.cs" />
+    <Compile Include="Scr\RequestStatus.cs" />
+    <Compile Include="Scr\RequestType.cs" />
+    <Compile Include="Scr\Proposed\RequestProposedPersonHistory.cs" />
+    <Compile Include="Scr\Proposed\RequestProposedPersonStatus.cs" />
+    <Compile Include="Scr\RequestUnit.cs" />
+    <Compile Include="Scr\ScreeningEntity.cs" />
+    <Compile Include="Scr\ScreeningResult.cs" />
+    <Compile Include="Scr\ScreeningStatus.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

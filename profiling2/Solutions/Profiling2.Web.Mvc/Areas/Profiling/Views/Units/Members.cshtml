@@ -1,0 +1,61 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Prf.Units
+@using Profiling2.Domain.Prf.Responsibility
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Domain.Prf
+@using System.Linq
+@model Unit
+@{
+  ViewBag.Title = Model.UnitName + " Members";
+}
+
+@Html.Partial("_UnitHeading", (Unit)ViewBag.CurrentUnit)
+
+<h3>Members</h3>
+
+<p>@Model.Careers.Count careers, @Model.Careers.Select(x => x.Person).Distinct().Count() individuals.</p>
+
+<dl class="dl-horizontal">
+  @foreach (Career c in (from career in Model.Careers orderby career.IsCurrentCareer descending, (career.Rank != null ? career.Rank.SortOrder : int.MaxValue) select career))
+  {
+    <dt title="@c.Person.Name">@Html.ActionLink(c.Person.Name, "Details", "Persons", new { area = "Profiling", id = c.Person.Id }, null)</dt>
+    <dd>
+      <p>
+        @if (c.IsCurrentCareer)
+        {
+          <span class="label"><small>CURRENT</small></span>
+        }
+        @if (c.HasStartDate())
+        {
+          <span>From</span> @Html.DateLabel(c.YearOfStart, c.MonthOfStart, c.DayOfStart)
+                       if (c.HasEndDate())
+                       {
+            <span>until</span> @Html.DateLabel(c.YearOfEnd, c.MonthOfEnd, c.DayOfEnd)
+                       }
+        }
+        else if (c.HasEndDate())
+        {
+          <span>Up to</span> @Html.DateLabel(c.YearOfEnd, c.MonthOfEnd, c.DayOfEnd)
+        }
+        else if (c.HasAsOfDate())
+        {
+          <span>As of</span> @Html.DateLabel(c.YearAsOf, c.MonthAsOf, c.DayAsOf)
+        }
+        <br />
+        <strong>@Html.Raw(c.FunctionUnitSummary)</strong>
+        <br />
+		    <strong>@Html.Raw(c.RankOrganizationLocationSummary)</strong>
+      </p>
+      <p>
+        @if (!string.IsNullOrEmpty(c.Person.BackgroundInformation))
+        {
+          @Html.Raw(c.Person.BackgroundInformation.Replace("\n", "<br />"))
+        }
+      </p>
+    </dd>
+  }
+</dl>
+
+

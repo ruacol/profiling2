@@ -1,0 +1,29 @@
+﻿@using Profiling2.Domain.Prf.Events
+@model IList<Event>
+@{
+    ViewBag.Title = "Approvals";
+}
+
+<h2>Approvals</h2>
+
+<p>List of events not yet approved.</p>
+
+<hr />
+
+<table class="table table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th>Event ID</th>
+            <th>Headline</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Event e in Model.OrderByDescending(x => x.Id))
+        {
+            <tr>
+                <td>@e.Id</td>
+                <td>@Html.ActionLink(e.Headline, "Details", new { id = e.Id, area = "Profiling" })</td>
+            </tr>
+        }
+    </tbody>
+</table>

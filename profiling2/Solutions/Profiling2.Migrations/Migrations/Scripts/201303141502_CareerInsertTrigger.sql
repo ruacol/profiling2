@@ -1,0 +1,15 @@
+﻿SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER TRIGGER [dbo].[PRF_TR_Career_Created_I] ON [dbo].[PRF_Career]    
+AFTER INSERT  
+AS    
+BEGIN   
+  SET NOCOUNT ON 
+  UPDATE P
+  SET P.[Created] = GETDATE()
+  FROM INSERTED I, PRF_Career P
+  WHERE I.[CareerID] = P.[CareerID]
+  SET NOCOUNT OFF
+END

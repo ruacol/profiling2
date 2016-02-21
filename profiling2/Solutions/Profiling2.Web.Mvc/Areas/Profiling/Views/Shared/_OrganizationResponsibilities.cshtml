@@ -1,0 +1,95 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Domain.Prf.Responsibility
+@using Profiling2.Infrastructure.Security
+@model IList<OrganizationResponsibility>
+
+<table class="table table-bordered" id="organization-responsibilities-table">
+  <thead>
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents))
+    {
+      <tr>
+        <th>Event</th><th>Responsibility Type</th><th>Unit</th>
+      </tr>
+    }
+    else
+    {
+      <tr>
+        <th>Categories</th><th>Responsibility Type</th>
+      </tr>
+    }
+  </thead>
+  @{
+      IDictionary<Event, IList<OrganizationResponsibility>> dict = new Dictionary<Event, IList<OrganizationResponsibility>>();
+      foreach (OrganizationResponsibility or in Model.Where(x => !x.Archive))
+      {
+          if (!dict.ContainsKey(or.Event))
+          {
+              dict[or.Event] = new List<OrganizationResponsibility>();
+          }
+          dict[or.Event].Add(or);
+      }
+  }
+    <tbody>
+      @foreach (Event e in dict.Keys.OrderByDescending(x => x.HasStartDate() ? x.GetStartDateTime() : x.GetEndDateTime()))
+      {
+          int i = 0;
+          if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents))
+          {
+              foreach (OrganizationResponsibility or in dict[e])
+              {
+                  <tr>
+                    @if (i == 0)
+                    {
+                      <td>
+                          @Html.ActionLink(e.Headline, "Details", "Events", new { id = e.Id, area = "Profiling" }, new { title = (e.HasStartDate() ? e.GetStartDateTime() : e.GetEndDateTime()).Value.Ticks.ToString() })
+                          @if (e.EventVerifiedStatus != null)
+                          {
+                            <span class="label pull-right" style="text-transform: uppercase;">@e.EventVerifiedStatus</span>   
+                          }
+                      </td>
+                    }
+                    else
+                    {
+                        <td><span title="@((e.HasStartDate() ? e.GetStartDateTime() : e.GetEndDateTime()).Value.Ticks.ToString())"></span></td>
+                    }
+                    <td>@or.OrganizationResponsibilityType</td>
+                    <td>
+                        @if (or.Unit != null)
+                        {
+                            @Html.Partial("_UnitLinkAndDates", or.Unit)
+                        }
+                        else
+                        {
+                            @Html.ActionLink(or.Organization.ToString(), "Details", "Organizations", new { area = "Profiling", id = or.Organization.Id }, new { target = "_blank" })
+                        }
+                    </td>
+                  </tr>
+                  i++;
+              }
+          }
+          else
+          {
+              <tr>
+                @if (i == 0)
+                {
+                    <td rowspan="@dict[e].Count">
+                      <ul>
+                        @foreach (Violation v in e.Violations)
+                        {
+                          <li>@v.Name</li>
+                        }
+                      </ul>
+                    </td>
+                }
+                @foreach (OrganizationResponsibility or in dict[e])
+                {
+                    <td>@or.OrganizationResponsibilityType</td>
+                }
+                i++;
+              </tr>
+          }
+      }
+    </tbody>
+</table>

@@ -1,0 +1,136 @@
+@using Profiling2.Infrastructure.Security
+@using Profiling2.Infrastructure.Security.Identity
+@using Profiling2.Domain.Prf
+@using StackExchange.Profiling
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewBag.Title</title>
+
+    @Html.RenderCssBundle("~/Content/app.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+    @RenderSection("styles", false)
+</head>
+<body>
+    @if (ViewBag.NoNavbar == null)
+    {
+        <div class="navbar navbar-inverse navbar-fixed-top hidden-print">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="brand" href="@(Url.Action("Index", "Home", new { area = "" }))">
+                        Home
+                    </a>
+                    <div class="nav-collapse collapse">
+                        <p class="navbar-text pull-right">&nbsp;@(Html.ActionLink("Logout", "Logout", "Account", new { area = "" }, new { id = "logout-link" }))</p>
+                        <p class="navbar-text pull-right">Logged in as @Html.ActionLink(((ExpandedIdentity)User.Identity).DisplayName, "Details", "Account", new { area = "" }, null) | </p>
+                        <ul class="nav">
+                            @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources))
+                            {
+                                <li 
+                                    @if (string.Equals((string)ViewContext.RouteData.DataTokens["area"], "Sources"))
+                                    {
+                                        @:class="active"
+                                    }
+                                >
+                                    @(Html.ActionLink("Sources", "Index", "Home", new { area = "Sources" }, null))
+                                </li>
+                            }
+                            @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents))
+                            {
+                                <li 
+                                    @if (string.Equals((string)ViewContext.RouteData.DataTokens["area"], "Hrdb"))
+                                    {
+                                        @:class="active"
+                                    }
+                                >
+                                    @(Html.ActionLink("HRDB", "Index", "Home", new { area = "Hrdb" }, null))
+                                </li>
+                            }
+                            @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchPersons)
+                                || ((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents)
+                                || ((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchUnits))
+                            {
+                                <li 
+                                    @if (string.Equals((string)ViewContext.RouteData.DataTokens["area"], "Profiling"))
+                                    {
+                                        @:class="active"
+                                    }
+                                >
+                                    @(Html.ActionLink("Profiling", "Index", "Home", new { area = "Profiling" }, null))
+                                </li>
+                            }
+                            @if (User.IsInRole(AdminRole.ScreeningRequestInitiator)
+                                || User.IsInRole(AdminRole.ScreeningRequestValidator)
+                                || ((PrfPrincipal)User).HasPermission(AdminPermission.CanPerformScreeningInput)
+                                || User.IsInRole(AdminRole.ScreeningRequestConsolidator)
+                                || User.IsInRole(AdminRole.ScreeningRequestFinalDecider))
+                            {
+                                <li
+                                    @if (string.Equals((string)ViewContext.RouteData.DataTokens["area"], "Screening"))
+                                    {
+                                        @:class="active"
+                                    }
+                                >
+                                    @(Html.ActionLink("Screening", "Index", "Home", new { area = "Screening" }, null))
+                                </li>
+                            }
+                            <li
+                                @if (string.Equals((string)ViewContext.RouteData.DataTokens["area"], "Documents"))
+                                {
+                                    @:class="active"
+                                }
+                            >
+                                @(Html.ActionLink("Documents", "Index", "Home", new { area = "Documents" }, null))
+                            </li>
+                            @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanAdministrate))
+                            {
+                                <li
+                                    @if (string.Equals((string)ViewContext.RouteData.DataTokens["area"], "System"))
+                                    {
+                                        @:class="active"
+                                    }
+                                >
+                                    @(Html.ActionLink("System", "Index", "Home", new { area = "System" }, null))
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="container-fluid">
+        <div id="mainContent" class="row-fluid">
+            @if (ViewBag.NoSidebar == null)
+            {
+                <div class="span2 hidden-print" id="sidebar">@Html.Partial("_Sidebar")</div>
+                <div class="span10">@RenderBody()</div>
+            }
+            else
+            {
+                <div class="span12">@RenderBody()</div>
+            }
+        </div>
+        <!--/mainContent-->
+        @if (ViewBag.NoFooter == null)
+        {
+            <div class="row-fluid">
+                <div class="span12">
+                    <hr />
+                    <p class="pull-left"><small>Version @GlobalViewSingleton.Instance.ProductVersion</small></p>
+                    <p class="pull-right"><small>OHCHR</small></p>
+                </div>
+            </div>
+        }
+    </div>
+    <!--/container-fluid-->
+
+    @Html.RenderJsBundle("~/Scripts/app.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+    @RenderSection("scriptSources", false)
+    <script type="text/javascript">
+        window.Profiling.applicationUrl = "@(Request.ApplicationPath + "/")";
+        @RenderSection("scripts", false)
+    </script>
+    @MiniProfiler.RenderIncludes()
+</body>
+</html>

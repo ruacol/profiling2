@@ -1,0 +1,63 @@
+﻿@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels
+@using Profiling2.Domain.Scr.Attach
+@model RequestViewModel
+@{
+  ViewBag.Title = "Submit Screening Request";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    var router = new Profiling.Routers.RequestSubmitRouter();
+    Backbone.history.start();
+  });
+}
+
+<h2>
+  Submit Screening Request
+</h2>
+
+@if (!ViewBag.Request.HasBeenSentForValidation)
+{
+  <div class="alert">This request has not yet been submitted to the Office of the DSRSG - Rule of Law.</div>
+  
+  if (!ViewData.ModelState.IsValid)
+  {
+    <div class="alert alert-error">
+      @Html.ValidationSummary()
+    </div>
+  }
+  
+  <hr />
+
+  using (Html.BeginForm("Submit", "Initiate", FormMethod.Post, new { @class = "form-horizontal", id = "main-form" }))
+  {
+    @Html.Partial("_EditRequestForm")
+  
+    <hr />
+  
+    <h3>Attached Units</h3>
+    
+    <div id="attached-units">
+      <p><span class="muted">Loading...</span></p>
+    </div>
+    
+    <h3>Attached Persons</h3>
+  
+    <div id="attached-persons">
+      <p><span class='muted'>Loading...</span></p>
+    </div>
+  
+    <p>
+      <small>* The list of names will stay saved when you make changes to it - you may leave and come back without formally submitting the request.</small>
+    </p>
+    
+    <div id="buttons-row" class="form-actions">
+      <button id="submit-button" type="submit" class="btn btn-primary" title="Click if you are ready to submit this request for validation.">Submit Request</button>
+      @Html.ActionLink("Back", "Index", "Initiate", new { area = "Screening" }, new { @class = "btn", title = "Return to initiate screen." })
+    </div>
+  }
+}
+else
+{
+  <div class="alert alert-info">This request has already been submitted.  @Html.ActionLink("View progress", "Details", "Requests", new { area = "Screening", id = Model.Id }, null)</div>
+}

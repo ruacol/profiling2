@@ -1,0 +1,56 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Scr
+@using Profiling2.Domain.Prf.Sources
+@model AdminUser
+
+<h3>Affiliations</h3>
+    
+@if (Model.Affiliations.Any())
+{
+    <p>
+        @foreach (SourceOwningEntity e in Model.Affiliations)
+        {
+            <span class="badge">@e.Name</span>
+        }
+    </p>
+}
+else
+{
+    <p class="muted">This user has no affiliations.</p>
+}
+
+<h3>Roles</h3>
+
+@if (Model.AdminRoles != null && Model.AdminRoles.Any())
+{
+    <p>
+        @foreach (AdminRole r in Model.AdminRoles)
+        {
+            <span class="badge">@r.Name</span>
+        }
+    </p>
+}
+else
+{
+    <p class="muted">This user has no roles.</p>
+}
+
+<h3>Permissions</h3>
+
+@{
+    if (Model.AdminRoles != null && Model.AdminRoles.Any())
+    {
+        IEnumerable<AdminPermission> perms = Model.AdminRoles.Select(x => x.AdminPermissions).Aggregate((x, y) => x.Concat(y).ToList()).Distinct();
+        if (perms != null && perms.Any())
+        {
+            foreach (AdminPermission p in perms)
+            {
+                <span class="badge">@p.Name</span>   
+            }   
+        }
+        else
+        {
+            <p class="muted">This user has no permissions.</p>
+        }
+    }
+}

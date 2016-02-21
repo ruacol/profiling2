@@ -1,0 +1,55 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@model IList<SourceLog>
+@{
+    ViewBag.Title = "Previews";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("table", {
+      bServerSide: false,
+      aoColumns: [ { sType: "title-numeric" }, null, null, { bSearchable: false } ]
+    });
+  }); 
+}
+
+<h2>Previews</h2>
+
+<p>This page lists the error encountered when attempting to preview these sources.  Use the Process button to process more sources which may not yet have been checked.</p>
+
+<p>@ViewBag.SourceLogCount of @ViewBag.SourceCount sources have been processed.  @ViewBag.PasswordErrorCount have password errors.</p>
+
+@Html.ActionLink("Process", "Process", "Previews", new { id = 100 }, new { @class = "btn btn-mini" })
+
+@Html.ActionLink("View Sources With Password Errors", "Passwords", "Previews", null, new { @class = "btn btn-mini" })
+
+<hr />
+
+<table id="table" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Source ID</th>
+            <th>Exception</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (SourceLog log in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@log.SourceID" title="@log.SourceID" target="_blank">@log.SourceID</a>
+                </td>
+                <td>
+                    <p class="accordion-toggle" data-toggle="collapse" data-target="#log-@log.SourceID">@log.LogSummary</p>
+                    <div id="log-@log.SourceID" class="collapse out"><pre>@log.Log</pre></div>
+                </td>
+                <td style="white-space: nowrap;">@log.DateTime</td>
+                <td style="white-space: nowrap;">
+                    @Html.ActionLink("Rescan", "Rescan", "Previews", new { area = "Sources", id = log.SourceID }, new { @class = "btn btn-mini" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

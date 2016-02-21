@@ -1,0 +1,149 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model PersonViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<div id="validation-errors"></div>
+
+@Html.HiddenFor(x => x.PublicSummary)
+@Html.HiddenFor(x => x.PublicSummaryDate)
+@Html.HiddenFor(x => x.BackgroundInformation)
+@Html.HiddenFor(x => x.Notes)
+
+<fieldset>
+    <div class="control-group">
+        <label for="FirstName" class="control-label">
+            First Name(s)
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.FirstName, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The first names for this inidividual including any middle names."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="LastName" class="control-label">
+            Last Name(s)
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.LastName, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The last names for this inidividual including any surnames or family names, followed by any post names."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            ID Number (Military, police, etc.)
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.MilitaryIDNumber, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" data-selector="#help-id-number"></i>
+            <div id="help-id-number" style="display: none;">
+              <p>One or more ID numbers that help identify the individual.  Format should follow one of the following examples:</p>
+              <ul>
+                <li>123456/A</li>
+                <li>123.456/A</li>
+                <li>1-12-12-12345-12</li>
+                <li>123456789012</li>
+                <li>SM123456</li>
+              </ul>
+              <p>Separate multiple ID numbers using commas.</p>
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Date Of Birth
+        </label>
+        <div class="controls">
+            <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfBirth, new { @class = "input-mini" })
+            <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfBirth, new { @class = "input-mini" })
+            <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfBirth, new { @class = "input-mini" })
+            <i class="accordion-toggle icon-info-sign" title="The date of birth of this individual. If parts of the date are not known, they can be left blank. If only an approximate date range is known, use the Approximate Date Of Birth field."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Approximate Date Of Birth
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.ApproximateBirthDate, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="If no exact components are known for the individual's birth date, then the approximate date range can be entered here."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Place Of Birth
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.BirthVillage, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The name of the place where this individual was born."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Birth Region
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.BirthRegionId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The region where this individual was born."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Ethnicity
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.EthnicityId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The ethnicity of the individual."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Height
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.Height, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The height of the individual."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Weight
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.Weight, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The weight of the individual."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Profile Status
+        </label>
+        <div class="controls">
+            @Html.DropDownListFor(x => x.ProfileStatusId, Model.ProfileStatuses, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The status of this profile."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Restricted
+        </label>
+        <div class="controls">
+            @Html.CheckBoxFor(x => x.IsRestrictedProfile)
+            <i class="accordion-toggle icon-info-sign" data-selector="#help-restricted"></i>
+            <div id="help-restricted" style="display: none;">
+              <ul>
+                <li>Only members with the International Profiling and National Profiling role may access restricted profiles.</li>
+                <li>Members with the Limited or Read Only Profiling roles may view restricted profile names
+                (such as in the context of a relationship), but they cannot access restricted profiles themselves.</li>
+                <li>Restricted profiles are excluded from the unit-centric interface.</li>
+                <li>Restricted profiles do not appear anywhere in the Conditionality portion, including in person searches.</li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</fieldset>

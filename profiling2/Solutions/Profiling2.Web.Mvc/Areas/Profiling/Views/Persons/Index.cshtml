@@ -1,0 +1,101 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Infrastructure.Security
+@{
+    ViewBag.Title = "Persons";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.PersonsRouter({ 
+            permissions: {
+                canChangePersons: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersons).ToJsBool())
+            },
+        });
+        Backbone.history.start();
+    });
+}
+
+<div class="btn-toolbar">
+    <div id="person-menu" class="btn-group pull-left">
+        @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanDeletePersons))
+        {
+            @Html.ActionLink("Merge Persons", "Merge", "Persons", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+        }
+    </div>
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchPersons) && ((PrfPrincipal)User).HasPermission(AdminPermission.CanAdministrate))
+    {
+        <div class="btn-group pull-left">
+            @Html.ActionLink("Match Persons", "MatchPersons", "Persons", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+        </div>
+    }
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewPersonReports))
+    {
+        <div class="btn-group pull-right">
+          <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">Reports <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+              <li>
+                  @Html.ActionLink("Deleted Profiles Log", "Deleted", "Persons", new { area = "Profiling" }, new { style = "font-size: 85%;" })
+              </li>
+              <li>
+                  @Html.ActionLink("Incomplete Profiles", "Incomplete", "Persons", new { area = "Profiling" }, new { style = "font-size: 85%;" })
+              </li>
+              <li>
+                  @Html.ActionLink("This Month's Profiles", "Changed", "Persons", new { area = "Profiling" }, new { style = "font-size: 85%;" })
+              </li>
+              <li>
+                  @Html.ActionLink("Wanted Commanders", "WantedCommanders", "Persons", new { area = "Profiling" }, new { style = "font-size: 85%;" })
+              </li>
+          </ul>
+        </div>
+    }
+</div>
+
+<div class="clearfix"></div>
+
+<h2>
+  Persons
+</h2>
+
+<p>
+    
+</p>
+
+<p>
+    <label class="radio inline">
+        <input type="radio" name="search-radio" value="legacy"> Use legacy search
+    </label>
+    <label class="radio inline">
+        <input type="radio" name="search-radio" value="lucene" checked="checked"> Use Lucene search
+    </label>
+</p>
+
+<hr />
+
+<div id="search-table"></div>
+
+<div class="clearfix" style="clear: both;">
+    <hr />
+
+    <h4>Search tips</h4>
+
+    <div id="legacy-help" style="display: none;">
+      <p>
+        Searches for persons are performed against the following criteria:
+      </p>
+      <ul>
+        <li>
+          Names and aliases with exact matching specified by surrounding a name with double quotes 
+          (searching "JOHN SMITH" will match both JOHN SMITH and SMITH JOHN, but not JOHN ALBERT SMITH);
+        </li>
+        <li>
+          Names and aliases with partial matching (searching JO or JOHN matches JOHN);
+        </li>
+        <li>Military and Police IDs with partial matching in any format.</li>
+      </ul>
+    </div>
+
+    <div id="lucene-help">
+        @Html.Partial("_LuceneSearchTips")
+    </div>
+
+</div>

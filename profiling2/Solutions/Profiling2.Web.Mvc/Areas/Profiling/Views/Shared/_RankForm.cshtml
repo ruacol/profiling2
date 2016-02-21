@@ -1,0 +1,45 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model RankViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+<div class="alert alert-error">
+    @Html.ValidationSummary()
+</div>
+}
+
+<div id="validation-errors"></div>
+    
+<fieldset>
+    <div class="control-group">
+        <label class="control-label">Name</label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.RankName, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Name (French)</label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.RankNameFr, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Description</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Description, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Sort Order</label>
+        <div class="controls">
+            @Html.TextBoxFor(x => x.SortOrder, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    @Html.HiddenFor(x => x.Archive)
+    <div class="control-group">
+        <label class="control-label">Notes</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+</fieldset>

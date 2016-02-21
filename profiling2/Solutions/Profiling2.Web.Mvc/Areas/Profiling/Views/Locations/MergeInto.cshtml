@@ -1,0 +1,43 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model LocationMergeViewModel
+@{
+    ViewBag.Title = "Merge Into Location";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var view = new Profiling.Views.LocationMergeIntoView();
+        $("#location-to-delete").html(view.render().el);
+    });
+}
+
+<h2>Merge Into Location</h2>
+
+<p>Find the location to be merged into this one by using the search field on the right.  Once you decide they should be merged, manually update 
+    this location using the form on the left - then click Merge.
+    The location on the right will be deleted, and its events, careers and unit locations will become part of this location.
+</p>
+
+<hr />
+
+<div class="row-fluid">
+    <div class="span6">
+        <p><strong>Location to keep</strong></p>
+
+        @using (Html.BeginForm("MergeInto", "Locations", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.Partial("_LocationForm", Model)
+    
+            <p>@Model.NumEvents events, @Model.NumCareers careers, @Model.NumUnitLocations unit locations.</p>
+            
+            @Html.HiddenFor(x => x.ToDeleteLocationId)
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Merge</button>
+                @Html.ActionLink("Back", "Details", "Locations", new { id = Model.Id, area = "Profiling" }, new { @class = "btn" })
+            </div>
+        }
+    </div>
+
+    <div id="location-to-delete" class="span6"></div>
+</div>

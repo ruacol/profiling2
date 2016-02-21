@@ -1,0 +1,32 @@
+﻿@using Profiling2.Domain.Scr
+@using Profiling2.Domain.Prf
+@model RequestEntity
+@{
+    ViewBag.Title = "Request Entity Details";
+}
+
+<h2>Request Entity Details</h2>
+
+<h3>
+  @Model.ToString()
+  @if (Model.Archive)
+  {
+    <span class="label"><small>ARCHIVED</small></span>
+  }
+</h3>
+
+<p>The following users are members of this requesting entity:</p>
+
+@if (Model.Users.Count > 0)
+{
+  <ul>
+    @foreach (AdminUser user in Model.Users.OrderBy(x => x.UserID).Where(x => !x.Archive))
+    {
+      <li>@user</li>
+    }
+  </ul>
+}
+else
+{
+  <div class="alert">There are no members of this requesting entity.</div>
+}

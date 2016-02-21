@@ -1,0 +1,75 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Domain.Prf
+@using Profiling2.Infrastructure.Security
+@model Ethnicity
+@{
+  ViewBag.Title = Model.EthnicityName;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("persons-table", {
+      bServerSide: false
+    });
+  }); 
+}
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersons))
+    {
+      @Html.ActionLink("Edit Ethnicity", "Edit", "Ethnicities", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini" })
+    }
+  </div>
+  <div class="btn-group">
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanDeletePersons))
+    {
+      @Html.ActionLink("Delete Ethnicity", "Delete", "Ethnicities", new { area = "Profiling", id = Model.Id }, new { @class = "btn btn-mini" })
+    }
+  </div>
+</div>
+
+<h2>
+  @Model.EthnicityName
+</h2>
+
+@if (!string.IsNullOrEmpty(Model.Notes))
+{
+  <p>@Model.Notes</p>
+}
+
+@if (Model.GetSameEthnicities().Any())
+{
+  <p>Equivalent ethnicities:</p>
+  <ul>
+    @foreach (Ethnicity e in Model.GetSameEthnicities())
+    {
+      <li>
+        @Html.ActionLink(e.EthnicityName, "Details", "Ethnicities", new { area = "Profiling", id = e.Id }, null)
+      </li>
+    }
+  </ul>
+}
+
+<div class="clearfix">
+  <hr />
+  <h3>Persons</h3>
+
+  <table id="persons-table" class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>ID Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (Person p in Model.Persons)
+      {
+        <tr>
+          <td style="white-space: nowrap;">@Html.ActionLink(string.IsNullOrEmpty(p.Name) ? "(no name)" : p.Name, "Details", "Persons", new { area = "Profiling", id = p.Id }, null)</td>
+          <td>@p.MilitaryIDNumber</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

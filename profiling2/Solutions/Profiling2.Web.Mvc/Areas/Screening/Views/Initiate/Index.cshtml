@@ -1,0 +1,54 @@
+﻿@using Profiling2.Web.Mvc.Areas.Screening.Controllers
+@using Profiling2.Domain.Scr
+@{
+    ViewBag.Title = "Requests for Screening";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.RequestTableRouter({ 
+          dataTablesAjaxSource: "@(Request.ApplicationPath + "/")Screening/Initiate/DataTables",
+          dataTablesActionUrl: "@(Request.ApplicationPath + "/")Screening/Initiate/Submit/"
+        });
+        Backbone.history.start();
+    });
+}
+
+<h2>
+  Requests for Screening
+</h2>
+
+<div id="intro-help">
+  @if (ViewBag.UserRequestEntities.Count > 0)
+  {
+    <div class="alert alert-info">
+      Your requesting entity:
+      @foreach (RequestEntity re in ViewBag.UserRequestEntities)
+      {
+        <strong>@Html.ActionLink(re.ToString(), "Details", "RequestEntity", new { id = re.Id }, null)</strong>
+        if (!re.Equals(ViewBag.UserRequestEntities[ViewBag.UserRequestEntities.Count - 1]))
+        {
+          @:, 
+        }
+      }
+    </div>
+  }
+  else
+  {
+    <div class="alert">You do not have a requesting entity!  Please contact an administrator.</div>
+  }
+  <p>
+    @Html.ActionLink("Create New Request", "Create", "Initiate", new { area = "Screening" }, new { @class = "btn btn-primary" })
+  </p>
+  <p>This page lists all screening requests relating to your requesting entity that have not yet been sent for validation.</p>
+  <p>Once a request has been submitted for validation, you may monitor its progress using the @Html.ActionLink("Requests", "Index", "Requests", new { area = "Screening" }, null)
+  interface, available on the left under 'Manage'.</p>
+
+  <div class="alert alert-info">
+      <a href="@Url.Content("~/Content/files/150604_HRDDP_Secretariat_Template_Application for Clearance_V01.docx")"><strong>Download</strong></a> the template application for clearance.
+  </div>
+
+  <hr />
+</div>
+
+<div id="requests-table-div" class="clearfix"></div>

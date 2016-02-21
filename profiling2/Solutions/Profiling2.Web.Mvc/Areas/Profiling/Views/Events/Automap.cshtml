@@ -1,0 +1,48 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Infrastructure.Security
+@model IDictionary<Event, IDictionary<Violation, int>>
+@{
+    ViewBag.Title = "Auto-mapping of Event Categories to Events";
+}
+
+<h2>Auto-mapping of Event Categories to Events</h2>
+
+<p>
+    This is a preview of the results of the system's automated mapping of event categories to existing events.  Nothing has been saved to the database.
+</p>
+<p>
+    An admin may save these mappings to the database, thereby updating each event with the mapped violations.
+</p>
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeEvents))
+{
+    <p>@Html.ActionLink("Save mappings", "AutomapSave", "Events", null, new { @class = "btn" })</p>
+}
+
+<table class="table table-condensed table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Event Name</th>
+            <th>Matched Categories</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (KeyValuePair<Event, IDictionary<Violation, int>> kvp in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(kvp.Key.EventName, "Details", "Events", new { id = kvp.Key.Id, area = "Profiling" }, null)</td>
+                <td>
+                    <ul>
+                        @foreach (Violation v in kvp.Value.Keys)
+                        {
+                            if (kvp.Value[v] <= 2)
+                            {
+                                <li>@v.Name</li>
+                            }
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

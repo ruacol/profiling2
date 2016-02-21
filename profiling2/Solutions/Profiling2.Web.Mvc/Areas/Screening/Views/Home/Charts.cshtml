@@ -1,0 +1,230 @@
+﻿@using Profiling2.Domain.DTO
+@using Profiling2.Domain.Scr
+@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels
+@model YearViewModel
+@{
+  ViewBag.Title = "Screening Charts";
+  IDictionary<int, IDictionary<string, int>> CountsByRequestEntity = ViewBag.CountsByRequestEntity;
+  IDictionary<int, IDictionary<ScreeningResult, int>> CountsByResult = ViewBag.CountsByResult;
+}
+
+@section scripts
+{
+    $(document).ready(function() {
+        @if (CountsByRequestEntity != null)
+        {
+            <text>
+                var countsByRequestEntityChart = new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'counts-by-request-entity-chart',
+                        type: 'line'
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    legend: {
+                        enabled: true
+                    },
+                    title: {
+                        text: 'Screenings Performed'
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        dateTimeLabelFormats: {
+                            day: '%b %e'
+                        },
+                        minTickInterval: 24 * 3600 * 1000
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Number of screenings'
+                        },
+                        min: 0,
+                        minTickInterval: 1
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            return '<b>' + moment(this.x).format('MMMM YYYY') + ': </b>' + this.y;
+                        }
+                    },
+                    series: [
+                        @{
+                            IList<string> xvalues = null;
+                            IList<string> series = new List<string>();
+                            foreach (string requestEntityName in CountsByRequestEntity[1].Keys)
+                            {
+                                xvalues = new List<string>();
+                                foreach (KeyValuePair<int, IDictionary<string, int>> kvp in CountsByRequestEntity)
+                                {
+                                    xvalues.Add("[Date.UTC(" + Model.Year + ", " + (kvp.Key - 1) + ", 1), " + (kvp.Value.ContainsKey(requestEntityName) ? kvp.Value[requestEntityName] : 0) + "]");
+                                }
+                                series.Add("{ data: [ " + string.Join(",", xvalues.ToArray()) + " ], name: '" + requestEntityName + "' }");
+                        
+                            }
+                        }
+                        @Html.Raw(string.Join(", ", series))
+                    ]
+                });
+            </text>
+        }
+
+        @if (CountsByResult != null)
+        {
+            <text>
+                var countsByResultChart = new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'counts-by-result-chart',
+                        type: 'line'
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    legend: {
+                        enabled: true
+                    },
+                    title: {
+                        text: 'Screenings Performed'
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        dateTimeLabelFormats: {
+                            day: '%b %e'
+                        },
+                        minTickInterval: 24 * 3600 * 1000
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Number of screenings'
+                        },
+                        min: 0,
+                        minTickInterval: 1
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            return '<b>' + moment(this.x).format('MMMM YYYY') + ': </b>' + this.y;
+                        }
+                    },
+                    series: [
+                        @{
+                            IList<string> xvalues = null;
+                            IList<string> series = new List<string>();
+                            foreach (ScreeningResult sr in CountsByResult[1].Keys)
+                            {
+                                xvalues = new List<string>();
+                                foreach (KeyValuePair<int, IDictionary<ScreeningResult, int>> kvp in CountsByResult)
+                                {
+                                    xvalues.Add("[Date.UTC(" + Model.Year + ", " + (kvp.Key - 1) + ", 1), " + (kvp.Value.ContainsKey(sr) ? kvp.Value[sr] : 0) + "]");
+                                }
+                                series.Add("{ data: [ " + string.Join(",", xvalues.ToArray()) + " ], name: '" + sr.ScreeningResultName + "', color: '" + sr.ScreeningResultName + "' }");
+                        
+                            }
+                        }
+                        @Html.Raw(string.Join(", ", series))
+                    ]
+                });
+            </text>
+        }
+    });
+}
+
+<h2 class="hidden-print">Screening Charts</h2>
+
+<p class="hidden-print">Select the year in which to retrieve screening counts.</p>
+
+<div class="clearfix hidden-print" style="margin-top: 20px;">
+  @using (Html.BeginForm("Charts", "Home", new { area = "Screening" }, FormMethod.Post, new { @class = "form-horizontal" }))
+  {
+    <div class="control-group">
+      <label class="control-label">Year</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.DropDownListFor(x => x.Year, Model.Years, new { @class = "input-large" })
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Go</button>
+      </div>
+    </div>
+  }
+</div>
+
+@if (CountsByRequestEntity != null)
+{
+    <hr class="hidden-print" />
+    
+    <h3>Screenings Performed</h3>
+    <p>For the purposes of these figures a screening is where a final decision was made about an individual during a screening request,
+    which must have been completed.</p>
+    <p>An individual who may have been screened more than once is counted once for each screening.</p>
+    
+    <h4>By Request Entity</h4>
+    
+    <div class="row-fluid">
+        <div class="pull-left span6">
+            <div id="counts-by-request-entity-chart"></div>
+        </div>
+        <div class="pull-left span6">
+            <table class="table table-bordered table-stats">
+                <thead>
+                    <tr>
+                        <th class="span2">Month</th>
+                        @foreach (string requestEntityName in CountsByRequestEntity[1].Keys)
+                        {
+                            <th class="span2">@requestEntityName</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (KeyValuePair<int, IDictionary<string, int>> kvp in CountsByRequestEntity)
+                    {
+                        <tr>
+                            <td class="span2">@string.Format("{0:MMM yyyy}", new DateTime(Model.Year, kvp.Key, 1))</td>
+                            @foreach (string requestEntityName in CountsByRequestEntity[1].Keys)
+                            {
+                                <td class="span2">
+                                    @(kvp.Value.ContainsKey(requestEntityName) ? kvp.Value[requestEntityName] : 0)
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@if (CountsByResult != null)
+{
+    <h4>By Result</h4>
+    
+    <div class="row-fluid">
+        <div class="pull-left span6">
+            <div id="counts-by-result-chart"></div>
+        </div>
+        <div class="pull-left span6">
+            <table class="table table-bordered table-stats">
+                <thead>
+                    <tr>
+                        <th class="span2">Month</th>
+                        @foreach (ScreeningResult sr in CountsByResult[1].Keys)
+                        {
+                            <th class="span2">@sr.ScreeningResultName</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (KeyValuePair<int, IDictionary<ScreeningResult, int>> kvp in CountsByResult)
+                    {
+                        <tr>
+                            <td class="span2">@string.Format("{0:MMM yyyy}", new DateTime(Model.Year, kvp.Key, 1))</td>
+                            @foreach (ScreeningResult sr in CountsByResult[1].Keys)
+                            {
+                                <td class="span2">
+                                    @(kvp.Value.ContainsKey(sr) ? kvp.Value[sr] : 0)
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

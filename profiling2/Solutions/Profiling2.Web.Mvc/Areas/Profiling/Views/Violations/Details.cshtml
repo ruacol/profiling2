@@ -1,0 +1,86 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Infrastructure.Security
+@model Violation
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<h2>@Model.Name</h2>
+
+<hr />
+
+<dl class="dl-horizontal">
+    <dt>Keywords</dt>
+    <dd>
+        @if (!string.IsNullOrEmpty(Model.Keywords))
+        {
+            @Model.Keywords
+        }
+        else
+        {
+            <span class="muted">(no keywords)</span>   
+        }
+    </dd>
+    <dt>Description</dt>
+    <dd>
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            @Model.Description
+        }
+        else
+        {
+            <span class="muted">(no description)</span>   
+        }
+    </dd>
+    <dt>Parent</dt>
+    <dd>
+        @if (Model.ParentViolation != null)
+        {
+            @Html.ActionLink(Model.ParentViolation.ToString(), "Details", new { id = Model.ParentViolation.Id }, null);
+        }
+        else
+        {
+            <span class="muted">(no parent category)</span>   
+        }
+    </dd>
+    <dt>HRDDP Interest</dt>
+    <dd>
+        @if (Model.ConditionalityInterest)
+        {
+            <span class="label label-warning">yes</span>
+        }
+        else
+        {
+            <span class="label label-inverse">no</span>   
+        }
+    </dd>
+</dl>
+
+<h3>Child Categories</h3>
+
+@if (Model.ChildrenViolations != null && Model.ChildrenViolations.Any())
+{
+    <ul>
+        @foreach (Violation v in Model.ChildrenViolations)
+        {
+            <li>@Html.ActionLink(v.Name, "Details", "Violations", new { id = v.Id }, null)</li>
+        }
+    </ul>
+}
+else
+{
+    <span class="muted">(no child categories)</span>
+}
+
+<h3>Events</h3>
+
+<p>There are @Model.Events.Count events of this category.</p>
+
+<div class="form-actions">
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeEvents))
+    {
+        @Html.ActionLink("Edit", "Edit", "Violations", new { id = Model.Id }, new { @class = "btn" })
+    }
+    @Html.ActionLink("Back to categories", "Index", "Violations", new { area = "Profiling" }, new { @class = "btn" })
+</div>

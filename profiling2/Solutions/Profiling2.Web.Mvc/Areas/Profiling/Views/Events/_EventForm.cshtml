@@ -1,0 +1,113 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model EventViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<div id="validation-errors"></div>
+
+<div id="event-form-help" class="collapse out">
+  <p>
+    Event narratives are short summaries of the incident and circumstances under which the violation took place.
+  </p>
+  <p>
+    <strong>
+      First sentence should include the date and the place where the event took place, the name of the alleged perpetrator
+      or of the unit involved in the violation, a clear and short description of the offense, and the category of victim (ensuring
+      anonymity).
+    </strong>
+  </p>
+  <p>
+    Mention any follow-up action such as investigation.
+  </p>
+  <p>
+    Use simple sentences using the following order, preferably.  For example:
+  </p>
+  <blockquote>
+      <span class="text-info">On 15 October 2005</span> 
+      <span class="text-warning">in Mbandaka</span>, 
+      <span class="text-success">soldiers of the 125 FARDC Brigade</span> 
+      <span class="text-error">arrested</span> 
+      <span class="text-info">a civilian</span> 
+      <span class="text-error">on the pretext that he had not greeted them</span>.  
+      They brought him to the brigade detention facility and subjected him to CIDT for five days.
+  </blockquote>
+  <hr />
+</div>
+
+@if (Model.Violations != null && !Model.Violations.Any() && !string.IsNullOrEmpty(Model.EventName))
+{
+    <p class="alert alert-warning">The value of the deprecated <em>Name</em> field for this event is: <span class="muted">@Model.EventName</span>.
+        &nbsp;&nbsp;Use it to populate the categories below.
+        &nbsp;&nbsp;Once this event is categorised, this message will no longer appear.
+    </p> 
+}
+
+<div class="control-group">
+    <label class="control-label">Categories *</label>
+    <div class="controls">
+        @Html.HiddenFor(x => x.ViolationIds, new { @class = "input-xxlarge" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">Narrative <small>(English)</small></label>
+    <div class="controls">
+        @Html.TextAreaFor(x => x.NarrativeEn, new { @class = "input-xxlarge", rows = "5" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">Narrative <small>(French)</small></label>
+    <div class="controls">
+        @Html.TextAreaFor(x => x.NarrativeFr, new { @class = "input-xxlarge", rows = "5" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">Start Date</label>
+    <div class="controls">
+        <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfStart, new { @class = "input-mini" })
+        <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfStart, new { @class = "input-mini" })
+        <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfStart, new { @class = "input-mini" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">End Date</label>
+    <div class="controls">
+        <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfEnd, new { @class = "input-mini" })
+        <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfEnd, new { @class = "input-mini" })
+        <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfEnd, new { @class = "input-mini" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label"><span id="edit-location-span"></span>Location *</label>
+    <div class="controls">
+        @Html.HiddenFor(x => x.LocationId, new { @class = "input-xxlarge" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">Notes</label>
+    <div class="controls">
+        @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">Verified Status</label>
+    <div class="controls">
+        @Html.DropDownListFor(x => x.EventVerifiedStatusId, Model.EventVerifiedStatuses, string.Empty, new { @class = "input-xxlarge" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">HRDB Case Code</label>
+    <div class="controls">
+        @Html.HiddenFor(x => x.JhroCaseIds, new { @class = "input-xxlarge" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">Tags</label>
+    <div class="controls">
+        @Html.HiddenFor(x => x.TagIds, new { @class = "input-xxlarge" })
+    </div>
+</div>

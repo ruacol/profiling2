@@ -1,0 +1,25 @@
+﻿<p>For maximum results, search terms are by default ORed together (each term being optional) with some fuzziness allowed (JO will return JON and JOHN).</p>
+<p>Search is not case sensitive.</p>
+Internal ID number search:
+<ul>
+    <li><span class="text-info">Id:100</span> will return the person with the internal Id of 100.</li>
+    <li><span class="text-info">Id:[100 TO 200]</span> will return those persons with internal Ids between 100 and 200.</li>
+</ul>
+Military or Police ID number search:
+<ul>
+    <li><span class="text-info">123456/K</span> will return the person with this ID number.</li>
+    <li><span class="text-info">123456789</span> is equivalent to <span class="text-info">1-23-456-789</span>.  <span class="text-info">123456/K</span> is equivalent to 123456k.  Punctuation is irrelevant.</li>
+</ul>
+Name search (also applies to aliases):
+<ul>
+    <li><span class="text-info">john</span> will return all persons with the name John.</li>
+    <li><span class="text-info">John Smith</span> will increase the search results to those persons with either John or Smith in their name.</li>
+    <li><span class="text-info">John AND Smith</span> will narrow the search results to those persons with both John and Smith in their name.</li>
+    <li><span class="text-info">j*n</span> will return all names with a j followed by an n (and any number of characters in between).  e.g. John, Jon, Benjamin...</li>
+    <li><span class="text-info">j?n</span> will return all names with a j followed by an n (and only one character in between).  e.g. Jon, Janvier...</li>
+</ul>
+Rank and function search:
+<ul>
+    <li><span class="text-info">Major John</span> will return those persons named John who have a current rank of Major.</li>
+    <li><span class="text-info">Commander John</span> will return those persons named John have a current function of Commander.</li>
+</ul>

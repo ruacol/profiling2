@@ -1,0 +1,48 @@
+﻿@using Profiling2.Domain.Prf
+
+<li class="nav-header">System</li>
+
+<li
+    @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Background"))
+    {
+        @:class="active"
+    }
+>
+    @(Html.ActionLink("Background Jobs", "Index", "Background", new { area = "System" }, null))
+</li>
+
+<li
+    @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Lucene"))
+    {
+        @:class="active"
+    }
+>
+    @(Html.ActionLink("Lucene", "Index", "Lucene", new { area = "System" }, null))
+</li>
+
+<li
+    @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "OhchrWebService"))
+    {
+        @:class="active"
+    }
+>
+    @(Html.ActionLink("OHCHR Web Service", "Index", "OhchrWebService", new { area = "System" }, null))
+</li>
+
+<li
+    @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Roles"))
+    {
+        @:class="active"
+    }
+>
+    @(Html.ActionLink("Roles", "Index", "Roles", new { area = "System" }, null))
+</li>
+
+<li
+    @if (string.Equals(ViewContext.Controller.ValueProvider.GetValue("controller").RawValue, "Users"))
+    {
+        @:class="active"
+    }
+>
+    @(Html.ActionLink("Users", "Index", "Users", new { area = "System" }, null))
+</li>

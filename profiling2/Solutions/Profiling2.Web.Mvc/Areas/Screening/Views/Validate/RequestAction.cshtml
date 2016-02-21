@@ -1,0 +1,61 @@
+﻿@using Profiling2.Web.Mvc.Areas.Screening.Controllers.ViewModels
+@model ValidateViewModel
+@{
+    ViewBag.Title = "Validate Screening Request";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.RequestValidateRouter();
+        Backbone.history.start();
+    });
+}
+
+<h2>Validate Screening Request</h2>
+
+@if (!ViewBag.Request.HasBeenForwardedForScreening || ViewBag.Request.IsSentForValidation)
+{
+  <div class="alert">This request has not yet been forwarded for screening by conditionality participants.</div>
+  
+  if (!ViewData.ModelState.IsValid)
+  {
+    <div class="alert alert-error">
+      @Html.ValidationSummary()
+    </div>
+  }
+  
+  <hr />
+
+  using (Html.BeginForm("RequestAction", "Validate", FormMethod.Post, new { @class = "form-horizontal", id = "main-form" }))
+  {
+    @Html.Partial("_EditRequestForm")
+  
+    <hr />
+    
+    <h3>Attached Units</h3>
+    
+    <div id="attached-units">
+      <p><span class="muted">Loading...</span></p>
+    </div>
+    
+    <h3>Attached Persons</h3>
+  
+    <div id="attached-persons">
+      <p><span class='muted'>Loading...</span></p>
+    </div>
+    
+    @Html.HiddenFor(m => m.ForwardRequest)
+    @Html.HiddenFor(m => m.RejectRequest)
+    @Html.HiddenFor(m => m.RejectReason)
+    
+    <div id="buttons-row" class="form-actions">
+      <button id="submit-button" type="submit" class="btn btn-primary" title="Click if you are ready to forward this request for screening.">Forward Request</button>
+      <button id="reject-button" type="button" class="btn" title="Do not forward this request to conditionality participants.">Reject Request</button>
+      @Html.ActionLink("Back", "Index", "Validate", new { area = "Screening" }, new { @class = "btn", title = "Return to list of requests to validate." })
+    </div>
+  }
+}
+else
+{
+  <div class="alert alert-info">This request has already been submitted.  @Html.ActionLink("View progress", "Details", "Requests", new { area = "Screening", id = Model.Id }, null)</div>
+}

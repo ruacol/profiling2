@@ -1,0 +1,23 @@
+﻿@using Profiling2.Domain.Prf
+@model AdminUser
+@{
+    ViewBag.Title = "My Account";
+    ViewBag.NoSidebar = true;
+}
+
+<h2>@Model.UserID</h2>
+
+<hr />
+
+@Html.Partial("_UserAttributes")
+@Html.Partial("_UserRoles")
+
+@if (new string[] { "LocalMembershipProvider", "SetupMembershipProvider" }.Contains(Membership.Provider.Name))
+{
+    <div class="form-horizontal">
+        <div class="form-actions">
+            @Html.ActionLink("Edit Account", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Change Password", "Password", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+}

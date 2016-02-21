@@ -1,0 +1,79 @@
+﻿@using HrdbWebServiceClient.Domain
+@using System.Collections
+@using NHibernate.Envers
+@using Profiling2.Domain
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model DateViewModel
+@{
+  ViewBag.Title = "OHCHR HRDB Web Service";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("#StartDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+    $("#EndDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+  });
+}
+
+<h2>OHCHR Web Service</h2>
+
+<p>Select the date period in which to retrieve cases from the OHCHR Human Rights Database (HRDB). Start Date is inclusive, End Date is exclusive.</p>
+
+<p>It is safe to submit this form multiple times; in fact it is encouraged whenever there is a change in the data structure sent from the OHCHR HRDB,
+    in order to update this system's copy of the case.
+</p>
+
+<div class="clearfix">
+  @using (Html.BeginForm("Index", "OhchrWebService", FormMethod.Post, new { @class = "form-horizontal" }))
+  {
+    <div class="control-group">
+      <label class="control-label">Start Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.StartDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">End Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.EndDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Go</button>
+      </div>
+    </div>
+  }
+</div>
+
+@if (ViewBag.Result != null)
+{
+    <hr />
+  
+    <h3>Result</h3>
+  
+    <p>@(((IDictionary<string, HrdbCase>)ViewBag.Result).Keys.Count) cases received.</p>
+    
+    <table class="table table-condensed table-bordered">
+        <thead>
+            <tr>
+                <th>Case Code</th>
+                <th>Date Registered</th>
+                <th>Last Followup</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<string, HrdbCase> kvp in (IDictionary<string, HrdbCase>)ViewBag.Result)
+            {
+                <tr>
+                    <td>@kvp.Key</td>
+                    <td>@kvp.Value.RegistryDt</td>
+                    <td>@kvp.Value.LatestFollowupDt</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

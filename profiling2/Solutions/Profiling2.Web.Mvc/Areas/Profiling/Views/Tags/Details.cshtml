@@ -1,0 +1,53 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Events
+@model Tag
+@{
+    ViewBag.Title = "Events by Tag";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("event-table", {
+      bServerSide: false,
+      aaSorting: [ [ 2, 'desc' ] ]
+    });
+  }); 
+}
+
+<div class="btn-toolbar">
+    <div class="btn-group">
+        @Html.ActionLink("Edit", "Edit", "Tags", new { area = "Profiling", id = Model.Id }, new { @class = "btn btn-mini" })
+    </div>
+    <div class="btn-group">
+        @Html.ActionLink("Delete", "Delete", "Tags", new { area = "Profiling", id = Model.Id }, new { @class = "btn btn-mini" })
+    </div>
+</div>
+
+<h2>Tag: @Model.TagName</h2>
+
+<hr />
+
+<table id="event-table" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Categories</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Event ev in Model.Events)
+        {
+            <tr>
+                <td>@Html.ActionLink(ev.Id.ToString(), "Details", "Events", new { area = "Profiling", id = ev.Id }, null)</td>
+                <td>@string.Join("; ", ev.Violations.Select(x => x.Name))</td>
+                <td>@Html.DateLabel(ev.YearOfStart, ev.MonthOfStart, ev.DayOfStart)</td>
+                <td>@Html.DateLabel(ev.YearOfEnd, ev.MonthOfEnd, ev.DayOfEnd)</td>
+                <td>@Html.ActionLink(ev.Location.ToString(), "Details", "Locations", new { id = ev.Location.Id, area = "Profiling" }, null)</td>
+            </tr>
+        }
+    </tbody>
+</table>

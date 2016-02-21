@@ -1,0 +1,33 @@
+﻿@using Profiling2.Domain.Prf.Units
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model UnitLocationViewModel
+@{
+    ViewBag.Title = ViewBag.CurrentUnit.UnitName;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.BasicSelect({
+      el: "#LocationId",
+      placeholder: "Search by location ID or name...",
+      nameUrl: "@(Request.ApplicationPath + "/")Profiling/Locations/Name/",
+      getUrl: "@(Request.ApplicationPath + "/")Profiling/Locations/Get"
+    });
+  }); 
+}
+
+@Html.Partial("_UnitHeading", (Unit)ViewBag.CurrentUnit)
+
+<h3>Add Location</h3>
+
+<hr />
+
+@using (Html.BeginForm("Create", "UnitLocations", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.Partial("_UnitLocationForm", Model)
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add</button>
+        @Html.ActionLink("Back", "Details", "Units", new { area = "Profiling", id = ViewBag.CurrentUnit.Id }, new { @class = "btn" })
+    </div>
+}

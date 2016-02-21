@@ -1,0 +1,87 @@
+﻿@using System.Linq
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Scr
+@using Profiling2.Domain.Scr.Attach
+@using Profiling2.Infrastructure.Security
+@model Request
+@{
+  ViewBag.Title = "Screening Request Attachments";
+}
+
+<h2>Screening Request Attachments</h2>
+
+<fieldset>
+    <legend>@(!string.IsNullOrEmpty(Model.RequestName) ? Model.RequestName : "(no request name)")</legend>
+
+    <p>
+      @Html.ActionLink("Add new attachment", "Create", "Attachments", new { area = "Screening", requestId = Model.Id }, new { @class = "btn btn-primary" })
+    </p>
+
+    @if (Model.RequestAttachments != null && Model.RequestAttachments.Where(x => !x.Archive).Any())
+    {
+        <table class="table">
+            <thead><tr><th>Attachment</th><th>Upload By</th><th>Upload Date</th><th></th></tr></thead>
+            <tbody>
+            @foreach (RequestAttachment re in Model.RequestAttachments.Where(x => !x.Archive))
+            {
+                <tr>
+                    <td>@re.Attachment.FileName</td>
+                    <td>
+                      @if (re.Attachment.UploadedByAdminUser != null)
+                      {
+                        @re.Attachment.UploadedByAdminUser.ToString()
+                      }
+                    </td>
+                    <td>@re.Attachment.UploadedDateTime</td>
+                    <td>
+                      @Html.ActionLink("Remove", "Remove", "Attachments", new { area = "Screening", requestId = Model.Id, id = re.Id }, new { @class = "btn btn-mini btn-danger" })
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    @if (Model.RequestAttachments != null && Model.RequestAttachments.Where(x => x.Archive).Any())
+    {
+        <table class="table">
+            <thead><tr><th>Removed Attachment</th><th>Upload By</th><th>Upload Date</th><th></th></tr></thead>
+            <tbody>
+            @foreach (RequestAttachment re in Model.RequestAttachments.Where(x => x.Archive))
+            {
+                <tr>
+                    <td>@re.Attachment.FileName</td>
+                    <td>
+                      @if (re.Attachment.UploadedByAdminUser != null)
+                      {
+                        @re.Attachment.UploadedByAdminUser.ToString()
+                      }
+                    </td>
+                    <td>@re.Attachment.UploadedDateTime</td>
+                    <td>
+                      @Html.ActionLink("Restore", "Restore", "Attachments", new { area = "Screening", requestId = Model.Id, id = re.Id }, new { @class = "btn btn-mini" })
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    @if (Model.RequestAttachments == null || (Model.RequestAttachments != null && !Model.RequestAttachments.Any()))
+    {
+        <span class="help-inline">There are no attachments.</span>
+    }
+</fieldset>
+
+<div class="form-actions">
+    @if (Model.HasBeenSentForValidation && ((PrfPrincipal)User).HasPermission(AdminPermission.CanAdministrate))
+    {
+      @Html.ActionLink("Back to screening request", "Edit", "Requests", new { area = "Screening", id = Model.Id }, new { @class = "btn" })
+    }
+    else if (User.IsInRole(AdminRole.ScreeningRequestInitiator))
+    {
+      @Html.ActionLink("Back to screening request", "Submit", "Initiate", new { area = "Screening", id = Model.Id }, new { @class = "btn" })
+    }
+    else
+    {
+      @Html.ActionLink("Back to screening request", "Details", "Requests", new { area = "Screening", id = Model.Id }, new { @class = "btn" })
+    }
+</div>

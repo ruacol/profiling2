@@ -1,0 +1,39 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Responsibility
+@using Profiling2.Domain.Prf.Units
+@using Profiling2.Infrastructure.Security
+@model IList<OrganizationResponsibility>
+@{
+    ViewBag.Title = "Indirect Responsibilities";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("organization-responsibilities-table", {
+      bServerSide: false,
+      @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents))
+      {
+          @:aoColumns: [ { sType: "title-numeric" }, null, null ]
+      }
+      else
+      {
+          @:aoColumns: [ null, null ]
+      }          
+    });
+  });
+}
+
+@Html.Partial("_UnitHeading", (Unit)ViewBag.Unit)
+
+<p>@Html.ActionLink("Back to unit", "Details", new { area = "Profiling", id = ViewBag.Unit.Id }, new { @class = "btn" })</p>
+
+<h3>Indirect Event Responsibilities</h3>
+<p>These include responsibilities attributed to units lower down in the hierarchy.</p>
+@if (Model.Count > 0)
+{
+    @Html.Partial("_OrganizationResponsibilities")
+}
+else
+{
+    <span class="muted">There are no known indirect event responsibilities.  Does this unit have any children?</span>
+}

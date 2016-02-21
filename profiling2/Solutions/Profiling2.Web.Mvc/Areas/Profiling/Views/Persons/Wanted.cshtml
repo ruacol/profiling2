@@ -1,0 +1,49 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@model IList<Person>
+@{
+    ViewBag.Title = "Wanted Persons";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("wanted-table", {
+      bServerSide: false,
+      aaSorting: [ [ 0, 'asc' ] ]
+    });
+  }); 
+}
+
+<h2>Wanted Persons</h2>
+
+<p>
+  List of persons whose background information contains either of the following terms:
+</p>
+<ul>
+  <li>arrest / arret</li>
+  <li>warrant / mandat</li>
+  <li>fugitive / fugitif</li>
+  <li>escape / evade</li>
+  <li>wanted / recherche</li>
+</ul>
+
+<hr />
+
+<table id="wanted-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Person</th>
+      <th>Background Information</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Person p in Model)
+    {
+      <tr>
+        <td style="white-space: nowrap;">
+          @Html.ActionLink(p.Name, "Details", "Persons", new { id = p.Id, area = "Profiling" }, null)
+        </td>
+        <td>@p.BackgroundInformation</td>
+      </tr>
+    }
+  </tbody>
+</table>

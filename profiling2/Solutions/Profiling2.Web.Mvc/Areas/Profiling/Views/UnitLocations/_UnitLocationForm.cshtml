@@ -1,0 +1,57 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model UnitLocationViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+<div class="alert alert-error">
+    @Html.ValidationSummary()
+</div>
+}
+
+<div id="validation-errors"></div>
+
+<fieldset>
+    @Html.HiddenFor(x => x.UnitId)
+    <div class="control-group">
+        <label class="control-label">Start Date</label>
+        <div class="controls">
+            <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfStart, new { @class = "input-mini" })
+            <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfStart, new { @class = "input-mini" })
+            <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfStart, new { @class = "input-mini" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">End Date</label>
+        <div class="controls">
+            <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfEnd, new { @class = "input-mini" })
+            <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfEnd, new { @class = "input-mini" })
+            <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfEnd, new { @class = "input-mini" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">As Of</label>
+        <div class="controls">
+            <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearAsOf, new { @class = "input-mini" })
+            <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthAsOf, new { @class = "input-mini" })
+            <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayAsOf, new { @class = "input-mini" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Location *</label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.LocationId, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Commentary</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Commentary, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Notes</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+</fieldset>

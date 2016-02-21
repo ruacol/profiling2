@@ -1,0 +1,45 @@
+﻿@model IList<object[]>
+@{
+    ViewBag.Title = "Duplicates By Name";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("duplicates-table", {
+      bServerSide: false
+    });
+  }); 
+}
+
+<h2>Duplicates By Name</h2>
+
+<p>The table below lists those file names in the database with duplicates.</p>
+
+<p>You may merge the duplicates of a file name where they also have the same size.  All reviews (previews, downloads) and attachments (to Persons and Events) will be
+migrated to the first Source of that file name, and the others will be archived to prevent them being re-imported during the source import process.</p>
+
+<p>Click a file name to view that name's duplicates, and optionally merge them.  Click Merge All to do the same for all file names listed in the table below - this will take a while.</p>
+
+<p>@Html.ActionLink("Merge All", "MergeAllDuplicatesByName", "SourceAdmin", new { area = "Sources" }, new { @class = "btn btn-mini" })</p>
+
+<hr />
+
+<table id="duplicates-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Duplicates</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (object[] row in Model)
+    {
+      <tr>
+        <td>
+          @Html.ActionLink(row[0].ToString(), "DuplicatesByNameOf", "SourceAdmin", new { area = "Sources", SourceName = row[0].ToString().Trim() }, new { target = "_blank" })
+        </td>
+        <td>@row[1]</td>
+      </tr>
+    }
+  </tbody>
+</table>

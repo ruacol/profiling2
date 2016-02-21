@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <sql-query name="PRF_SP_Suggestion_EventForPerson"  callable="true" >
+    <query-param name="PersonID" type="System.Int32"/>
+    <query-param name="MaximumRows" type="System.Int32"/>
+    <query-param name="StartRowIndex" type="System.Int32"/>
+
+    <return-scalar column ="EventID" type ="System.Int32"/>
+    <return-scalar column ="EventName" type ="System.String"/>
+    <return-scalar column ="Score" type ="System.String"/>
+    <return-scalar column ="Features" type ="System.String"/>
+    <return-scalar column ="SuggestionReason" type ="System.String"/>
+
+    exec PRF_SP_Suggestion_EventForPerson @PersonID=:PersonID, @MaximumRows=:MaximumRows, @StartRowIndex=:StartRowIndex
+  </sql-query>
+</hibernate-mapping>

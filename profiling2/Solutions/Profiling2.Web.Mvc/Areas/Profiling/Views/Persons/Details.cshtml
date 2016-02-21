@@ -1,0 +1,83 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Infrastructure.Security
+@model Person
+@{
+    ViewBag.Title = Model.Name;
+}
+@section styles
+{
+  @Html.RenderCssBundle("~/Content/leaflet.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <!--[if lte IE 8]>
+      @Html.RenderCssBundle("~/Content/leaflet.ie.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <![endif]-->
+}
+@section scriptSources
+{
+  @Html.RenderJsBundle("~/Scripts/leaflet.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+}
+@section scripts
+{
+    $(document).ready(function() {
+        window.Profiling.personDetailsRouter = new Profiling.Routers.PersonDetailsRouter({ 
+          id: @Model.Id,
+          permissions: {
+            canViewPersonResponsibilities: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewPersonResponsibilities).ToJsBool()),
+            canChangePersonResponsibilities: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersonResponsibilities).ToJsBool()),
+            canChangePersons: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersons).ToJsBool()),
+            canChangePersonBackground: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersonBackground).ToJsBool()),
+            canViewBackgroundInformation: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewBackgroundInformation).ToJsBool()),
+            canViewPersonRelationships: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewPersonRelationships).ToJsBool()),
+            canDeletePersons: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanDeletePersons).ToJsBool()),
+            canExportPersons: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanExportPersons).ToJsBool()),
+            canViewPersonReports: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewPersonReports).ToJsBool()),
+            canChangePersonPublicSummaries: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersonPublicSummaries).ToJsBool()),
+            canViewAndChangePersonRestrictedNotes: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndChangePersonRestrictedNotes).ToJsBool()),
+            canViewAndSearchSources: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources).ToJsBool()),
+            canPerformScreeningInput: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanPerformScreeningInput).ToJsBool()),
+            hasScreeningRole: @((User.IsInRole(AdminRole.ScreeningRequestInitiator)
+                || User.IsInRole(AdminRole.ScreeningRequestValidator)
+                || User.IsInRole(AdminRole.ScreeningRequestConditionalityParticipant)
+                || User.IsInRole(AdminRole.ScreeningRequestConsolidator)
+                || User.IsInRole(AdminRole.ScreeningRequestFinalDecider)).ToJsBool()),
+            canChangeEvents: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeEvents).ToJsBool()),
+          },
+          personName: "@Model.Name"
+        });
+        Backbone.history.start();
+    });
+}
+
+<div class="btn-toolbar">
+    <div class="btn-group">
+        <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">Change person... <span class="caret"></span></a>
+        <ul id="change-person-menu" class="dropdown-menu"></ul>
+    </div>
+
+    @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanExportPersons)
+        || ((PrfPrincipal)User).HasPermission(AdminPermission.CanViewPersonReports)
+        || ((PrfPrincipal)User).HasPermission(AdminPermission.CanChangePersonPublicSummaries))
+    {
+        <div class="btn-group pull-right" id="public-summary-container"></div>
+        <div class="btn-group pull-right" id="button-group-right">
+            @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanExportPersons))
+            {
+                <a class="btn btn-mini" id="save-as-word-button">Save As Word</a>
+            }
+            @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewPersonReports))
+            {
+                @Html.ActionLink("Audit Trail", "Audit", "Persons", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini", target = "_blank" })
+            }
+        </div>
+    }
+</div>
+
+<h2>
+    <span id="name-header">@(string.IsNullOrEmpty(Model.Name) ? "(no name)" : Model.Name)</span>
+    @if (Model.Archive)
+    {
+        @:&nbsp;<small>(archived)</small>
+    }
+</h2>
+
+<div id="person-details-content"></div>

@@ -1,0 +1,94 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@model FeedingSource
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.Name</h2>
+
+@if (Model.ApprovedBy != null)
+{
+    <p class="alert alert-success">Approved by @Model.ApprovedBy on @string.Format("{0: d MMM yyyy HH:mm}", Model.ApprovedDate)</p>
+}
+@if (Model.Source != null)
+{
+    <p class="alert alert-info">Source has been attached to @Model.Source.PersonSources.Count persons, @Model.Source.EventSources.Count events, @Model.Source.UnitSources.Count units and @Model.Source.OperationSources.Count operations.</p>
+}
+
+@if (Model.RejectedBy != null)
+{
+    <p class="alert alert-danger">Rejected by @Model.RejectedBy on @string.Format("{0: d MMM yyyy HH:mm}", Model.RejectedDate)</p>
+    if (!string.IsNullOrEmpty(Model.RejectedReason))
+    {
+        <p class="alert alert-danger">@Model.RejectedReason</p>
+    }
+}
+
+<table class="table table-bordered" style="width: auto;">
+    @if (Model.Restricted)
+    {
+        <tr>
+            <td colspan="2">
+                File is <span class="label label-important"><small>RESTRICTED</small></span>
+            </td>
+        </tr>
+    }
+    @if (Model.IsReadOnly)
+    {
+        <tr>
+            <td colspan="2">
+                <i class="icon-lock"></i> File is read only.
+            </td>
+        </tr>
+    }
+    @if (Model.IsPublic)
+    {
+        <tr>
+            <td colspan="2">
+                File is <span class="label"><small>PUBLIC</small></span>
+            </td>
+        </tr>
+    }
+    <tr>
+        <th>Last Modified Date</th>
+        <td>@string.Format("{0: d MMM yyyy HH:mm}", Model.FileModifiedDateTime)</td>
+    </tr>
+    <tr>
+        <th>Upload</th>
+        <td>
+            Uploaded by @Model.UploadedBy on @string.Format("{0: d MMM yyyy HH:mm}", Model.UploadDate)
+        </td>
+    </tr>
+    <tr>
+        <th>Notes From Uploader</th>
+        <td>
+            @if (!string.IsNullOrEmpty(Model.UploadNotes))
+            {
+                @Html.Raw(Model.UploadNotes.Replace("\r\n", "<br />").Replace("\n", "<br />"))
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>Authors</th>
+        <td>@string.Join(", ", Model.SourceAuthors.Select(x => x.Author))</td>
+    </tr>
+    <tr>
+        <th>Owning Entities</th>
+        <td>@string.Join(", ", Model.SourceOwningEntities.Select(x => x.Name))</td>
+    </tr>
+</table>
+
+<div class="form-actions">
+    @if (Model.ApprovedBy == null && Model.RejectedBy == null && Model.Source == null)
+    {
+        @Html.ActionLink("Approve", "Approve", "Feeding", new { area = "Sources", id = Model.Id }, new { @class = "btn btn-primary", style = "margin-right: 5px;" })
+        @Html.ActionLink("Reject", "Reject", "Feeding", new { area = "Sources", id = Model.Id }, new { @class = "btn btn-danger", style = "margin-right: 5px;" })
+        @Html.ActionLink("Rename", "Rename", "Feeding", new { area = "Sources", id = Model.Id }, new { @class = "btn", style = "margin-right: 5px;" })
+    }
+    @if (Model.Source != null)
+    {
+        <a class="btn" href="@(Request.ApplicationPath + "/")Profiling/Sources#info/@Model.Source.Id" target="_blank">View source info</a>
+    }
+    @Html.ActionLink("Download", "Download", "Feeding", new { area = "Sources", id = Model.Id }, new { @class = "btn" })
+    @Html.ActionLink("Back", "Index", "Feeding", new { area = "Sources" }, new { @class = "btn" })
+</div>

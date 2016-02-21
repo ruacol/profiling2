@@ -1,0 +1,44 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model IList<Region>
+@{
+    ViewBag.Title = "Pre-2015 Provinces";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("regions-table", {
+      bServerSide: false
+    });
+  }); 
+}
+
+<div class="btn-toolbar">
+    <div class="btn-group">
+      @Html.ActionLink("Create Pre-2015 Province", "Create", "Regions", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+    </div>
+</div>
+
+<h2>Pre-2015 Provinces</h2>
+
+<hr />
+
+<table id="regions-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Notes</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Region reg in Model)
+    {
+      <tr>
+        <td>@Html.ActionLink(reg.RegionName, "Edit", new { id = reg.Id })</td>
+        <td>@reg.Notes</td>
+        <td>@Html.ActionLink("Delete", "Delete", "Regions", new { id = reg.Id, area = "Profiling" }, new { @class = "btn btn-mini" })</td>
+      </tr>
+    }
+  </tbody>
+</table>

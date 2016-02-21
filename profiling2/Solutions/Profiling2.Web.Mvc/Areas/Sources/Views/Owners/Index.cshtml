@@ -1,0 +1,48 @@
+﻿@using Profiling2.Domain.Prf.Sources
+@model IList<SourceOwningEntity>
+@{
+    ViewBag.Title = "Source Owning Entities";
+}
+
+<h2>Source Owning Entities</h2>
+
+<p>These entities represent an organization or section which may have contributed sources to the database.  Certain user accounts
+    may also be linked to these entities, so that they may be granted access to sources belonging to their organization or section,
+    via the Lucene-based source browse/search interface.
+</p>
+
+<p>Use the Create button to create a new source owning entity; use the Populate button to link existing sources to these entities via
+    their source path prefix.
+</p>
+
+@Html.ActionLink("Create", "Create", "Owners", new { area = "Sources" }, new { @class = "btn" })
+
+@Html.ActionLink("Populate", "Populate", "Owners", new { area = "Sources" }, new { @class = "btn" })
+
+<hr />
+
+<table id="table" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Source Path Prefix</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (SourceOwningEntity soe in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(soe.Name, "Edit", "Owners", new { area = "Sources", id = soe.Id }, null)
+                </td>
+                <td>
+                    @soe.SourcePathPrefix
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", "Owners", new { area = "Sources", id = soe.Id }, new { @class = "btn btn-mini btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

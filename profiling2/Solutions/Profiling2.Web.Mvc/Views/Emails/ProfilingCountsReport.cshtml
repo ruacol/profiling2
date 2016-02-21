@@ -1,0 +1,55 @@
+﻿@using Profiling2.Domain.DTO
+@using Profiling2.Domain.Prf.Persons
+@{
+    ProfilingCountsView dto = (ProfilingCountsView)ViewBag.ProfilingCounts;
+}
+<table>
+    <tr>
+        <th>Profiles</th>
+        <th>@string.Format("{0:yyyy-MM-dd}", DateTime.Now)</th>
+    </tr>
+    @foreach (KeyValuePair<ProfileStatus, int> kvp in dto.ProfileStatus.Where(x => x.Key.ProfileStatusName != ProfileStatus.FARDC_2007_LIST).OrderBy(x => x.Key.Id))
+    {
+        <tr>
+            <td>@kvp.Key.ProfileStatusName</td>
+            <td class="value">@kvp.Value</td>
+        </tr>
+    }
+    <tr>
+        <th>Total Profiles</th>
+        <td class="value">@dto.ProfileStatus.Where(x => x.Key.ProfileStatusName != ProfileStatus.FARDC_2007_LIST).Sum(x => x.Value)</td>
+    </tr>
+    @if (dto.ProfileStatus.Where(x => x.Key.ProfileStatusName == ProfileStatus.FARDC_2007_LIST).Any())
+    {
+        <tr>
+            <td>@ProfileStatus.FARDC_2007_LIST</td>
+            <td class="value">
+                @dto.ProfileStatus.Where(x => x.Key.ProfileStatusName == ProfileStatus.FARDC_2007_LIST).First().Value
+            </td>
+        </tr>
+    }
+    <tr>
+        <th>Organizations</th>
+        <td class="value">@dto.Organization</td>
+    </tr>
+    <tr>
+        <th>Careers</th>
+        <td class="value">@dto.Career</td>
+    </tr>
+    <tr>
+        <th>Events</th>
+        <td class="value">@dto.Event</td>
+    </tr>
+    <tr>
+        <th>Person Responsibilities</th>
+        <td class="value">@dto.PersonResponsibility</td>
+    </tr>
+    <tr>
+        <th>Organization Responsibilities</th>
+        <td class="value">@dto.OrganizationResponsibility</td>
+    </tr>
+    <tr>
+        <th>Sources</th>
+        <td class="value">@dto.Source</td>
+    </tr>
+</table>

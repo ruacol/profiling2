@@ -1,0 +1,91 @@
+﻿@using System.Collections
+@using NHibernate.Envers
+@using Profiling2.Domain
+@using Profiling2.Domain.DTO
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Persons
+@using KellermanSoftware.CompareNetObjects
+@{
+  ViewBag.Title = "Audit Trail: Unit (ID=" + ViewBag.Unit.Id + ")";
+  IList<AdminUser> Users = ((IList<AdminUser>)ViewBag.Users);
+}
+
+<h2>Audit Trail: Unit (ID=@(ViewBag.Unit.Id))</h2>
+
+<hr />
+
+<table class="table table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>Who</th>
+      <th>When</th>
+      <th>What</th>
+      <th>Field</th>
+      <th>Diff</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (AuditTrailDTO row in ViewBag.AuditTrail)
+    {
+      IList<AdminUser> users = Users.Where(x => x.IsUser(row.REVINFO.UserName)).ToList();
+      <tr>
+        <td style="white-space: nowrap;" title="@(users.Any() ? users.First().UserID : string.Empty)">@(users.Any() ? users.First().UserName : string.Empty)</td>
+        <td style="white-space: nowrap;">@string.Format("{0:yyyy/MM/dd HH:mm:ss}", row.REVINFO.REVTSTMP)</td>
+        @if (row.Differences.Count > 0)
+        {
+          <td>@row.RevisionType</td>
+          <td style="white-space: nowrap;">@(row.Entity.GetType().Name)(ID=@row.Entity.Id) @row.Differences[0].PropertyName</td>
+          <td>
+            @Html.DiffOutput(row.Differences[0].Object2Value, row.Differences[0].Object1Value)
+          </td>
+       row.Differences.RemoveAt(0);
+        }
+        else
+        {
+          <td>@row.RevisionType</td>
+          <td style="white-space: nowrap;">@(row.Entity.GetType().Name)(ID=@row.Entity.Id)</td>
+          <td>@row.Entity</td>
+        }
+      </tr>
+        foreach (Difference d in row.Differences)
+        {
+        <tr>
+          <td colspan="2"></td>
+          <td>@row.RevisionType</td>
+          <td style="white-space: nowrap;">@(row.Entity.GetType().Name)(ID=@row.Entity.Id) @d.PropertyName</td>
+          <td>@Html.DiffOutput(d.Object2Value, d.Object1Value)</td>
+        </tr>
+        }
+    }
+  </tbody>
+</table>
+
+@if (ViewBag.OldAuditTrail != null && ViewBag.OldAuditTrail.Count > 0)
+{
+    <hr />
+
+    <table class="table table-condensed table-bordered">
+      <thead>
+        <tr>
+          <th>Who</th>
+          <th>When</th>
+          <th>What</th>
+          <th>Previous Values</th>
+          <th>Non Profiling Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (ChangeActivityDTO dto in ViewBag.OldAuditTrail)
+        {
+          IList<AdminUser> users = Users.Where(x => x.IsUser(dto.Who)).ToList();
+          <tr @(DateTime.Parse("2013-05-09 11:07") < dto.When ? "class=warning" : string.Empty)>
+            <td style="white-space: nowrap;" title="@(users.Any() ? users.First().UserID : string.Empty)">@(users.Any() ? users.First().UserName : string.Empty)</td>
+            <td style="white-space: nowrap;">@string.Format("{0:yyyy/MM/dd HH:mm:ss}", dto.When)</td>
+            <td style="white-space: nowrap;">@dto.What</td>
+            <td>@dto.PreviousValues</td>
+            <td>@dto.NonProfilingChange</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+}

@@ -1,0 +1,71 @@
+﻿@using Profiling2.Domain.Prf.Persons
+@model IList<Person>
+@{
+    ViewBag.Title = "Incomplete";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        new Profiling.DataTable("table-incomplete", { 
+          bServerSide: false, 
+          aLengthMenu: [[25, 50, 100, 200, -1], [25, 50, 100, 200, 'All']],
+          aaSorting: [ [ 5, 'desc' ] ]
+        });
+    });
+}
+
+<h2>Incomplete Profiles</h2>
+
+<p>
+  This page lists all non-FARDC 2007 List profiles that are missing any of the following:
+  <ul>
+    <li>Ethnicity</li>
+    <li>Photos</li>
+    <li>Person Responsibilities</li>
+    <li>Careers</li>
+    <li>Date of Birth (both year/month/day of birth, and 'ApproximateBirthDate' fields)</li>
+    <li>Place of Birth (both 'BirthVillage' and 'BirthRegion' fields)</li>
+  </ul>
+</p>
+
+<hr />
+
+<table id="table-incomplete" class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th style="white-space: nowrap;">First Name</th>
+      <th style="white-space: nowrap;">Last Name</th>
+      <th style="white-space: nowrap;">Profile Status</th>
+      <th>Created</th>
+      <th>Last Modified</th>
+      <th>Ethnicity</th>
+      <th>Photos</th>
+      <th>Responsibilities</th>
+      <th>Careers</th>
+      <th>Date of Birth</th>
+      <th>Place of Birth</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Person p in Model)
+    {
+      <tr>
+        <td>
+            @Html.ActionLink(p.Id.ToString(), "Details", "Persons", new { area = "Profiling", id = p.Id }, new { target = "_blank", title = "Go to profile" })
+        </td>
+        <td>@p.FirstName</td>
+        <td>@p.LastName</td>
+        <td>@p.ProfileStatus</td>
+        <td>@string.Format("{0:yyyy/MM/dd}", p.Created)</td>
+        <td>@string.Format("{0:yyyy/MM/dd}", p.ProfileLastModified)</td>
+        <td>@p.Ethnicity</td>
+        <td>@p.PersonPhotos.Count</td>
+        <td>@p.PersonResponsibilities.Count</td>
+        <td>@p.Careers.Count</td>
+        <td>@p.DateOfBirth</td>
+        <td>@p.PlaceOfBirth</td>
+      </tr>
+    }
+  </tbody>
+</table>

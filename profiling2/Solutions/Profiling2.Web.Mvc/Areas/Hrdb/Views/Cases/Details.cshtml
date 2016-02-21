@@ -1,0 +1,236 @@
+﻿@using HrdbWebServiceClient.Domain
+@using Profiling2.Domain.Prf.DTO
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Domain.Prf.Sources
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model HrdbCase
+@{
+    JhroCase jc = ViewBag.JhroCase;
+    IList<EventDataTableView> candidates = ViewBag.EventCandidates;
+    ViewBag.Title = jc.CaseNumber;
+    ViewBag.NoSideBar = true;
+}
+@if (!jc.Events.Any())
+{
+    @:@section scripts
+    {
+      $(document).ready(function() {
+        var model = new Profiling.Models.PotentialMatchingEventsModel({ id: @jc.Id });
+        model.fetch({
+          beforeSend: function() {
+            $("#matches").html("<span class='muted'>Loading potential matching events...</span>");
+          },
+          success: function() {
+            var view = new Profiling.Views.PotentialMatchingEventsView({ model: model, jcId: @jc.Id });
+            $("#matches").html(view.render().el);
+          },
+          error: function(model, xhr, options) {
+            bootbox.alert(xhr.responseText);
+            $("#matches").html("<p>No potential matching events detected.</p>");
+          }
+        });
+      }); 
+    }
+}
+
+<h2>@(Model != null && !string.IsNullOrEmpty(Model.Title) ? Model.Title : "(no title)") <small>@jc.CaseNumber</small></h2>
+
+<hr />
+
+<div class="clearfix">
+    @if (Model != null)
+    {
+        <p class="pull-left">
+            <strong>@Model.SubOfficeDesc</strong> sub-office registered this case on @(Model.RegistryDt.HasValue ? string.Format("{0:dddd dd MMMM yyyy}", Model.RegistryDt.Value) : string.Empty).
+            @if (Model.LatestFollowupDt.HasValue && string.Format("{0:dddd dd MMMM yyyy}", Model.LatestFollowupDt.Value) != string.Format("{0:dddd dd MMMM yyyy}", Model.RegistryDt.Value))
+            {
+                @:&nbsp;&nbsp;It was last followed up on @string.Format("{0:dddd dd MMMM yyyy}", Model.LatestFollowupDt.Value).
+            }
+        </p>
+    }
+
+    <p class="pull-right">@Html.ActionLink("Back to HRDB cases", "Index", "Home", new { area = "Hrdb" }, new { @class = "btn" })</p>
+    <p class="pull-right">
+        <a href="@Url.Action("Import", "Events", new { area = "Hrdb", id = jc.Id })" class="btn" style="margin-right: 10px;">
+            <i class="icon-hand-right"></i>
+            Import...
+        </a>
+    </p>
+    @if (Model != null)
+    {
+        <p class="pull-right">
+            <a href="@Model.GetDirectLinkToHRDB()" class="btn" style="margin-right: 10px;" target="_blank">
+                <i class="icon-share"></i>
+                Open in HRDB 
+            </a>
+        </p>
+    }
+</div>
+
+@if (jc.Sources.Any())
+{
+    <div class="alert alert-success">
+        There are source documents linked to this case code:
+        <ul>
+            @foreach (Source s in jc.Sources)
+            {
+                <li>
+                    <a href="@Url.Action("Index", "Sources", new { area = "Profiling" })#info/@s.Id" target="_blank">@s.SourceName</a>
+                    @if (s.SourceRelationshipsAsParent.Any())
+                    {
+                        <ul>
+                            @foreach (SourceRelationship sr in s.SourceRelationshipsAsParent)
+                            {
+                                <li><a href="@Url.Action("Index", "Sources", new { area = "Profiling" })#info/@sr.ChildSource.Id" target="_blank">@sr.ChildSource.SourceName</a></li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+     <div class="alert alert-block">
+         There are no source documents linked to this case code.
+     </div>
+}
+
+@if (jc.Events.Any())
+{
+    <div class="alert alert-success">
+        @foreach (Event e in jc.Events)
+        {
+            <p>This case is linked with the event @Html.ActionLink(e.Headline, "Details", "Events", new { id = e.Id, area = "Profiling" }, new { target = "_blank" }).</p>
+        }
+    </div>
+}
+else
+{
+     <div class="alert alert-block">
+         <p>There are no events linked to this case code.</p>
+     </div>
+}
+
+@if (Model != null)
+{
+    <div>
+        <table class="table table-bordered">
+            <thead><tr><th>Start Date</th><th>End Date</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td style="width: 50%;">@(Model.StartDate.HasValue ? string.Format("{0:dddd dd MMMM yyyy}", Model.StartDate.Value) : string.Empty)</td>
+                    <td>@(Model.EndDate.HasValue ? string.Format("{0:dddd dd MMMM yyyy}", Model.EndDate.Value) : string.Empty)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <thead><tr><th>Summary</th></tr></thead>
+            <tbody>
+                <tr><td>@Html.Raw(Model.Summary)</td></tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th colspan="2">Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!string.IsNullOrEmpty(Model.GisCoordinates))
+                {
+                    <tr>
+                        <td>Coordinates</td>
+                        <td>@Model.GisCoordinates</td>
+                    </tr>
+                }
+                @if (!string.IsNullOrEmpty(Model.IncidentAddr))
+                {
+                    <tr>
+                        <td>Address</td>
+                        <td>@Model.IncidentAddr</td>
+                    </tr>
+                }
+                @if (!string.IsNullOrEmpty(Model.TownVillage))
+                {
+                    <tr>
+                        <td>Town/Village</td>
+                        <td>@Model.TownVillage</td>
+                    </tr>
+                }
+                @if (!string.IsNullOrEmpty(Model.Subregion))
+                {
+                    <tr>
+                        <td>Subregion</td>
+                        <td>@Model.Subregion</td>
+                    </tr>
+                }
+                @if (!string.IsNullOrEmpty(Model.Region))
+                {
+                    <tr>
+                        <td>Region</td>
+                        <td>@Model.Region</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <thead><tr><th>Analysis</th></tr></thead>
+            <tbody><tr><td>@Html.Raw(Model.AnalysisDesc)</td></tr></tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <thead><tr><th>Facts</th></tr></thead>
+            <tbody><tr><td>@Html.Raw(Model.FactAnalysis)</td></tr></tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <thead><tr><th>Legal</th></tr></thead>
+            <tbody><tr><td>@Html.Raw(Model.LegalAnalysis)</td></tr></tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <thead><tr><th>Methodology</th></tr></thead>
+            <tbody><tr><td>@Html.Raw(Model.Methodology)</td></tr></tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="span6">Perpetrator</th>
+                    <th class="span3">Degree of responsibility</th>
+                    <th class="span3">Violations</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (HrdbPerpetrator p in Model.Perpetrators)
+                {
+                    <tr>
+                        <td>
+                            @Html.Partial("_HrdbPerpetratorDetails", p)
+                        </td>
+                        <td>@p.DegreeOfResponsibility</td>
+                        <td>
+                            @if (p.Violations.Any())
+                            {
+                                @string.Join("; ", p.Violations.Select(x => x.ViolationDesc))
+                            }
+                            else
+                            {
+                                <span class="muted">No violations</span>   
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p class="muted">This case currently has no content from the HRDB.</p>
+}

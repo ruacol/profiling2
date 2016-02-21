@@ -1,0 +1,45 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model IList<PersonRelationshipTypeViewModel>
+@{
+  ViewBag.Title = "Person Relationship Types";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("types-table", {
+      bServerSide: false
+    });
+  }); 
+}
+
+<div class="btn-toolbar">
+    <div class="btn-group">
+        @Html.ActionLink("Create", "Create", "PersonRelationshipTypes", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+    </div>
+</div>
+
+<h2>Person Relationship Types</h2>
+
+<hr />
+
+<table id="types-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Is Commutative</th>
+      <th>Notes</th>
+      <th>Num Relationships</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (PersonRelationshipTypeViewModel vm in Model)
+    {
+      <tr>
+        <td style="white-space: nowrap;">@Html.ActionLink(vm.PersonRelationshipTypeName, "Details", "PersonRelationshipTypes", new { area = "Profiling", id = vm.Id }, null)</td>
+        <td>@vm.IsCommutative</td>
+        <td>@vm.Notes</td>
+        <td>@vm.NumRelationships</td>
+      </tr>
+    }
+  </tbody>
+</table>

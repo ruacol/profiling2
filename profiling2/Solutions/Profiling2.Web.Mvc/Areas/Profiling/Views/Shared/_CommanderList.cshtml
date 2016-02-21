@@ -1,0 +1,36 @@
+﻿@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Prf.Persons
+@model IList<Career>
+@{
+    if (Model.Count > 0)
+    {
+        <ul class="unstyled">
+            @foreach (Person p in Model.Select(x => x.Person).Distinct())
+            {
+            <li>
+                @Html.ActionLink(p.Name, "Details", "Persons", new { area = "Profiling", id = p.Id }, null)
+                @if (Model.Where(x => x.Person == p).Any(x => x.Acting))
+                {
+                    <span class="label label-info" style="margin-left: 5px;"><small>ACTING</small></span>
+                }
+                @if (Model.Where(x => x.Person == p).Any(x => x.Absent))
+                {
+                    <span class="label label-success" style="margin-left: 5px;"><small>ABSENT</small></span>
+                }
+                @if (Model.Where(x => x.Person == p).Any(x => x.Defected))
+                {
+                    <span class="label label-important" style="margin-left: 5px;"><small>DEFECTED</small></span>
+                }
+                @if (Model.Where(x => x.Person == p).Any(x => x.Nominated))
+                {
+                    <span class="label label-success" style="margin-left: 5px;"><small>NOMINATED</small></span>
+                }
+            </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <span class="muted">No known current commander.</span> 
+    }
+}

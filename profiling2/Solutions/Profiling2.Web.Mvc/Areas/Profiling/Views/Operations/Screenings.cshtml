@@ -1,0 +1,41 @@
+﻿@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Prf.Units
+@model Operation
+@{
+  ViewBag.Title = "Screenings";
+  IList<Career> careers = ViewBag.Careers;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    new Profiling.DataTable("screenings-table", {
+      bServerSide: false,
+      aaSorting: [ [ 8, 'desc' ] ]
+    });
+    $("span.srpe-result").click(function() {
+      var selector = $(this).data('selector');
+      bootbox.dialog($(selector).html().replace(/\n/g, "<br />"), [{
+        label: "Open screening",
+        callback: function() {
+          window.location.href = "@(Request.ApplicationPath + "/")Screening/Requests/Details/" + $(selector).data('request-id');
+        }
+      }, {
+        label: "OK",
+        class: "btn-primary",
+        callback: null
+      }], {
+        onEscape: true,
+        classes: "narrative",
+        animate: false
+      });
+    });
+  }); 
+}
+
+<h2>Screenings On Individuals In @Html.Raw(Model.Name)</h2>
+
+<p>Latest screenings performed on all individuals with careers in units that are part of the operation @Html.ActionLink(Model.Name, "Details", "Operations", new { id = Model.Id, area = "Profiling" }, null).</p>
+
+<hr />
+
+@Html.Partial("_CareersLatestScreenings")

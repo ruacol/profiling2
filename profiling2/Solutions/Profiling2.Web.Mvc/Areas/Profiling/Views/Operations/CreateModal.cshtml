@@ -1,0 +1,22 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model OperationViewModel
+@{
+    Layout = "";
+    ViewBag.Title = "Create New Operation";
+}
+
+@using (Html.BeginForm("CreateModal", "Operations", FormMethod.Post, new { id = "operation-create-form" }))
+{
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4>Create New Operation</h4>
+      <p>Create a new operation which can then be linked to a unit.</p>
+  </div>
+  <div class="modal-body form-horizontal">
+    @Html.Partial("_OperationForm", Model)
+  </div>
+  <div class="modal-footer">
+    <a id="modal-operation-create-button" class="btn btn-primary">Save</a>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  </div>
+}

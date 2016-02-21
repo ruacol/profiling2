@@ -1,0 +1,24 @@
+﻿@using Profiling2.Domain.Scr
+@using Profiling2.Domain.Extensions
+@model IList<RequestUnit>
+<table id="units-table" class="table table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th title="This column represents the order in which the person was introduced to the request.">No.</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 1; 
+        }
+        @foreach (RequestUnit ru in Model.Where(x => !x.Archive))
+        {
+            <tr>
+                <td>@i</td>
+                <td>@Html.Partial("_UnitLinkAndDates", ru.Unit)</td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>

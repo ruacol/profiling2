@@ -1,0 +1,46 @@
+﻿@using Profiling2.Domain
+@{
+    ViewBag.Title = "SourcesLike";
+    IList<LuceneSearchResult> Results = (IList<LuceneSearchResult>)ViewData["results"];
+}
+
+<h2>Sources Like</h2>
+
+@if (Results != null)
+{
+    <table class="table">
+        <tr>
+            <th>Id</th><th>Name</th><th>FileDateTimeStamp</th><th>Score</th>
+        </tr>
+        @foreach (LuceneSearchResult result in Results)
+        {
+            <tr>
+                @foreach (string key in new string[] { "Id", "SourceName", "FileDateTimeStamp" })
+                {
+                    <td>
+                        @if (result.FieldValues.ContainsKey(key))
+                        {
+                            foreach (string s in result.FieldValues[key])
+                            {
+                                if (string.Equals(key, "FileDateTimeStamp"))
+                                {
+                                    @string.Format("{0:yyyy-MM-dd}", new DateTime(long.Parse(s)))
+                                }
+                                else if (string.Equals(key, "Id"))
+                                {
+                                    <a href="@(Request.ApplicationPath + "/")Profiling/Sources/Preview/@s" target="_blank">@s</a>
+                                }
+                                else
+                                {
+                                    @s
+                                }
+                                <br />
+                            }
+                        }
+                    </td>
+                }
+                <td>@result.Score</td>
+            </tr>
+        }
+    </table>
+}

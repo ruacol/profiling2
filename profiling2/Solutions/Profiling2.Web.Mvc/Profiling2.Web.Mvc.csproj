@@ -1,0 +1,1550 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{39613BA0-1206-4A4B-A16A-C1F2A22D1267}</ProjectGuid>
+    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Profiling2.Web.Mvc</RootNamespace>
+    <AssemblyName>Profiling2.Web.Mvc</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Build\Signing\Profiling2.snk</AssemblyOriginatorKeyFile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <UseIISExpress>true</UseIISExpress>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="Aspose.Cells, Version=8.6.3.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Aspose.Cells.8.6.3\lib\net40\Aspose.Cells.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Pdf, Version=11.1.1.0, Culture=neutral, PublicKeyToken=6947866647e416ec, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Aspose.Pdf.11.1.1\lib\net40-client\Aspose.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper, Version=2.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CommonServiceLocator.WindsorAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\CommonServiceLocator.WindsorAdapter.1.0\lib\NET35\CommonServiceLocator.WindsorAdapter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\CsvHelper.2.10.0\lib\net40-client\CsvHelper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentNHibernate, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\FluentNHibernate.1.4.0.0\lib\net35\FluentNHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\HangFire.Core.1.4.2\lib\net45\Hangfire.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\HangFire.SqlServer.1.4.2\lib\net45\Hangfire.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HangFire.Windsor, Version=0.1.5343.14974, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\HangFire.Windsor.0.1.5343.14974\lib\net45\HangFire.Windsor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HrdbWebServiceClient, Version=0.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\HrdbWebServiceClient.0.2.4.0\lib\net45\HrdbWebServiceClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlDiff, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\htmldiff.net.1.1\lib\net35\HtmlDiff.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.AWT.WinForms, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.AWT.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Beans, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Beans.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Charsets, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Charsets.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Corba, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Corba.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Core, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Jdbc, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Jdbc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Management, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Management.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Media, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Media.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Misc, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Misc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Naming, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Naming.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Remoting, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Remoting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Security, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.SwingAWT, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.SwingAWT.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Text, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Text.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Tools, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Tools.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Util, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Util.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.API, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.API.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Bind, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.Bind.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Crypto, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Parse, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.Parse.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Transform, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.Transform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.WebServices, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.WebServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.XPath, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.XPath.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.Runtime, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.Runtime.JNI, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.Runtime.JNI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.3.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\CompareNETObjects.3.03.0.0\lib\net45\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Mvc3Futures.3.0.20105.0\lib\Microsoft.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MiniProfiler, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\MiniProfiler.2.1.0\lib\net40\MiniProfiler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mvc.JQuery.Datatables, Version=1.0.5319.18817, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Mvc.JQuery.Datatables.1.2.111\lib\net40\Mvc.JQuery.Datatables.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MvcContrib, Version=3.0.100.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\MvcContrib.Mvc3-ci.3.0.100.0\lib\MvcContrib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MvcContrib.FluentHtml, Version=3.0.100.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\MvcContrib.Mvc3.FluentHtml-ci.3.0.100.0\lib\MvcContrib.FluentHtml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\NHibernate.3.3.5.4000\lib\Net35\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate.Envers, Version=1.6.0.0, Culture=neutral, PublicKeyToken=e2c5b946037fb7f8, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\NHibernate.Envers.1.6.0\lib\Net35\NHibernate.Envers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Postal, Version=1.0.0.0, Culture=neutral, PublicKeyToken=45719375b8b4d528, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Postal.Mvc3.1.2.0\lib\net40\Postal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="QueryInterceptor, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\QueryInterceptor.0.2\lib\net40\QueryInterceptor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RazorEngine, Version=2.1.4039.23635, Culture=neutral, PublicKeyToken=1f722ed313f51831, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\RazorEngine.2.1\lib\.NetFramework 4.0\RazorEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpArch.Domain, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\SharpArch.Domain.2.1.2\lib\NET40\SharpArch.Domain.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpArch.NHibernate, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\MONUSCO\SharpArch.NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpArch.Web.Mvc, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\SharpArch.Web.Mvc.Castle.2.1.2\lib\NET40\SharpArch.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Profiling.NHibernate, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\MiniProfiler.NHibernate.2.1.0.2\lib\NET40\StackExchange.Profiling.NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=3.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Microsoft.AspNet.Mvc.3.0.50813.1\lib\net40\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\RazorEngine.2.1\lib\.NetFramework 4.0\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="tika-app, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\TikaOnDotNet.1.7.0\lib\net35\tika-app.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TikaOnDotNet, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\TikaOnDotNet.1.7.0\lib\net35\TikaOnDotNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebActivator, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Common\AssemblyVersion.cs">
+      <Link>Properties\AssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="App_Start\MiniProfiler.cs" />
+    <Compile Include="Areas\API\APIAreaRegistration.cs" />
+    <Compile Include="Areas\API\BasicAuthenticationAttribute.cs" />
+    <Compile Include="Areas\API\Controllers\BaseApiController.cs" />
+    <Compile Include="Areas\API\Controllers\PersonsController.cs" />
+    <Compile Include="Areas\API\Controllers\UnitsController.cs" />
+    <Compile Include="Areas\Documents\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Documents\Controllers\ViewModels\DocumentationFileTagViewModel.cs" />
+    <Compile Include="Areas\Documents\Controllers\ViewModels\DocumentationFileViewModel.cs" />
+    <Compile Include="Areas\Documents\DocumentsAreaRegistration.cs" />
+    <Compile Include="Areas\Hrdb\Controllers\CasesController.cs" />
+    <Compile Include="Areas\Hrdb\Controllers\EventsController.cs" />
+    <Compile Include="Areas\Hrdb\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Hrdb\Controllers\ViewModels\HrdbCaseViewModel.cs" />
+    <Compile Include="Areas\Hrdb\Controllers\ViewModels\HrdbPerpetratorViewModel.cs" />
+    <Compile Include="Areas\Hrdb\HrdbAreaRegistration.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ActionsTakenController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ActionTakenTypesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ActiveScreeningsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\CareersController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\EventRelationshipsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\EventsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\EventSourcesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\LocationsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\OperationAliasesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\OperationsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\OperationSourcesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\OrganizationsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\OrgResponsibilitiesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\PersonRelationshipTypesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\PersonRestrictedNotesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\TagsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\UnitOperationsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\ActionTakenTypeViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\AdminUserViewModel.cs" />
+    <Compile Include="Areas\Hrdb\Controllers\ViewModels\JhroCaseViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\LocationMergeViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\OperationAliasViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\OperationNameChangeViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\OperationSourceViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonRelationshipTypeViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonRestrictedNoteViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\RegionViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\SourceDataTablesParam.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\SourceFileDataViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\SourceInfoView.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\TagViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\UnitOperationViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\OperationDataTableView.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\OperationViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonDataTableLuceneView.cs" />
+    <Compile Include="Areas\Profiling\Controllers\PersonPhotosController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\PersonRelationshipsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\PersonResponsibilitiesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\PersonResponsibilityTypesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\PersonsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\PersonSourcesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\RanksController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\RegionsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\RolesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\UnitAliasesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\UnitSourcesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\UnitAliasViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\UnitDataTableLuceneView.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\UnitSourceViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\QueryFinalDecisionViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\RequestDataTableLuceneView.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\ScreeningResponseDataTableLuceneView.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\YearViewModel.cs" />
+    <Compile Include="Areas\Sources\Controllers\AllController.cs" />
+    <Compile Include="Areas\Sources\Controllers\AuthorsController.cs" />
+    <Compile Include="Areas\Sources\Controllers\ExtensionController.cs" />
+    <Compile Include="Areas\Sources\Controllers\OcrController.cs" />
+    <Compile Include="Areas\Sources\Controllers\SourceAdminController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\SourceAttachController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\HierarchiesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\UnitLocationsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\UnitsController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\ActionTakenViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\ActiveScreeningViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\AdminSuggestionPersonResponsibilityViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\CareerViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\DataTablesSourceData.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\DateViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\EthnicityViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\EventRelationshipViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\EventSourceViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\EventViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\LocationViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\MergeViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\OrganizationViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\OrgResponsibilityViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PeriodBaseViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\PersonAliasesController.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonAliasViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonDataTableView.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonPhotoViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonRelationshipViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonResponsibilityTypeViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonResponsibilityViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonSourceViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PersonViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\PhotoViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\RankViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\RequestPersonViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\RoleViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\ScreeningResultViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\SourceViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\UnitHierarchyViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\UnitLocationViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\UnitViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\ViolationViewModel.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViolationsController.cs" />
+    <Compile Include="Areas\Profiling\ProfilingAreaRegistration.cs" />
+    <Compile Include="Areas\Screening\Controllers\AttachmentsController.cs" />
+    <Compile Include="Areas\Screening\Controllers\ConsolidateController.cs" />
+    <Compile Include="Areas\Screening\Controllers\FinalizeController.cs" />
+    <Compile Include="Areas\Screening\Controllers\InitiateController.cs" />
+    <Compile Include="Areas\Screening\Controllers\InputsController.cs" />
+    <Compile Include="Areas\Screening\Controllers\RequestEntityController.cs" />
+    <Compile Include="Areas\Screening\Controllers\RequestPersonController.cs" />
+    <Compile Include="Areas\Screening\Controllers\ScreeningBaseController.cs" />
+    <Compile Include="Areas\Screening\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Screening\Controllers\ScreeningEntityController.cs" />
+    <Compile Include="Areas\Screening\Controllers\ValidateController.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\ConsolidateViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\FinalDecisionViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\FinalizeViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\ProposedPersonViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\RecommendationViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\RequestPersonDataTableView.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\RequestViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\ScreeningRequestPersonEntityViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\ScreeningRequestPersonEntityDataTableView.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\RespondViewModel.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\ValidateViewModel.cs" />
+    <Compile Include="Areas\Screening\Export\ExcelCasesForDiscussion.cs" />
+    <Compile Include="Areas\Screening\ScreeningAreaRegistration.cs" />
+    <Compile Include="Areas\Sources\Controllers\ExplorerController.cs" />
+    <Compile Include="Areas\Sources\Controllers\FeedingController.cs" />
+    <Compile Include="Areas\Sources\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Sources\Controllers\PreviewsController.cs" />
+    <Compile Include="Areas\Sources\Controllers\OwnersController.cs" />
+    <Compile Include="Areas\Sources\Controllers\ViewModels\FeedingSourceViewModel.cs" />
+    <Compile Include="Areas\Sources\Controllers\ViewModels\MultipleUploadViewModel.cs" />
+    <Compile Include="Areas\Sources\Controllers\ViewModels\SourceAuthorViewModel.cs" />
+    <Compile Include="Areas\Sources\Controllers\ViewModels\SourceOwningEntityViewModel.cs" />
+    <Compile Include="Areas\Sources\Controllers\ViewModels\SourcePathDataTableLuceneView.cs" />
+    <Compile Include="Areas\Sources\Controllers\ViewModels\SourceResultDataTableLuceneView.cs" />
+    <Compile Include="Areas\Sources\Controllers\ViewModels\RemovePasswordViewModel.cs" />
+    <Compile Include="Areas\Sources\SourcesAreaRegistration.cs" />
+    <Compile Include="Areas\System\Controllers\BackgroundController.cs" />
+    <Compile Include="Areas\System\Controllers\HomeController.cs" />
+    <Compile Include="Areas\System\Controllers\LuceneController.cs" />
+    <Compile Include="Areas\System\Controllers\OhchrWebServiceController.cs" />
+    <Compile Include="Areas\System\Controllers\PermissionsController.cs" />
+    <Compile Include="Areas\System\Controllers\RolesController.cs" />
+    <Compile Include="Areas\System\Controllers\ScheduledController.cs" />
+    <Compile Include="Areas\System\Controllers\SourceIndexLogController.cs" />
+    <Compile Include="Areas\System\Controllers\SystemBaseController.cs" />
+    <Compile Include="Areas\System\Controllers\Tasks\PostalEmailTasks.cs" />
+    <Compile Include="Areas\System\Controllers\ViewModels\RoleViewModel.cs" />
+    <Compile Include="Areas\System\Controllers\ViewModels\SearchViewModel.cs" />
+    <Compile Include="Areas\System\Controllers\ViewModels\UserViewModel.cs" />
+    <Compile Include="Areas\System\SystemAreaRegistration.cs" />
+    <Compile Include="AuthorizationFilterForHangfire.cs" />
+    <Compile Include="CastleWindsor\AutomappingConfiguration.cs" />
+    <Compile Include="CastleWindsor\ComponentRegistrar.cs" />
+    <Compile Include="Areas\Profiling\Controllers\AdminSourceSearchesController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CompressAttribute.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Areas\Screening\Controllers\RequestsController.cs" />
+    <Compile Include="Controllers\ModelBinders\ModelBindingContextExtension.cs" />
+    <Compile Include="Controllers\MultiRoleAuthorizeAttribute.cs" />
+    <Compile Include="Controllers\NHibernateContractResolver.cs" />
+    <Compile Include="Controllers\NoCacheAttribute.cs" />
+    <Compile Include="Controllers\PermissionAuthorizeAttribute.cs" />
+    <Compile Include="Controllers\RouteRegistrar.cs" />
+    <Compile Include="Areas\Profiling\Controllers\SourcesController.cs" />
+    <Compile Include="Areas\System\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Screening\Controllers\ViewModels\RequestView.cs" />
+    <Compile Include="Areas\Profiling\Controllers\ViewModels\SourceDataTableView.cs" />
+    <Compile Include="Controllers\ModelBinders\SourceDataTablesModelBinder.cs" />
+    <Compile Include="Controllers\ModelBinders\TrimModelBinder.cs" />
+    <Compile Include="GlobalViewSingleton.cs" />
+    <Compile Include="Helpers\DateLabel.cs" />
+    <Compile Include="Helpers\HtmlExtensions.cs" />
+    <Compile Include="Helpers\ScreeningResultLabel.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Mvc.Bundler.cs" />
+    <Compile Include="RegisterDatatablesModelBinder.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="Validators\ApproximateBirthDateAttribute.cs" />
+    <Compile Include="Validators\SensibleOperationNameChangeAttribute.cs" />
+    <Compile Include="Validators\UniqueOperationNameAttribute.cs" />
+    <Compile Include="Validators\UniqueUnitOperationAttribute.cs" />
+    <Compile Include="Validators\ValidDatePeriodAttribute.cs" />
+    <Compile Include="Validators\IsNotPendingAttribute.cs" />
+    <Compile Include="Validators\IsRecognisedIDAttribute.cs" />
+    <Compile Include="Validators\RequirePersonNameAttribute.cs" />
+    <Compile Include="Validators\RequiresResponseAttribute.cs" />
+    <Compile Include="Validators\UniqueUnitAttribute.cs" />
+    <Compile Include="Validators\UnitHierarchyPreventLoopAttribute.cs" />
+    <Compile Include="Validators\UnitIsPartOfOrganizationAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bundler\bundler.js" />
+    <Content Include="bundler\node.exe" />
+    <Content Include="bundler\node_modules\clean-css\index.js" />
+    <Content Include="bundler\node_modules\clean-css\lib\clean.js" />
+    <Content Include="bundler\node_modules\clean-css\node_modules\optimist\index.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\browser.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\cake.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\coffee-script.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\command.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\grammar.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\helpers.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\index.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\lexer.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\nodes.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\optparse.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\parser.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\repl.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\rewriter.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\scope.js" />
+    <Content Include="bundler\node_modules\less\lib\less\browser.js" />
+    <Content Include="bundler\node_modules\less\lib\less\colors.js" />
+    <Content Include="bundler\node_modules\less\lib\less\cssmin.js" />
+    <Content Include="bundler\node_modules\less\lib\less\functions.js" />
+    <Content Include="bundler\node_modules\less\lib\less\index.js" />
+    <Content Include="bundler\node_modules\less\lib\less\parser.js" />
+    <Content Include="bundler\node_modules\less\lib\less\rhino.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\alpha.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\anonymous.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\assignment.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\call.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\color.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\comment.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\condition.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\dimension.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\directive.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\element.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\expression.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\import.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\javascript.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\keyword.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\media.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\mixin.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\operation.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\paren.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\quoted.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\rule.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\ruleset.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\selector.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\url.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\value.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\variable.js" />
+    <Content Include="bundler\node_modules\lib\parse-js.js" />
+    <Content Include="bundler\node_modules\lib\process.js" />
+    <Content Include="bundler\node_modules\lib\squeeze-more.js" />
+    <Content Include="bundler\node_modules\sass\lib\sass.js" />
+    <Content Include="bundler\node_modules\step\lib\step.js" />
+    <Content Include="bundler\node_modules\uglify-js.js" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.dll" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.dll.CodeAnalysisLog.xml" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.pdb" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.pkgdef" />
+    <Content Include="bundler\vs2010-extension\extension.vsixmanifest" />
+    <Content Include="bundler\vs2010-extension\favicon.ico" />
+    <Content Include="bundler\vs2010-extension\ServiceStack-logo.png" />
+    <Content Include="Content\.gitignore" />
+    <Content Include="Content\base.css" />
+    <Content Include="Content\bootstrap-datepicker.css" />
+    <Content Include="Content\bootstrap-datepicker3.css" />
+    <Content Include="Content\bootstrap-modal.css" />
+    <Content Include="Content\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Areas\System\Views\Lucene\SourceSearch.cshtml" />
+    <Content Include="Areas\System\Views\SourceIndexLog\Index.cshtml" />
+    <Content Include="Areas\System\Views\SourceIndexLog\Details.cshtml" />
+    <Content Include="Areas\System\Views\Lucene\EventSearch.cshtml" />
+    <Content Include="Areas\System\Views\Lucene\RequestSearch.cshtml" />
+    <Content Include="Areas\Profiling\Views\Locations\MergeInto.cshtml" />
+    <Content Include="Areas\System\Views\SourceIndexLog\Stats.cshtml" />
+    <Content Include="Areas\System\Views\Lucene\SourcesLike.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\EditPublicSummaryModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\EditNotesModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\EditBackgroundInformationModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Locations\Map.cshtml" />
+    <Content Include="Areas\Sources\Views\Extension\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonRestrictedNotes\CreateModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonRestrictedNotes\EditModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonRestrictedNotes\_PersonRestrictedNoteForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\UnitOperations\EditModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\AddUnitModal.cshtml" />
+    <Content Include="Areas\Sources\Views\SourceAdmin\DuplicatesByHash.cshtml" />
+    <Content Include="Areas\Sources\Views\SourceAdmin\DuplicatesByHashOf.cshtml" />
+    <Content Include="Areas\Sources\Views\All\Browse.cshtml" />
+    <Content Include="Areas\Profiling\Views\OperationSources\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\OperationSources\Edit.cshtml" />
+    <Content Include="Areas\Sources\Views\Ocr\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\MatchPersons.cshtml" />
+    <Content Include="Areas\Sources\Views\Previews\Index.cshtml" />
+    <Content Include="Areas\Screening\Views\Home\ScreeningEntityCounts.cshtml" />
+    <Content Include="Areas\Screening\Views\Home\FinalDecisions.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonRelationshipTypes\Create.cshtml" />
+    <Content Include="Areas\System\Views\Users\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\Merge.cshtml" />
+    <Content Include="Areas\Sources\Views\Feeding\Report.cshtml" />
+    <Content Include="Areas\Screening\Views\Home\Charts.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonResponsibilities\List.cshtml" />
+    <Content Include="Areas\System\Views\Roles\Index.cshtml" />
+    <Content Include="Areas\System\Views\Roles\Edit.cshtml" />
+    <Content Include="Areas\System\Views\Roles\Create.cshtml" />
+    <Content Include="Areas\System\Views\Roles\_RoleForm.cshtml" />
+    <Content Include="Areas\System\Views\Users\Archived.cshtml" />
+    <Content Include="Areas\Sources\Views\Authors\CreateModal.cshtml" />
+    <Content Include="Areas\Sources\Views\Owners\Index.cshtml" />
+    <Content Include="Areas\Sources\Views\Owners\Create.cshtml" />
+    <Content Include="Areas\Sources\Views\Owners\_SourceOwningEntityForm.cshtml" />
+    <Content Include="Areas\Sources\Views\Owners\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Sources\Edit.cshtml" />
+    <Content Include="Areas\System\Views\OhchrWebService\Index.cshtml" />
+    <Content Include="Areas\Sources\Views\Previews\RemovePassword.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Audit.cshtml" />
+    <Content Include="Areas\Sources\Views\Previews\Passwords.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\Audit.cshtml" />
+    <Content Include="Areas\System\Views\Background\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Regions\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Regions\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Regions\_RegionForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Regions\Edit.cshtml" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.vsix" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.dll.lastcodeanalysissucceeded" />
+    <Content Include="bundler\node_modules\step\package.json" />
+    <Content Include="bundler\node_modules\sass\package.json" />
+    <Content Include="bundler\node_modules\less\package.json" />
+    <Content Include="bundler\node_modules\coffee-script\package.json" />
+    <Content Include="bundler\coffee.cmd" />
+    <Content Include="bundler\bundler.cmd" />
+    <Content Include="Content\DataTables-1.9.4\docs\media\css\doc.css" />
+    <Content Include="Content\DataTables-1.9.4\docs\media\css\shCore.css" />
+    <Content Include="Content\DataTables-1.9.4\docs\media\css\shThemeDataTables.css" />
+    <Content Include="Content\DataTables-1.9.4\docs\media\images\arrow.jpg" />
+    <Content Include="Content\DataTables-1.9.4\docs\media\images\arrow.png" />
+    <Content Include="Content\DataTables-1.9.4\docs\media\images\extended.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\AutoFill\media\css\AutoFill.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\AutoFill\media\docs\media\css\doc.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\AutoFill\media\docs\media\css\shCore.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\AutoFill\media\docs\media\css\shThemeDataTables.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\AutoFill\media\docs\media\images\arrow.jpg" />
+    <Content Include="Content\DataTables-1.9.4\extras\AutoFill\media\docs\media\images\arrow.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\AutoFill\media\docs\media\images\extended.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\AutoFill\media\images\filler.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\css\ColReorder.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\docs\media\css\doc.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\docs\media\css\shCore.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\docs\media\css\shThemeDataTables.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\docs\media\images\arrow.jpg" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\docs\media\images\arrow.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\docs\media\images\extended.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\images\insert.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\css\ColVis.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\css\ColVisAlt.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\docs\media\css\doc.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\docs\media\css\shCore.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\docs\media\css\shThemeDataTables.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\docs\media\images\arrow.jpg" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\docs\media\images\arrow.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\docs\media\images\extended.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\images\button.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\FixedColumns\docs\media\css\doc.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\FixedColumns\docs\media\css\shCore.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\FixedColumns\docs\media\css\shThemeDataTables.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\FixedColumns\docs\media\images\arrow.jpg" />
+    <Content Include="Content\DataTables-1.9.4\extras\FixedColumns\docs\media\images\arrow.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\FixedColumns\docs\media\images\extended.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\Scroller\media\css\dataTables.scroller.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\Scroller\media\docs\media\css\doc.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\Scroller\media\docs\media\css\shCore.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\Scroller\media\docs\media\css\shThemeDataTables.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\Scroller\media\docs\media\images\arrow.jpg" />
+    <Content Include="Content\DataTables-1.9.4\extras\Scroller\media\docs\media\images\arrow.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\Scroller\media\docs\media\images\extended.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\Scroller\media\images\loading-background.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\css\TableTools.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\css\TableTools_JUI.css" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\background.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\collection.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\collection_hover.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\copy.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\copy_hover.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\csv.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\csv_hover.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\pdf.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\pdf_hover.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\print.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\print_hover.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\xls.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\xls_hover.png" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\swf\copy_csv_xls.swf" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\swf\copy_csv_xls_pdf.swf" />
+    <Content Include="Content\DataTables-1.9.4\media\css\demo_page.css" />
+    <Content Include="Content\DataTables-1.9.4\media\css\demo_table_jui.css" />
+    <Content Include="Content\DataTables-1.9.4\media\css\jquery.dataTables.css" />
+    <Content Include="Content\DataTables-1.9.4\media\css\jquery.dataTables_themeroller.css" />
+    <Content Include="Content\DataTables-1.9.4\media\images\back_disabled.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\back_enabled.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\back_enabled_hover.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\favicon.ico" />
+    <Content Include="Content\DataTables-1.9.4\media\images\forward_disabled.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\forward_enabled.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\forward_enabled_hover.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\Sorting icons.psd" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\printer.psd" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\file_types.psd" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\copy document.psd" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\collection.psd" />
+    <Content Include="Areas\Screening\Views\Initiate\SearchUnitsModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\Approvals.cshtml" />
+    <Content Include="Areas\Screening\Views\Shared\_RequestUnits.cshtml" />
+    <Content Include="Areas\API\Views\Web.config" />
+    <Content Include="Areas\Profiling\Views\Units\Locations.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\_UnitNameChanges.cshtml" />
+    <Content Include="Areas\Profiling\Views\Tags\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Tags\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActionTakenTypes\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActionTakenTypes\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActionTakenTypes\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActionTakenTypes\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActionTakenTypes\_ActionTakenTypeForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Sources\Replace.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_UnitNameForOperations.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Indirects.cshtml" />
+    <Content Include="Areas\Documents\Views\Home\Manage.cshtml" />
+    <Content Include="Areas\Documents\Views\Home\CreateTag.cshtml" />
+    <Content Include="Areas\Documents\Views\Home\_TagForm.cshtml" />
+    <Content Include="Areas\Documents\Views\Home\EditTag.cshtml" />
+    <Content Include="Areas\Documents\Views\Home\CreateFile.cshtml" />
+    <Content Include="Areas\Documents\Views\Home\_FileForm.cshtml" />
+    <Content Include="Content\DataTables-1.9.4\media\images\sort_asc.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\sort_asc_disabled.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\sort_both.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\sort_desc.png" />
+    <Content Include="Content\DataTables-1.9.4\media\images\sort_desc_disabled.png" />
+    <Content Include="Content\images\layers-2x.png" />
+    <Content Include="Content\images\layers.png" />
+    <Content Include="Content\images\marker-icon-2x.png" />
+    <Content Include="Content\images\marker-icon.png" />
+    <Content Include="Content\images\marker-shadow.png" />
+    <Content Include="Content\l.geosearch.css" />
+    <Content Include="Content\select2-spinner.gif" />
+    <Content Include="Content\select2.css" />
+    <Content Include="Content\select2.png" />
+    <Content Include="Content\select2x2.png" />
+    <Content Include="Content\DataTables-1.9.4\media\css\demo_table.css" />
+    <Content Include="Content\DataTables.Scroller\dataTables.scroller.css" />
+    <Content Include="Content\DataTables.Scroller\images\loading-background.png" />
+    <Content Include="Content\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\img\glyphicons-halflings.png" />
+    <Content Include="Content\img\sharp_arch.jpg" />
+    <Content Include="Content\img\sharp_arch_small.gif" />
+    <Content Include="Content\jquery.fileupload-ui.css" />
+    <Content Include="Content\leaflet.css" />
+    <Content Include="Content\leaflet.ie.css" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-bg_glass_75_ffffff_1x400.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\images\ui-icons_f6cf3b_256x240.png" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\jquery-ui-1.10.0.custom.css" />
+    <Content Include="Content\themes\jquery.ui.bootstrap\jquery-ui-1.10.0.custom.min.css" />
+    <Content Include="Content\timeline\fonts\font.abril-droidsans.css" />
+    <Content Include="Content\timeline\fonts\font.amatic-andika.css" />
+    <Content Include="Content\timeline\fonts\font.bevan-pontanosans.css" />
+    <Content Include="Content\timeline\fonts\font.bitter-raleway.css" />
+    <Content Include="Content\timeline\fonts\font.clicker-garamond.css" />
+    <Content Include="Content\timeline\fonts\font.dancing-ledger.css" />
+    <Content Include="Content\timeline\fonts\font.default.css" />
+    <Content Include="Content\timeline\fonts\font.fjalla-average.css" />
+    <Content Include="Content\timeline\fonts\font.georgia-helvetica.css" />
+    <Content Include="Content\timeline\fonts\font.knightlab.css" />
+    <Content Include="Content\timeline\fonts\font.lustria-lato.css" />
+    <Content Include="Content\timeline\fonts\font.medula-lato.css" />
+    <Content Include="Content\timeline\fonts\font.oldstandard.css" />
+    <Content Include="Content\timeline\fonts\font.opensans-gentiumbook.css" />
+    <Content Include="Content\timeline\fonts\font.playfair-faunaone.css" />
+    <Content Include="Content\timeline\fonts\font.playfair.css" />
+    <Content Include="Content\timeline\fonts\font.pt.css" />
+    <Content Include="Content\timeline\fonts\font.roboto-megrim.css" />
+    <Content Include="Content\timeline\fonts\font.rufina-sintony.css" />
+    <Content Include="Content\timeline\fonts\font.ubuntu.css" />
+    <Content Include="Content\timeline\fonts\font.unicaone-vollkorn.css" />
+    <Content Include="Content\timeline\icons\icons.html" />
+    <Content Include="Content\timeline\icons\tl-icons.svg" />
+    <Content Include="Content\timeline\timeline.css" />
+    <Content Include="Global.asax" />
+    <Content Include="README.txt" />
+    <Content Include="Scripts\.gitignore" />
+    <Content Include="Scripts\backbone.js" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-modal.js" />
+    <Content Include="Scripts\bootstrap-modalmanager.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\DataTables-1.9.4\docs\media\js\doc.js" />
+    <Content Include="Scripts\DataTables-1.9.4\docs\media\js\jquery.js" />
+    <Content Include="Scripts\DataTables-1.9.4\docs\media\js\shBrushJScript.js" />
+    <Content Include="Scripts\DataTables-1.9.4\docs\media\js\shCore.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\docs\media\js\doc.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\docs\media\js\jquery.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\docs\media\js\shBrushJScript.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\docs\media\js\shCore.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\js\AutoFill.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\js\AutoFill.min.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\docs\media\js\doc.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\docs\media\js\jquery.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\docs\media\js\shBrushJScript.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\docs\media\js\shCore.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\js\ColReorder.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\js\ColReorder.min.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\docs\media\js\doc.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\docs\media\js\jquery.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\docs\media\js\shBrushJScript.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\docs\media\js\shCore.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\js\ColVis.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\js\ColVis.min.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\docs\media\js\doc.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\docs\media\js\jquery.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\docs\media\js\shBrushJScript.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\docs\media\js\shCore.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\media\js\FixedColumns.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\media\js\FixedColumns.min.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\docs\media\js\doc.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\docs\media\js\jquery.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\docs\media\js\shBrushJScript.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\docs\media\js\shCore.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\js\dataTables.scroller.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\js\dataTables.scroller.min.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\TableTools\media\js\TableTools.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\TableTools\media\js\TableTools.min.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\TableTools\media\js\ZeroClipboard.js" />
+    <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.dataTables.js" />
+    <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.dataTables.min.js" />
+    <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.js" />
+    <Content Include="Scripts\dataTables.fnFilterOnReturn.js" />
+    <Content Include="Scripts\dataTables.fnReloadAjax.js" />
+    <Content Include="Scripts\dataTables.fnSetFilteringDelay.js" />
+    <Content Include="Scripts\dataTables.scroller.js" />
+    <Content Include="Scripts\dataTables.titleNumericSort.js" />
+    <Content Include="Scripts\exporting.src.js" />
+    <Content Include="Scripts\FileUpload\jquery.fileupload-fp.js" />
+    <Content Include="Scripts\FileUpload\jquery.fileupload-ui.js" />
+    <Content Include="Scripts\FileUpload\jquery.fileupload.js" />
+    <Content Include="Scripts\FileUpload\jquery.iframe-transport.js" />
+    <Content Include="Scripts\FileUpload\jquery.ui.widget.js" />
+    <Content Include="Scripts\findAndReplaceDOMText.js" />
+    <Content Include="Scripts\highcharts.src.js" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\TableTools\media\js\TableTools.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\js\dataTables.scroller.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\media\js\FixedColumns.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\js\ColVis.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\js\ColReorder.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\js\AutoFill.min.js.gz" />
+    <Content Include="Scripts\images\layers.png" />
+    <Content Include="Scripts\images\marker-icon-2x.png" />
+    <Content Include="Scripts\images\marker-icon.png" />
+    <Content Include="Scripts\images\marker-shadow.png" />
+    <Content Include="Scripts\jquery-1.8.3.js" />
+    <Content Include="Scripts\jquery-1.8.3.min.js" />
+    <Content Include="Scripts\jquery-ui-1.10.3.js" />
+    <Content Include="Scripts\jquery.highlight-4.js" />
+    <Content Include="Scripts\l.control.geosearch.js" />
+    <Content Include="Scripts\l.geosearch.provider.openstreetmap.js" />
+    <Content Include="Scripts\leaflet-0.7.3.js" />
+    <Content Include="Scripts\leaflet-0.7.3.min.js" />
+    <Content Include="Scripts\Models\.gitignore" />
+    <Content Include="Areas\Profiling\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_BareLayout.cshtml" />
+    <Content Include="Areas\Screening\Views\Requests\Edit.cshtml" />
+    <Content Include="Areas\Screening\Views\Attachments\Index.cshtml" />
+    <Content Include="Areas\Screening\Views\Attachments\Create.cshtml" />
+    <Content Include="Areas\Screening\Views\Consolidate\RequestAction.cshtml" />
+    <Content Include="Areas\Screening\Views\Consolidate\Index.cshtml" />
+    <Content Include="Areas\System\Views\Users\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Violations\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Violations\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Violations\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_ViolationForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\Automap.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\_EventForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Violations\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\SourceAttach\Person.cshtml" />
+    <Content Include="Areas\Profiling\Views\SourceAttach\Event.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Locations\CreateModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Locations\_LocationForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Locations\EditModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\EventSources\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\EventSources\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\Sources\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonResponsibilities\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonResponsibilities\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonResponsibilityTypes\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\OrgResponsibilities\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\OrgResponsibilities\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Organizations\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActionsTaken\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActionsTaken\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Incomplete.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_PersonForm.cshtml" />
+    <Compile Include="Areas\Profiling\Controllers\EthnicitiesController.cs" />
+    <Content Include="Areas\Profiling\Views\PersonAliases\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonAliases\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_PersonAliasForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonSources\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonSources\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonPhotos\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonPhotos\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_PersonPhotoForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonRelationships\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonRelationships\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_PersonRelationshipForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\QuickCreate.cshtml" />
+    <Content Include="Areas\Profiling\Views\Careers\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\Careers\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_CareerForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonResponsibilities\AddForPerson.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Audit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\SuggestModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Chart.cshtml" />
+    <Content Include="Areas\Profiling\Views\Roles\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ranks\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Roles\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ranks\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Roles\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_RoleForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_RankForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ranks\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Roles\CreateModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Roles\EditModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Roles\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ranks\Create.cshtml" />
+    <Content Include="Areas\Sources\Views\SourceAdmin\Index.cshtml" />
+    <Content Include="Areas\Sources\Views\SourceAdmin\DuplicatesByName.cshtml" />
+    <Content Include="Areas\Sources\Views\SourceAdmin\DuplicatesByNameOf.cshtml" />
+    <Content Include="Areas\Sources\Views\SourceAdmin\DuplicatesByIgnored.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_SourceDuplicatesTable.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_UnitForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Create.cshtml" />
+    <Content Include="Areas\Screening\Views\Initiate\Index.cshtml" />
+    <Content Include="Areas\Screening\Views\RequestEntity\Details.cshtml" />
+    <Content Include="Areas\Screening\Views\Initiate\Create.cshtml" />
+    <Content Include="Areas\Screening\Views\Initiate\Submit.cshtml" />
+    <Content Include="Areas\Screening\Views\Initiate\SearchPersonsModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\EditModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\CreateModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ranks\CreateModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ranks\EditModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Sources\Search.cshtml" />
+    <Content Include="Areas\Profiling\Views\Organizations\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Organizations\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_OrganizationForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Organizations\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Locations\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Locations\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Locations\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Locations\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Careers\Commanders.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActionsTaken\Wanted.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Wanted.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\WantedCommanders.cshtml" />
+    <Content Include="Areas\Screening\Views\Initiate\ProposePersonModal.cshtml" />
+    <Content Include="Areas\Screening\Views\RequestPerson\RequestPersonModal.cshtml" />
+    <Content Include="Areas\Screening\Views\RequestPerson\ProposedPersonModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Hierarchies\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Hierarchies\_UnitHierarchyForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Hierarchies\CreateParent.cshtml" />
+    <Content Include="Areas\Profiling\Views\Hierarchies\CreateChild.cshtml" />
+    <Content Include="Areas\Profiling\Views\UnitLocations\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\UnitLocations\_UnitLocationForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\UnitLocations\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Deleted.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Changed.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ranks\Army.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_RankTable.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ranks\Navy.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ranks\Police.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Members.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_OrganizationResponsibilities.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActiveScreenings\CreateModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\ActiveScreenings\EditModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_ActiveScreeningForm.cshtml" />
+    <Content Include="Areas\Screening\Views\Inputs\Index.cshtml" />
+    <Content Include="Areas\Screening\Views\ScreeningEntity\Details.cshtml" />
+    <Content Include="Areas\Screening\Views\Inputs\All.cshtml" />
+    <Content Include="Areas\Screening\Views\Inputs\Respond.cshtml" />
+    <Content Include="Areas\Screening\Views\Shared\_RequestDisplayTable.cshtml" />
+    <Content Include="Areas\Screening\Views\Inputs\_RespondPerson.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\UnrecognisedIds.cshtml" />
+    <Content Include="Areas\Profiling\Views\Hierarchies\CreateNameChange.cshtml" />
+    <Content Include="Areas\Profiling\Views\Hierarchies\EditNameChange.cshtml" />
+    <Content Include="Areas\Profiling\Views\Hierarchies\_UnitNameChangeForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Current.cshtml" />
+    <Content Include="Areas\Screening\Views\Shared\_CasesForDiscussion.cshtml" />
+    <Content Include="Areas\Profiling\Views\Home\Counts.cshtml" />
+    <Content Include="Areas\Screening\Views\Requests\_ExportSupportStatus.cshtml" />
+    <Content Include="Areas\Screening\Views\Home\Counts.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\FeatureProbabilityCalcs.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\NewSuggest.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Screenings.cshtml" />
+    <Content Include="Areas\Profiling\Views\EventRelationships\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\EventRelationships\_EventRelationshipForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_EventSearchHelp.cshtml" />
+    <Content Include="Areas\Profiling\Views\EventRelationships\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ethnicities\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ethnicities\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ethnicities\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ethnicities\_EthnicityForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Ethnicities\Edit.cshtml" />
+    <Content Include="Areas\Screening\Views\Finalize\Index.cshtml" />
+    <Content Include="Areas\Screening\Views\Finalize\RequestAction.cshtml" />
+    <Content Include="Areas\System\Views\Lucene\Index.cshtml" />
+    <Content Include="Areas\System\Views\Lucene\PersonSearch.cshtml" />
+    <Content Include="Areas\Screening\Views\Validate\Index.cshtml" />
+    <Content Include="Areas\Screening\Views\Validate\RequestAction.cshtml" />
+    <Content Include="Areas\Screening\Views\Shared\_EditRequestForm.cshtml" />
+    <Content Include="Areas\Documents\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Documents\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Sources\Views\Web.config" />
+    <Content Include="Areas\Sources\Views\Shared\_SidebarListItems.cshtml" />
+    <Content Include="Areas\Sources\Views\Explorer\Index.cshtml" />
+    <Content Include="Areas\Sources\Views\Explorer\Browse.cshtml" />
+    <Content Include="Areas\Sources\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Merge.cshtml" />
+    <Content Include="Areas\Documents\Views\Web.config" />
+    <Content Include="Areas\System\Views\Home\ShowPersonSourceDuplicates.cshtml" />
+    <Content Include="Areas\System\Views\Home\ShowEventSourceDuplicates.cshtml" />
+    <Content Include="Areas\System\Views\Home\ShowOrganizationSourceDuplicates.cshtml" />
+    <Content Include="Areas\Sources\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Sources\Views\Feeding\Index.cshtml" />
+    <Content Include="Areas\Sources\Views\Feeding\Approve.cshtml" />
+    <Content Include="Areas\Sources\Views\Feeding\Reject.cshtml" />
+    <Content Include="Areas\Profiling\Views\UnitAliases\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\UnitAliases\_UnitAliasForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\UnitAliases\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\UnitSources\Add.cshtml" />
+    <Content Include="Areas\Profiling\Views\UnitSources\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\EmptyUnits.cshtml" />
+    <Content Include="Areas\System\Views\Lucene\UnitSearch.cshtml" />
+    <Content Include="Areas\Screening\Views\ScreeningEntity\SearchResponses.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\Merge.cshtml" />
+    <Content Include="Areas\Sources\Views\Feeding\Rename.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\_UnitDetailsDataList.cshtml" />
+    <Content Include="Areas\Profiling\Views\Units\AddOperationModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\_OperationForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\Details.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\CreateModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\EditModal.cshtml" />
+    <Content Include="Areas\Profiling\Views\OperationAliases\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\OperationAliases\_OperationAliasForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\OperationAliases\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\Audit.cshtml" />
+    <Content Include="Areas\Sources\Views\SourceAdmin\Folders.cshtml" />
+    <Content Include="Areas\Sources\Views\All\Cases.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonRelationshipTypes\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonRelationshipTypes\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\PersonRelationshipTypes\Details.cshtml" />
+    <Content Include="Areas\Sources\Views\Feeding\Details.cshtml" />
+    <Content Include="Areas\Sources\Views\Feeding\Upload.cshtml" />
+    <Content Include="Areas\System\Views\Lucene\ScreeningResponseSearch.cshtml" />
+    <Content Include="Content\files\persons.csv" />
+    <Content Include="Content\files\150604_HRDDP_Secretariat_Template_Application for Clearance_V01.docx" />
+    <Content Include="Areas\Hrdb\Views\Cases\CreateModal.cshtml" />
+    <Content Include="Areas\Hrdb\Views\Cases\_JhroCaseForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\Screenings.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_CareersLatestScreenings.cshtml" />
+    <Content Include="Areas\Profiling\Views\Tags\Create.cshtml" />
+    <Content Include="Areas\Profiling\Views\Tags\_TagForm.cshtml" />
+    <Content Include="Areas\Profiling\Views\Tags\Edit.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\EditFormerNameChange.cshtml" />
+    <Content Include="Areas\Profiling\Views\Operations\EditNewNameChange.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_SourceThumbnail.cshtml" />
+    <Content Include="Areas\Profiling\Views\Home\_ProfilingCounts.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_CommanderList.cshtml" />
+    <Content Include="Areas\Profiling\Views\Events\WithCases.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_CareersTable.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_UnitHeading.cshtml" />
+    <Content Include="Areas\Hrdb\Views\Web.config" />
+    <Content Include="Areas\Hrdb\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Hrdb\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Hrdb\Views\Events\Import.cshtml" />
+    <Content Include="Areas\Hrdb\Views\Cases\Details.cshtml" />
+    <Content Include="Areas\Hrdb\Views\Home\Old.cshtml" />
+    <Content Include="Areas\Hrdb\Views\Shared\_HrdbPerpetratorDetails.cshtml" />
+    <Content Include="Areas\Profiling\Views\Violations\_ViolationRow.cshtml" />
+    <Content Include="Areas\Profiling\Views\Persons\Timeline.cshtml" />
+    <None Include="Content\leaflet.css.bundle" />
+    <None Include="Content\leaflet.ie.css.bundle" />
+    <Content Include="packages.config" />
+    <Content Include="Content\timeline\icons\tl-icons.eot" />
+    <Content Include="Content\timeline\icons\tl-icons.ttf" />
+    <Content Include="Content\timeline\icons\tl-icons.woff" />
+    <Content Include="Content\timeline\timeline.css.bundle" />
+    <None Include="Scripts\leaflet.js.bundle" />
+    <Content Include="Scripts\Models\OperationSourcesModel.coffee" />
+    <None Include="Scripts\Models\PersonCareersModel.coffee" />
+    <None Include="Scripts\Models\PersonModel.coffee" />
+    <Content Include="Scripts\Models\PersonNotesModel.coffee" />
+    <None Include="Scripts\Models\PersonRelationshipsModel.coffee" />
+    <None Include="Scripts\Models\PersonResponsibilitiesModel.coffee" />
+    <None Include="Scripts\Models\PersonScreeningInformationModel.coffee" />
+    <Content Include="Scripts\Models\PotentialMatchingEventsModel.coffee" />
+    <Content Include="Scripts\Models\SimilarEventsModel.coffee" />
+    <None Include="Scripts\Models\SourceModel.coffee" />
+    <None Include="Scripts\Models\SourcesCollection.coffee" />
+    <Content Include="Scripts\modernizr-2.7.2.js" />
+    <Content Include="Scripts\moment-with-langs.js" />
+    <Content Include="Scripts\moment-with-langs.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\Routers\.gitignore" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\timeline.js" />
+    <Content Include="Scripts\underscore.js" />
+    <Content Include="Scripts\underscore.min.js" />
+    <Content Include="Scripts\Views\.gitignore" />
+    <None Include="Scripts\BasicSelect.coffee" />
+    <Content Include="Scripts\Routers\FeedingIndexRouter.coffee" />
+    <Content Include="Scripts\Models\UnitSourcesModel.coffee" />
+    <Content Include="Scripts\MultiSelect.coffee" />
+    <None Include="Scripts\Routers\HierarchyRouter.coffee" />
+    <Content Include="Scripts\Routers\MergePersonsRouter.coffee" />
+    <Content Include="Scripts\Routers\MergeUnitsRouter.coffee" />
+    <Content Include="Scripts\Routers\RequestTableRouter.coffee" />
+    <Content Include="Scripts\Routers\OperationDetailsRouter.coffee" />
+    <Content Include="Scripts\Routers\MatchPersonsRouter.coffee" />
+    <Content Include="Scripts\Routers\MergeEventsRouter.coffee" />
+    <Content Include="Scripts\Routers\HrdbCaseImportRouter.coffee" />
+    <None Include="Scripts\Routers\RequestValidateRouter.coffee" />
+    <None Include="Scripts\Routers\RequestRespondRouter.coffee" />
+    <Content Include="Scripts\Routers\ExplorerBrowseRouter.coffee" />
+    <Content Include="Scripts\Routers\SearchResponsesRouter.coffee" />
+    <None Include="Scripts\Routers\UnitDetailsRouter.coffee" />
+    <Content Include="Scripts\underscore.min.map" />
+    <Content Include="Scripts\timeline.js.bundle" />
+    <None Include="Scripts\Views\Event\BaseEventRelationshipFormView.coffee" />
+    <Content Include="Scripts\Views\Event\EventApproveView.coffee" />
+    <None Include="Scripts\Views\Event\EventRelationshipAddFormView.coffee" />
+    <None Include="Scripts\Views\Event\EventRelationshipEditFormView.coffee" />
+    <Content Include="Scripts\Views\Source\Explorer\ExplorerBrowseView.coffee" />
+    <Content Include="Scripts\Views\LocationMergeIntoView.coffee" />
+    <Content Include="Scripts\Views\Person\PersonEditFormIconView.coffee" />
+    <Content Include="Scripts\Views\RedFlagsView.coffee" />
+    <Content Include="Scripts\Views\LocationMapView.coffee" />
+    <Content Include="Scripts\Views\PersonDetails\PublicSummaryView.coffee" />
+    <Content Include="Scripts\Views\MapView.coffee" />
+    <Content Include="Scripts\Views\PersonDetails\NotesView.coffee" />
+    <Content Include="Scripts\Views\Event\MergeEventSearchView.coffee" />
+    <Content Include="Scripts\Views\PersonDetails\PersonDetailsResponsibilitiesNewView.coffee" />
+    <Content Include="Scripts\Views\PersonDetails\PersonDetailsResponsibilitiesSummaryView.coffee" />
+    <Content Include="Scripts\Views\Event\JhroCaseCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\ActiveScreening\ActiveScreeningAddFormView.coffee" />
+    <None Include="Scripts\Views\Person\ActiveScreening\ActiveScreeningDeleteButtonView.coffee" />
+    <None Include="Scripts\Views\Person\ActiveScreening\ActiveScreeningEditFormView.coffee" />
+    <None Include="Scripts\Views\Person\DeleteProfileButtonView.coffee" />
+    <Content Include="Scripts\Views\Person\PersonDataTablesLuceneView.coffee" />
+    <Content Include="Scripts\Views\Person\Merge\MergePersonSearchView.coffee" />
+    <Content Include="Scripts\Views\Person\PublicSummaryEditFormIconView.coffee" />
+    <Content Include="Scripts\Views\Person\Notes\RestrictedNoteAddFormView.coffee" />
+    <Content Include="Scripts\Views\Person\Notes\RestrictedNoteEditFormView.coffee" />
+    <Content Include="Scripts\Views\Person\MatchPersonView.coffee" />
+    <Content Include="Scripts\Views\PotentialMatchingEventsView.coffee" />
+    <None Include="Scripts\Views\Request\AttachedPersonsView.coffee" />
+    <Content Include="Scripts\Views\Request\AttachedUnitsView.coffee" />
+    <None Include="Scripts\Views\Request\DeleteRequestButtonView.coffee" />
+    <None Include="Scripts\Views\Request\EditProposedPersonView.coffee" />
+    <None Include="Scripts\Views\Request\EditRequestPersonView.coffee" />
+    <None Include="Scripts\Views\Request\PersonSearchView.coffee" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Scripts\Routers\RequestIndexRouter.coffee" />
+    <None Include="Scripts\Routers\RequestSubmitRouter.coffee" />
+    <None Include="Scripts\Routers\SourcesSearchRouter.coffee" />
+    <None Include="Scripts\Routers\UnitChartRouter.coffee" />
+    <None Include="Scripts\Routers\EventDetailsRouter.coffee" />
+    <None Include="Scripts\Routers\EventIndexRouter.coffee" />
+    <None Include="Scripts\Routers\PersonDetailsRouter.coffee" />
+    <None Include="Scripts\Routers\PersonsRouter.coffee" />
+    <None Include="Scripts\Routers\SourcesRouter.coffee" />
+    <None Include="Scripts\Views\BaseDeleteButtonView.coffee" />
+    <None Include="Scripts\Views\BaseModalForm.coffee" />
+    <None Include="Scripts\Views\Event\ActionTakenAddFormView.coffee" />
+    <None Include="Scripts\Views\Event\ActionTakenAddIconFormView.coffee" />
+    <None Include="Scripts\Views\Event\ActionTakenEditFormView.coffee" />
+    <None Include="Scripts\Views\Event\AddPersonResponsibilityFormView.coffee" />
+    <None Include="Scripts\Views\Event\BaseEventFormView.coffee" />
+    <None Include="Scripts\Views\Event\EventAddSourceFormView.coffee" />
+    <None Include="Scripts\Views\Event\EventAddSourceIconFormView.coffee" />
+    <None Include="Scripts\Views\Event\EventCreateFormIconView.coffee" />
+    <None Include="Scripts\Views\Event\EventCreateFormView.coffee" />
+    <None Include="Scripts\Views\Event\EventDataTablesView.coffee" />
+    <None Include="Scripts\Views\Event\EventDeleteView.coffee" />
+    <None Include="Scripts\Views\Event\EventEditFormIconView.coffee" />
+    <None Include="Scripts\Views\Event\EventEditFormView.coffee" />
+    <None Include="Scripts\Views\Event\EventSourceEditFormView.coffee" />
+    <None Include="Scripts\Views\Event\OrgResponsibilityAddFormView.coffee" />
+    <None Include="Scripts\Views\Event\OrgResponsibilityEditFormView.coffee" />
+    <None Include="Scripts\Views\Event\PersonResponsibilityAddIconFormView.coffee" />
+    <None Include="Scripts\Views\Event\PersonResponsibilityEditFormView.coffee" />
+    <None Include="Scripts\Views\LocationCreateFormView.coffee" />
+    <None Include="Scripts\Views\LocationEditFormView.coffee" />
+    <None Include="Scripts\Views\PersonDetails\PersonDetailsCareersView.coffee" />
+    <None Include="Scripts\Views\PersonDetails\PersonDetailsInformationView.coffee" />
+    <None Include="Scripts\Views\PersonDetails\PersonDetailsRelationshipsView.coffee" />
+    <None Include="Scripts\Views\PersonDetails\PersonDetailsResponsibilitiesView.coffee" />
+    <None Include="Scripts\Views\PersonDetails\PersonDetailsScreeningInformationView.coffee" />
+    <None Include="Scripts\Views\PersonDetails\PersonDetailsTabView.coffee" />
+    <None Include="Scripts\Views\Person\Alias\AliasCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\Alias\AliasDeleteButtonView.coffee" />
+    <None Include="Scripts\Views\Person\Alias\AliasEditFormView.coffee" />
+    <None Include="Scripts\Views\Person\Career\BaseCareerFormView.coffee" />
+    <None Include="Scripts\Views\Person\BasePersonFormView.coffee" />
+    <None Include="Scripts\Views\Person\Relationship\BasePersonRelationshipFormView.coffee" />
+    <None Include="Scripts\Views\Person\Career\CareerCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\Career\CareerDeleteButtonView.coffee" />
+    <None Include="Scripts\Views\Person\Career\CareerEditFormView.coffee" />
+    <None Include="Scripts\Views\Person\EventSuggestFormView.coffee" />
+    <None Include="Scripts\Views\Person\HumanRightsAddFormView.coffee" />
+    <None Include="Scripts\Views\Person\HumanRightsDeleteButtonView.coffee" />
+    <None Include="Scripts\Views\Person\PersonCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\PersonDataTablesView.coffee" />
+    <None Include="Scripts\Views\Person\PersonEditFormView.coffee" />
+    <None Include="Scripts\Views\Person\PersonQuickCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\PersonSource\PersonSourceCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\PersonSource\PersonSourceDeleteButtonView.coffee" />
+    <None Include="Scripts\Views\Person\PersonSource\PersonSourceEditFormView.coffee" />
+    <None Include="Scripts\Views\Person\Photo\PhotoCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\Photo\PhotoDeleteButtonView.coffee" />
+    <None Include="Scripts\Views\Person\Photo\PhotoEditFormView.coffee" />
+    <None Include="Scripts\Views\Person\RankCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\RankEditFormView.coffee" />
+    <None Include="Scripts\Views\Person\Relationship\RelationshipCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\Relationship\RelationshipDeleteButtonView.coffee" />
+    <None Include="Scripts\Views\Person\Relationship\RelationshipEditFormView.coffee" />
+    <None Include="Scripts\Views\Person\FunctionCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\FunctionEditFormView.coffee" />
+    <None Include="Scripts\Views\Request\ProposePersonView.coffee" />
+    <Content Include="Scripts\Views\Request\RequestDataTablesLuceneView.coffee" />
+    <None Include="Scripts\Views\Request\RequestDataTablesView.coffee" />
+    <None Include="Scripts\Views\Person\UnitCreateFormView.coffee" />
+    <None Include="Scripts\Views\Person\UnitEditFormView.coffee" />
+    <Content Include="Scripts\Views\Source\SelectMostRecentlyViewedPersonsView.coffee" />
+    <Content Include="Scripts\Views\Source\Search\SourceMostRecentAttachTargetView.coffee" />
+    <Content Include="Scripts\Views\Source\SelectMostRecentlyViewedEventsView.coffee" />
+    <Content Include="Scripts\Views\Source\Explorer\ExplorerCaseView.coffee" />
+    <Content Include="Scripts\Views\SearchResponsesDataTableView.coffee" />
+    <Content Include="Scripts\Views\Source\Explorer\ExplorerSearchView.coffee" />
+    <Content Include="Scripts\Views\Source\MoreLikeThisView.coffee" />
+    <Content Include="Scripts\Views\Source\Explorer\ExplorerPathsView.coffee" />
+    <Content Include="Scripts\Views\Source\Explorer\ExplorerPreviewModalView.coffee" />
+    <Content Include="Scripts\Views\RoleEditFormView.coffee" />
+    <Content Include="Scripts\Views\Request\UnitSearchView.coffee" />
+    <Content Include="Scripts\Views\SourceThumbnailView.coffee" />
+    <Content Include="Scripts\Views\SimilarEventsView.coffee" />
+    <None Include="Scripts\Views\Source\Search\SourcePreviewView.coffee" />
+    <None Include="Scripts\Views\Source\Search\SourceSearchView.coffee" />
+    <None Include="Scripts\Views\Source\Search\SourceTabsView.coffee" />
+    <None Include="Scripts\Views\Source\Search\SourceView.coffee" />
+    <Content Include="Scripts\Views\Source\FeedingIndexDataTablesView.coffee" />
+    <None Include="Scripts\Views\Source\SourceAddFormView.coffee" />
+    <None Include="Scripts\Views\Source\SearchAlt\SourceResultsView.coffee" />
+    <None Include="Scripts\Views\Source\SearchAlt\SourceSearchFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\Alias\UnitAliasCreateFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\Alias\UnitAliasEditFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\Alias\UnitAliasDeleteButtonView.coffee" />
+    <Content Include="Scripts\Views\Unit\MergeUnitSearchView.coffee" />
+    <Content Include="Scripts\Views\Unit\OperationAddFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\OperationCreateFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\OperationEditFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\OperationRemoveButtonView.coffee" />
+    <Content Include="Scripts\Views\Unit\OperationAliasEditFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\UnitAddFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\OperationSource\OperationSourcesView.coffee" />
+    <Content Include="Scripts\Views\Unit\OperationSource\OperationSourceCreateFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\OperationSource\OperationSourceEditFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\OperationSource\OperationSourceDeleteButtonView.coffee" />
+    <Content Include="Scripts\Views\Source\SourceAuthorCreateFormView.coffee" />
+    <Content Include="Scripts\Views\Source\SourceEditFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\CombinedLocationsMapView.coffee" />
+    <None Include="Scripts\Views\Unit\UnitChartDetailsView.coffee" />
+    <None Include="Scripts\Views\Unit\UnitImmediateChartView.coffee" />
+    <Content Include="Scripts\Views\Unit\UnitSource\UnitSourceCreateFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\UnitSource\UnitSourceEditFormView.coffee" />
+    <Content Include="Scripts\Views\Unit\UnitSource\UnitSourceDeleteButtonView.coffee" />
+    <Content Include="Scripts\Views\Unit\UnitSource\UnitSourcesView.coffee" />
+    <Content Include="Scripts\Views\Unit\UnitOperationEditFormView.coffee" />
+    <Content Include="Scripts\Views\UserEditFormView.coffee" />
+    <Content Include="Views\Shared\_UserRoles.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_QuickPersonForm.cshtml" />
+    <Content Include="Views\Shared\_LuceneSearchTips.cshtml" />
+    <Content Include="Views\Shared\_RawValidationSummary.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\Password.cshtml" />
+    <Content Include="Scripts\Views\UsersIndexView.coffee" />
+    <Content Include="Views\Shared\_UserAttributes.cshtml" />
+    <Content Include="Views\Shared\_MINIPROFILER UPDATED Layout.cshtml" />
+    <Content Include="Views\Emails\Web.config" />
+    <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Emails\ProfilingCountsReport.cshtml" />
+    <Content Include="Views\Emails\_EmailLayout.cshtml" />
+    <Content Include="Views\Emails\FeedingSourceReport.cshtml" />
+    <Content Include="Views\Emails\SourceFolderCountsReport.cshtml" />
+    <Content Include="Views\Shared\_UnitLinkAndDates.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Profiling2.Domain\Profiling2.Domain.csproj">
+      <Project>{8DEF56CD-601E-443C-9DCE-C4EC54C0B6A6}</Project>
+      <Name>Profiling2.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Profiling2.Infrastructure\Profiling2.Infrastructure.csproj">
+      <Project>{9544D94B-9B6E-4B61-8A09-88382205BF86}</Project>
+      <Name>Profiling2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Profiling2.Tasks\Profiling2.Tasks.csproj">
+      <Project>{C9AAC14B-E695-4508-83B7-ACB8FC5A7284}</Project>
+      <Name>Profiling2.Tasks</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NHibernate.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\API\Models\" />
+    <Folder Include="Areas\API\Views\Shared\" />
+    <Folder Include="Content\themes\base\" />
+    <Folder Include="Controllers\Queries\" />
+    <Folder Include="Controllers\ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Profiling\Views\Sources\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Profiling\Views\Sources\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Screening\Views\Web.config" />
+    <Content Include="Areas\Screening\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Screening\Views\Shared\_SidebarListItems.cshtml" />
+    <Content Include="Areas\Screening\Views\Home\Index.cshtml" />
+    <Content Include="Areas\System\Views\Web.config" />
+    <Content Include="Areas\System\Views\Home\Index.cshtml" />
+    <Content Include="Areas\System\Views\Shared\_SidebarListItems.cshtml" />
+    <Content Include="Areas\System\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Profiling\Views\Web.config" />
+    <Content Include="Areas\Profiling\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\Shared\_SidebarListItems.cshtml" />
+    <None Include="Content\app.css.bundle" />
+    <Content Include="log4net.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Local.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Scripts\app.js.bundle" />
+    <None Include="Scripts\Application.coffee">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </None>
+    <None Include="Scripts\DataTable.coffee">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </None>
+    <Content Include="Views\Shared\DataTable.cshtml" />
+    <Content Include="Areas\Screening\Views\Requests\Details.cshtml" />
+    <Content Include="Areas\Screening\Views\Requests\Index.cshtml" />
+    <Content Include="Areas\System\Views\Users\Details.cshtml" />
+    <Content Include="Areas\System\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Profiling\Views\AdminSourceSearches\Details.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Shared\_SidebarListItems.cshtml" />
+    <Content Include="Views\Account\Details.cshtml" />
+    <Content Include="Views\Shared\_Sidebar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target> -->
+  <Target Name="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>59173</DevelopmentServerPort>
+          <DevelopmentServerVPath>/Profiling2/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:59173/Profiling2/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+</Project>

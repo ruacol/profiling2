@@ -1,0 +1,45 @@
+﻿@using Profiling2.Domain.Prf.Actions
+@model IList<ActionTakenType>
+@{
+  ViewBag.Title = "Action Taken Types";
+}
+
+<div class="btn-toolbar">
+    <div class="btn-group">
+        @Html.ActionLink("Create", "Create", "ActionTakenTypes", new { area = "Profiling" }, new { @class = "btn btn-mini" })
+    </div>
+</div>
+
+<h2>Action Taken Types</h2>
+
+<hr />
+
+<table id="types-table" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Notes</th>
+      <th>Actions Taken</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (ActionTakenType att in Model)
+    {
+      <tr>
+        <td style="white-space: nowrap;">
+            @Html.ActionLink(att.ActionTakenTypeName, "Details", "ActionTakenTypes", new { area = "Profiling", id = att.Id }, null)
+            @if (att.IsRemedial)
+            {
+                <span class="label"><small>REMEDIAL</small></span>
+            }
+            @if (att.IsDisciplinary)
+            {
+                <span class="label"><small>DISCIPLINARY</small></span>
+            }
+        </td>
+        <td>@att.Notes</td>
+        <td>@att.ActionsTaken.Count</td>
+      </tr>
+    }
+  </tbody>
+</table>

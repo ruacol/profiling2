@@ -1,0 +1,66 @@
+﻿@using Profiling2.Domain.Prf.Actions
+@model ActionTakenType
+@{
+    ViewBag.Title = Model.ActionTakenTypeName;
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("#delete-button").click(function(e) {
+        bootbox.confirm("This type will only be deleted if it has 0 actions taken. Continue?", function(response) {
+        if (response === true)
+            window.location.href = "@(Request.ApplicationPath + "/")Profiling/ActionTakenTypes/Delete/@Model.Id";
+        });
+    });
+  }); 
+}
+
+<h2>
+    @Model.ActionTakenTypeName
+    @Html.ActionLink("Edit", "Edit", "ActionTakenTypes", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini" })
+    <button id="delete-button" class="btn btn-mini btn-danger">Delete</button>
+</h2>
+
+
+<dl>
+    <dt>Is Remedial?</dt>
+    <dd>@Model.IsRemedial</dd>
+    <dt>Is Disciplinary?</dt>
+    <dd>@Model.IsDisciplinary</dd>
+    @if (!string.IsNullOrEmpty(Model.Notes))
+    {
+        <dt>Notes</dt>
+        <dd>@Model.Notes</dd>
+    }
+</dl>
+
+<hr />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Subject</th>
+            <th>Object</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ActionTaken at in Model.ActionsTaken)
+        {
+            <tr>
+                <td>@Html.ActionLink(at.Event.Headline, "Details", "Events", new { area = "Profiling", id = at.Event.Id }, null)</td>
+                <td>
+                    @if (at.SubjectPerson != null)
+                    {
+                        @Html.ActionLink(at.SubjectPerson.Name, "Details", "Persons", new { area = "Profiling", id = at.SubjectPerson.Id }, null)
+                    }
+                </td>
+                <td>
+                    @if (at.ObjectPerson != null)
+                    {
+                        @Html.ActionLink(at.ObjectPerson.Name, "Details", "Persons", new { area = "Profiling", id = at.ObjectPerson.Id }, null)
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,61 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model OrgResponsibilityViewModel
+@{
+    Layout = "";
+}
+
+@using (Html.BeginForm("Edit", "OrgResponsibilities", new { area = "Profiling", id = Model.Id }, FormMethod.Post, new { id = "modal-form", @class = "form-horizontal" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4>Edit Organization Responsibility</h4>
+    </div>
+    <div class="modal-body">
+        <div id="validation-errors"></div>
+        @Html.HiddenFor(x => x.EventId)
+        @Html.HiddenFor(x => x.OrganizationId)
+    
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">Event *</label>
+                <div class="controls">
+                    <span class="input-xxlarge uneditable-input" title="@Model.EventHeadline">@Model.EventHeadline</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Organization *</label>
+                <div class="controls">
+                    <span class="input-xxlarge uneditable-input">@Model.OrganizationName</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Unit</label>
+                <div class="controls">
+                    @Html.HiddenFor(x => x.UnitId, new { @class = "input-xxlarge" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Responsibility Type *</label>
+                <div class="controls">
+                    @Html.DropDownListFor(x => x.OrganizationResponsibilityTypeId, Model.OrgResponsibilityTypes, new { @class = "input-large" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Commentary</label>
+                <div class="controls">
+                    @Html.TextAreaFor(x => x.Commentary, new { @class = "input-xxlarge" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Notes</label>
+                <div class="controls">
+                    @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <a id="modal-org-responsibility-edit-button" class="btn btn-primary">Save</a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    </div>
+}

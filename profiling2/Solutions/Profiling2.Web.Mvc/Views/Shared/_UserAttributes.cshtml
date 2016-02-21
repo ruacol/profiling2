@@ -1,0 +1,46 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Scr
+@model AdminUser
+
+<table class="table table-bordered table-condensed" style="width: auto;">
+    <thead>
+        <tr>
+            <th>MONUSCO ID</th><th>Full Name</th><th>Email</th><th>Request Entities</th><th>Screening Entities</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.UserID</td><td>@Model.UserName</td><td>@Model.Email</td>
+            <td>
+                @if (Model.RequestEntities != null && Model.RequestEntities.Count > 0)
+                {
+                    <ul>
+                    @foreach (RequestEntity re in Model.RequestEntities)
+                    {
+                        <li>@re.RequestEntityName</li>
+                    }
+                    </ul>
+                }
+                else
+                {
+                    <span class="muted">This user is not a member of any request entity.</span>
+                }
+            </td>
+            <td>
+                @if (Model.ScreeningEntities != null && Model.ScreeningEntities.Count > 0)
+                {
+                    <ul>
+                    @foreach (ScreeningEntity se in Model.ScreeningEntities)
+                    {
+                        <li>@se.ScreeningEntityName</li>
+                    }
+                    </ul>
+                }
+                else
+                {
+                    <span class="muted">This user is not a member of any screening entity.</span>
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,29 @@
+﻿@using Profiling2.Domain.Prf;
+@using Profiling2.Infrastructure.Security;
+@{
+    ViewBag.Title = "Source Search";
+    ViewBag.NoNavbar = true;
+    ViewBag.NoSidebar = true;
+    ViewBag.NoFooter = true;
+}
+@section styles
+{
+    <style>
+        body { padding-top: 0px; }
+    </style>
+}
+@section scripts
+{
+    $(document).ready(function() {
+        var router = new Profiling.Routers.SourcesRouter({ 
+            permissions: {
+                canChangeSources: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeSources).ToJsBool())
+            }
+        });
+        Backbone.history.start();
+    });
+}
+
+<div class="row-fluid">
+    <div id="source-search" class="span12"></div>
+</div>

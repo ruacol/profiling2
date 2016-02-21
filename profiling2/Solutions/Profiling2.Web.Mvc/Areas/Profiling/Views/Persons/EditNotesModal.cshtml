@@ -1,0 +1,31 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model PersonViewModel
+@{
+  Layout = "";
+  ViewBag.Title = "Edit Notes";
+}
+
+@using (Html.BeginForm("EditNotesModal", "Persons", FormMethod.Post))
+{
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4>Edit Notes for @Model.Name</h4>
+  </div>
+  <div class="modal-body form-horizontal">
+    <p>Enter some notes for @Model.Name.  These notes should be of a temporary nature, for example TBC / red flags.  They are never included or shown outside this context.</p>
+    <p>Only <em>@AdminPermission.CanChangePersonNotes</em> permission holders may edit this text.</p>
+    <div class="control-group">
+      <label class="control-label">
+        Notes
+      </label>
+      <div class="controls">
+        @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge", rows = "5" })
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a id="modal-notes-save-button" class="btn btn-primary">Save</a>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  </div>
+}

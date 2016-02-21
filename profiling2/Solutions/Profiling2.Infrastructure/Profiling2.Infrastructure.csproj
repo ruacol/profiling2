@@ -1,0 +1,547 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9544D94B-9B6E-4B61-8A09-88382205BF86}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Profiling2.Infrastructure</RootNamespace>
+    <AssemblyName>Profiling2.Infrastructure</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Build\Signing\Profiling2.snk</AssemblyOriginatorKeyFile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells, Version=8.6.3.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Aspose.Cells.8.6.3\lib\net40\Aspose.Cells.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Pdf, Version=11.1.1.0, Culture=neutral, PublicKeyToken=6947866647e416ec, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Aspose.Pdf.11.1.1\lib\net40-client\Aspose.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Slides, Version=15.11.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Aspose.Slides.NET.15.11.0\lib\net4.0-client\Aspose.Slides.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Words, Version=15.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Aspose.Words.15.12.0\lib\net40\Aspose.Words.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentNHibernate, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\FluentNHibernate.1.4.0.0\lib\net35\FluentNHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.AWT.WinForms, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.AWT.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Beans, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Beans.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Charsets, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Charsets.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Corba, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Corba.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Core, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Jdbc, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Jdbc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Management, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Management.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Media, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Media.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Misc, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Misc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Naming, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Naming.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Remoting, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Remoting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Security, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.SwingAWT, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.SwingAWT.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Text, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Text.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Tools, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Tools.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Util, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.Util.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.API, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.API.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Bind, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.Bind.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Crypto, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Parse, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.Parse.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Transform, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.Transform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.WebServices, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.WebServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.XPath, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.XPath.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.Runtime, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IKVM.Runtime.JNI, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\IKVM.7.4.5196.0\lib\IKVM.Runtime.JNI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.3.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\CompareNETObjects.3.03.0.0\lib\net45\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Analyzers, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Analyzers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Core, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.FastVectorHighlighter, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.FastVectorHighlighter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Highlighter, Version=2.3.2.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Highlighter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Management, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.Management.1.0.3\lib\net40-full\Lucene.Net.Contrib.Management.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Memory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Memory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Queries, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Queries.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Regex, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Regex.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.SimpleFacetedSearch, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.SimpleFacetedSearch.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Snowball, Version=2.0.0.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Snowball.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.SpellChecker, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.SpellChecker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\NHibernate.3.3.5.4000\lib\Net35\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate.Envers, Version=1.6.0.0, Culture=neutral, PublicKeyToken=e2c5b946037fb7f8, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\NHibernate.Envers.1.6.0\lib\Net35\NHibernate.Envers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpArch.Domain, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\SharpArch.Domain.2.1.2\lib\NET40\SharpArch.Domain.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpArch.NHibernate, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\MONUSCO\SharpArch.NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="tika-app, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\TikaOnDotNet.1.7.0\lib\net35\tika-app.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TikaOnDotNet, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\TikaOnDotNet.1.7.0\lib\net35\TikaOnDotNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Common\AssemblyVersion.cs">
+      <Link>Properties\AssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Aspose\Licenses\AsposeInitialiser.cs" />
+    <Compile Include="Aspose\AsposeService.cs" />
+    <Compile Include="Aspose\HtmlImageExportCallback.cs" />
+    <Compile Include="Aspose\Licenses\CellsLicenseInitialiser.cs" />
+    <Compile Include="Aspose\Licenses\PdfLicenseInitialiser.cs" />
+    <Compile Include="Aspose\Licenses\SlidesLicenseInitialiser.cs" />
+    <Compile Include="Aspose\Licenses\WordsLicenseInitialiser.cs" />
+    <Compile Include="Aspose\Loader\BaseAsposeLoader.cs" />
+    <Compile Include="Aspose\Loader\LoadSourceException.cs" />
+    <Compile Include="Aspose\Loader\PdfLoader.cs" />
+    <Compile Include="Aspose\Loader\PresentationLoader.cs" />
+    <Compile Include="Aspose\Loader\WordDocumentLoader.cs" />
+    <Compile Include="Aspose\Loader\WorkbookLoader.cs" />
+    <Compile Include="Email\EmailService.cs" />
+    <Compile Include="Export\Profiling\BaseWordExportService.cs" />
+    <Compile Include="Export\Profiling\WordExportEventService.cs" />
+    <Compile Include="Export\Profiling\WordExportPersonService.cs" />
+    <Compile Include="Export\Screening\BasePdfExportRequest.cs" />
+    <Compile Include="Export\Screening\PdfExportRequestForInitiatorService.cs" />
+    <Compile Include="Export\Screening\PdfExportRequestForConditionalityParticipantService.cs" />
+    <Compile Include="NHibernateMaps\Conventions\BinaryColumnLengthConvention.cs" />
+    <Compile Include="NHibernateMaps\Conventions\StringClobColumnConvention.cs" />
+    <Compile Include="NHibernateMaps\Overrides\AdminRoleMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\AdminSuggestionPersonResponsibilityOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\EthnicityMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\EventMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\FeedingSourceMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\JhroCaseMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\OperationMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\OrganizationMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\PersonFinalDecisionMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\PersonMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\PersonResponsibilityMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\PhotoMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\RegionMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\RequestAttachmentOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\RequestPersonMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\ScreeningRequestPersonEntityMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\ScreeningRequestPersonFinalDecisionMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\ScreeningRequestPersonRecommendationMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\SourceMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\TagMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\UnitMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\ViolationMappingOverride.cs" />
+    <Compile Include="Queries\ActionTakenWantedQuery.cs" />
+    <Compile Include="Queries\AdminUserQueries.cs" />
+    <Compile Include="Queries\Audit\OperationRevisionsQuery.cs" />
+    <Compile Include="Queries\Audit\PersonRestrictedNoteRevisionsQuery.cs" />
+    <Compile Include="Queries\Audit\UnitRevisionsQuery.cs" />
+    <Compile Include="Queries\EventQueries.cs" />
+    <Compile Include="Queries\JhroCaseQueries.cs" />
+    <Compile Include="Queries\LocationMergeQuery.cs" />
+    <Compile Include="Queries\AttachedSourceQueries.cs" />
+    <Compile Include="Queries\PersonQueries.cs" />
+    <Compile Include="Queries\Search\SourceAuthorSearchQuery.cs" />
+    <Compile Include="Queries\SourceCollectionsQuery.cs" />
+    <Compile Include="Queries\AdminSourceSearchQuery.cs" />
+    <Compile Include="Queries\Audit\ActionTakenRevisionsQuery.cs" />
+    <Compile Include="Queries\Audit\AdminAuditQuery.cs" />
+    <Compile Include="Queries\Audit\AuditableExtensions.cs" />
+    <Compile Include="Queries\Audit\CareerRevisionsQuery.cs" />
+    <Compile Include="Queries\Audit\AuditedEntityQuery.cs" />
+    <Compile Include="Queries\Audit\EventRevisionsQuery.cs" />
+    <Compile Include="Queries\Audit\PersonPhotoRevisionsQuery.cs" />
+    <Compile Include="Queries\Audit\PersonRelationshipRevisionsQuery.cs" />
+    <Compile Include="Queries\Audit\PersonResponsibilityRevisionsQuery.cs" />
+    <Compile Include="Queries\Audit\PersonSourceRevisionsQuery.cs" />
+    <Compile Include="Queries\CommandersQuery.cs" />
+    <Compile Include="Queries\UnitQueries.cs" />
+    <Compile Include="Queries\FeedingSourceQuery.cs" />
+    <Compile Include="Queries\ObjectSourceDuplicatesQuery.cs" />
+    <Compile Include="Queries\Procs\DeletedProfilesStoredProcQuery.cs" />
+    <Compile Include="Queries\Procs\MergeStoredProcQueries.cs" />
+    <Compile Include="Queries\RequestPersonsQuery.cs" />
+    <Compile Include="Queries\ScreeningEntityQueries.cs" />
+    <Compile Include="Queries\Search\EventSearchQuery.cs" />
+    <Compile Include="Queries\SourceLogQueries.cs" />
+    <Compile Include="Queries\Stats\CountsQuery.cs" />
+    <Compile Include="Queries\Stats\ScreeningCountsQuery.cs" />
+    <Compile Include="Queries\Search\LocationSearchQuery.cs" />
+    <Compile Include="Queries\Procs\ModifiedProfilesStoredProcQuery.cs" />
+    <Compile Include="Queries\Audit\NHibernateAuditQuery.cs" />
+    <Compile Include="Queries\Search\OrganizationSearchQuery.cs" />
+    <Compile Include="Queries\Audit\PersonAliasRevisionsQuery.cs" />
+    <Compile Include="Queries\Procs\PersonChangeActivityQuery.cs" />
+    <Compile Include="Queries\PersonDataTablesQuery.cs" />
+    <Compile Include="Queries\Search\PersonRelationshipTypeNameQuery.cs" />
+    <Compile Include="Queries\Audit\PersonRevisionsQuery.cs" />
+    <Compile Include="Queries\Procs\PersonStoredProcSearchQuery.cs" />
+    <Compile Include="Queries\Stats\PersonStatisticsQuery.cs" />
+    <Compile Include="Queries\Search\RankSearchQuery.cs" />
+    <Compile Include="Queries\Search\RoleSearchQuery.cs" />
+    <Compile Include="Queries\SourceQueries.cs" />
+    <Compile Include="Queries\SourceSQLQuery.cs" />
+    <Compile Include="Queries\Procs\SuggestionEventForPersonQuery.cs" />
+    <Compile Include="Queries\Search\UnitSearchQuery.cs" />
+    <Compile Include="Queries\Stats\SourceStatisticsQueries.cs" />
+    <Compile Include="Queries\Suggestions\EventInSameLocationSuggestionsQuery.cs" />
+    <Compile Include="Queries\Suggestions\OrganizationResponsibilitySuggestionsQuery.cs" />
+    <Compile Include="Queries\Suggestions\CareerLocationSuggestionsQuery.cs" />
+    <Compile Include="Queries\Suggestions\EventRelationshipSuggestionsQuery.cs" />
+    <Compile Include="Queries\Suggestions\PersonNameSuggestionsQuery.cs" />
+    <Compile Include="Queries\Suggestions\PersonRelationshipSuggestionsQuery.cs" />
+    <Compile Include="Queries\Suggestions\SourceSuggestionsQuery.cs" />
+    <Compile Include="Queries\RequestQueries.cs" />
+    <Compile Include="Queries\ViolationDataTablesQuery.cs" />
+    <Compile Include="Search\AlphaNumericFilter.cs" />
+    <Compile Include="Search\AlphaNumericTokenizer.cs" />
+    <Compile Include="Search\BaseIndexer.cs" />
+    <Compile Include="Search\EventIndexer.cs" />
+    <Compile Include="Search\EventSearcher.cs" />
+    <Compile Include="Search\IndexWriters\EventIndexWriterSingleton.cs" />
+    <Compile Include="Search\IndexWriters\RequestIndexWriterSingleton.cs" />
+    <Compile Include="Search\IndexWriters\ScreeningResponseIndexWriterSingleton.cs" />
+    <Compile Include="Search\IndexWriters\SourceIndexWriterSingleton.cs" />
+    <Compile Include="Search\IndexWriters\SourcePathIndexWriterSingleton.cs" />
+    <Compile Include="Search\IndexWriters\UnitIndexWriterSingleton.cs" />
+    <Compile Include="Search\LowerCaseAnalyzer.cs" />
+    <Compile Include="Search\LuceneSearcher.cs" />
+    <Compile Include="Search\IndexWriters\PersonIndexWriterSingleton.cs" />
+    <Compile Include="Search\RequestIndexer.cs" />
+    <Compile Include="Search\RequestSearcher.cs" />
+    <Compile Include="Search\ScreeningResponseIndexer.cs" />
+    <Compile Include="Search\ScreeningResponseSearcher.cs" />
+    <Compile Include="Search\SourceIndexer.cs" />
+    <Compile Include="Search\NumericQueryParser.cs" />
+    <Compile Include="Search\PersonIndexer.cs" />
+    <Compile Include="Search\PersonSearcher.cs" />
+    <Compile Include="Search\PersonAnalyzer.cs" />
+    <Compile Include="Search\SourceSearcher.cs" />
+    <Compile Include="Search\UnitIndexer.cs" />
+    <Compile Include="Search\UnitSearcher.cs" />
+    <Compile Include="Security\ActiveDirectoryMembershipProvider.cs" />
+    <Compile Include="Security\LocalMembershipProvider.cs" />
+    <Compile Include="Security\LocalRoleProvider.cs" />
+    <Compile Include="Security\Identity\ExpandedIdentity.cs" />
+    <Compile Include="NHibernateMaps\AutomappingConfiguration.cs" />
+    <Compile Include="NHibernateMaps\Conventions\CustomForeignKeyConvention.cs" />
+    <Compile Include="NHibernateMaps\Conventions\HasManyConvention.cs" />
+    <Compile Include="NHibernateMaps\Conventions\PrimaryKeyConvention.cs" />
+    <Compile Include="NHibernateMaps\Conventions\TableNameConvention.cs" />
+    <Compile Include="NHibernateMaps\AutoPersistenceModelGenerator.cs" />
+    <Compile Include="NHibernateMaps\Overrides\AdminUserMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\RequestEntityMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\RequestMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\RequestProposedPersonMappingOverride.cs" />
+    <Compile Include="NHibernateMaps\Overrides\ScreeningEntityMappingOverride.cs" />
+    <Compile Include="Queries\SourceDataTablesQuery.cs" />
+    <Compile Include="Security\PrfPrincipal.cs" />
+    <Compile Include="Security\SetupMembershipProvider.cs" />
+    <Compile Include="Suggestions\AliasSuggestions.cs" />
+    <Compile Include="Suggestions\BaseSuggestions.cs" />
+    <Compile Include="Suggestions\CareerInResponsibleOrganizationSuggestions.cs" />
+    <Compile Include="Suggestions\CareerInResponsibleUnitSuggestions.cs" />
+    <Compile Include="Suggestions\CareerLocationSuggestions.cs" />
+    <Compile Include="Suggestions\EventInSameLocationSuggestions.cs" />
+    <Compile Include="Suggestions\EventRelationshipSuggestions.cs" />
+    <Compile Include="Suggestions\FirstNameSuggestions.cs" />
+    <Compile Include="Suggestions\LastNameSuggestions.cs" />
+    <Compile Include="Suggestions\PersonRelationshipSuggestions.cs" />
+    <Compile Include="Suggestions\SourceSuggestions.cs" />
+    <Compile Include="Suggestions\Suggester.cs" />
+    <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="Util\HexUtil.cs" />
+    <Compile Include="Util\IDNumber.cs" />
+    <Compile Include="Util\MIMEAssistant.cs" />
+    <Compile Include="Util\SetComparerExpressionVisitor.cs" />
+    <Compile Include="Util\SqlReaderStream.cs" />
+    <Compile Include="Util\StreamUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Profiling2.Domain\Profiling2.Domain.csproj">
+      <Project>{8DEF56CD-601E-443C-9DCE-C4EC54C0B6A6}</Project>
+      <Name>Profiling2.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernateMaps\SearchForPerson.hbm.xml" />
+    <EmbeddedResource Include="NHibernateMaps\ProfileChangeActivity.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernateMaps\SearchForPersonCount.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernateMaps\SuggestionEventForPerson.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernateMaps\SuggestionEventForPersonCount.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernateMaps\DeletedProfiles.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernateMaps\ModifiedProfiles.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernateMaps\PersonMerge.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernateMaps\UnitMerge.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernateMaps\EventMerge.hbm.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,378 @@
+﻿@using Profiling2.Domain.Extensions
+@using Profiling2.Domain.Prf.Persons
+@using Profiling2.Domain.Prf.Careers
+@using Profiling2.Domain.Prf.Units
+@using Profiling2.Domain.Prf.Responsibility
+@using Profiling2.Domain.Prf.Events
+@using Profiling2.Domain.Prf
+@using Profiling2.Domain.DTO
+@using Profiling2.Infrastructure.Security
+@using System.Linq
+@model Unit
+@{
+    ViewBag.Title = Model.UnitName;
+}
+@section styles
+{
+  <style>
+    .dl-horizontal dt {
+      width: 220px;
+    }
+    .dl-horizontal dd {
+      margin-left: 240px;
+    }
+  </style>
+}
+@section scriptSources
+{
+  <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+}
+@{
+    IList<UnitHierarchy> parentUnitHierarchies = ViewBag.ParentUnitHierarchies;
+    IList<UnitHierarchy> childUnitHierarchies = ViewBag.ChildUnitHierarchies;
+}
+@section scripts
+{
+  if (typeof google !== 'undefined') {
+    google.load('visualization', '1.0', { packages: ['orgchart'] });
+  } else {
+    bootbox.alert("Failed to load Google APIs; charts may not work.");
+  }
+  $(document).ready(function() {
+    $.fn.dataTableExt.afnFiltering.push(
+      function( oSettings, aData, iDataIndex ) {
+        if ($("#checkbox-only-current").is(":checked"))
+          return (aData[0].indexOf("CURRENT") >= 0);
+        else
+          return true;
+      }
+    );
+    var dataTable = new Profiling.DataTable("careers-table", {
+      bServerSide: false,
+      aaSorting: [ [ 3, 'asc' ] ],
+      aoColumns: [ null, { sType: "title-numeric" }, { sType: "title-numeric" }, { sType: "title-numeric" } ]
+    });
+    $("#checkbox-only-current").change(function() {
+      dataTable.fnDraw();
+    });
+    $("i.icon-trash.delete-location").click(function(e) {
+      bootbox.confirm("This unit location will be deleted.  Continue?", function(response) {
+        if (response === true)
+          window.location.href = "@(Request.ApplicationPath + "/")Profiling/Units/@Model.Id/Locations/Delete/" + $(e.target).data("id");
+      });
+    });
+    $("i.icon-trash.delete-name-change").click(function(e) {
+      bootbox.confirm("This name change will be deleted.  Continue?", function(response) {
+        if (response === true)
+          window.location.href = "@(Request.ApplicationPath + "/")Profiling/Units/@Model.Id/Hierarchies/Delete/" + $(e.target).data("id");
+      });
+    });
+
+    var parentHierarchyModels = [];
+    var childHierarchyModels = [];
+    @foreach (UnitHierarchy uh in parentUnitHierarchies)
+    {
+      <text>
+      parentHierarchyModels.push({
+        id: @uh.Id,
+        parentUnitId: @uh.ParentUnit.Id,
+        parentUnitName: "@uh.ParentUnit.UnitName",
+        unitId: @uh.Unit.Id,
+        unitName: "@uh.Unit.UnitName"
+      });
+      </text>
+    }
+    @foreach (UnitHierarchy uh in childUnitHierarchies)
+    {
+      <text>
+      childHierarchyModels.push({
+        id: @uh.Id,
+        parentUnitId: @uh.ParentUnit.Id,
+        parentUnitName: "@uh.ParentUnit.UnitName",
+        unitId: @uh.Unit.Id,
+        unitName: "@uh.Unit.UnitName"
+      });
+      </text>
+    }
+    var router = new Profiling.Routers.UnitDetailsRouter({ 
+      unitId: @Model.Id,
+      permissions: {
+        canChangeUnits: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeUnits).ToJsBool()),
+        canViewAndSearchSources: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources).ToJsBool()),
+        canViewAndSearchEvents: @(((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchEvents).ToJsBool())
+      },
+      parentHierarchyModels: parentHierarchyModels,
+      childHierarchyModels: childHierarchyModels
+    });
+    Backbone.history.start();
+
+    $("#delete-unit-button").click(function(e) {
+      bootbox.confirm("This unit will only be deleted if there are no careers, responsibilities or hierarchies linked to it. Continue?", function(response) {
+        if (response === true)
+          window.location.href = "@(Request.ApplicationPath + "/")Profiling/Units/Delete/@Model.Id";
+      });
+    });
+
+    $('#combined-locations-table').each(Profiling.mergeTableCellsWithRowspan);
+  });
+}
+
+<div class="btn-toolbar">
+    <div class="btn-group" id="write-buttons">
+        <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">Change unit... <span class="caret"></span></a>
+        <ul class="dropdown-menu" style="font-size: small;">
+            @if (((PrfPrincipal)User).HasPermission(AdminPermission.CanChangeUnits))
+            {
+                <li>@Html.ActionLink("Edit Unit", "Edit", "Units", new { id = Model.Id, area = "Profiling" }, null)</li>
+                <li>@Html.ActionLink("Name Change", "CreateNameChange", "Hierarchies", new { currentUnitId = Model.Id, area = "Profiling" }, null)</li>
+                <li>@Html.ActionLink("Add Parent Unit", "CreateParent", "Hierarchies", new { currentUnitId = Model.Id, area = "Profiling" }, null)</li>
+                <li>@Html.ActionLink("Add Child Unit", "CreateChild", "Hierarchies", new { currentUnitId = Model.Id, area = "Profiling" }, null)</li>
+                <li>@Html.ActionLink("Add Location", "Create", "UnitLocations", new { currentUnitId = Model.Id, area = "Profiling" }, null)</li>
+                <li class="divider"></li>
+                <li><a id="delete-unit-button">Delete Unit</a></li>
+            }
+        </ul>
+    </div>
+
+    <div class="btn-group pull-right">
+        @((User.IsInRole(AdminRole.ScreeningRequestInitiator)
+                || User.IsInRole(AdminRole.ScreeningRequestValidator)
+                || ((PrfPrincipal)User).HasPermission(AdminPermission.CanPerformScreeningInput)
+                || User.IsInRole(AdminRole.ScreeningRequestConsolidator)
+                || User.IsInRole(AdminRole.ScreeningRequestFinalDecider)).ToJsBool())
+        {
+            @Html.ActionLink("Screenings", "Screenings", "Units", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini" })
+        }
+        @Html.ActionLink("Audit Trail", "Audit", "Units", new { id = Model.Id, area = "Profiling" }, new { @class = "btn btn-mini", target = "_blank" })
+    </div>
+</div>
+
+<h2>
+    @Model.UnitName
+    @if (Model.HasStartDate() || Model.HasEndDate())
+    {
+        <small>(@Model.PrintDates())</small>   
+    }
+</h2>
+
+@if (ViewBag.ParentNameChanges.Count > 0 || ViewBag.ChildNameChanges.Count > 0)
+{
+    <ul class="nav nav-pills nav-stacked pull-right" style="font-size: small;">
+        <li @(Request.QueryString["includeNameChanges"] == "False" || !Request.QueryString.HasKeys() ? "class=active" : string.Empty)>
+            @Html.ActionLink("Single view", "Details", "Units", new { id = Model.Id }, new { title = "View the details for only this unit." })
+        </li>
+        <li @(Request.QueryString["includeNameChanges"] == "True" ? "class=active" : string.Empty)>
+            @Html.ActionLink("Combined view", "Details", "Units", new { id = Model.Id, includeNameChanges = true }, new { title = "View the details for all historical and future versions of this unit." })
+        </li>
+    </ul>   
+}
+
+@if (Model.UnitAliases.Any())
+{
+    <p>
+        (also known as
+        @foreach (UnitAlias a in Model.UnitAliases)
+        {
+            <span class="unit-alias" data-id="@a.Id"></span>
+            <span>
+                @if (a != Model.UnitAliases.Last())
+                { 
+                    <strong>@a.UnitName</strong>@:,
+                }
+                else
+                {
+                    <strong>@a.UnitName</strong>
+                }
+            </span>
+        }
+        )
+    </p>
+}
+
+@Html.Partial("_UnitNameChanges")
+
+@Html.Partial("_UnitDetailsDataList")
+
+<div class="clearfix">
+  <hr />
+  <h3>Hierarchy</h3>
+
+  <p>View @Html.ActionLink("full hierarchy", "Chart", "Units", new { id = Model.Id, area = "Profiling" }, null).</p>
+
+  <div id="chart-hierarchy"></div>
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>Operations</h3>
+
+  @{
+      IList<UnitOperation> uos = ViewBag.UnitOperations;
+  }
+  @if (uos.Any())
+  {
+      <ul>
+        @foreach (UnitOperation uo in uos)
+        {
+            if (uo.Operation != null)
+            {
+              <li>
+                  <span class="unit-operation" data-id="@uo.Id" data-operation-id="@uo.Operation.Id"></span>
+                  @Html.ActionLink(uo.Operation.Name, "Details", "Operations", new { area = "Profiling", id = uo.Operation.Id }, null)
+                  @{
+                      if (uo.HasStartDate() || uo.HasEndDate())
+                      {
+                          @:(
+                          if (uo.HasStartDate())
+                          {
+                            @:from @Html.DateLabel(uo.YearOfStart, uo.MonthOfStart, uo.DayOfStart)
+                          }
+                          if (uo.HasEndDate())
+                          {
+                            @:to @Html.DateLabel(uo.YearOfEnd, uo.MonthOfEnd, uo.DayOfEnd)
+                          }
+                          @:)
+                      }
+                  }
+                  @foreach (OperationAlias a in uo.Operation.OperationAliases)
+                  {
+                      <br />@:(a.k.a.) @a.Name
+                  }
+              </li>
+            }
+        }
+      </ul>
+  }
+  else
+  {
+      <span class="muted">This unit has not been part of any operations.</span>
+  }
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>Careers</h3>
+
+  <p>View @Html.ActionLink("more detail", "Members", "Units", new { id = Model.Id, area = "Profiling" }, null).</p>
+
+  @{
+      IList<Career> careers = ViewBag.Careers;
+  }
+
+  <div class="pull-right">
+    <label class="checkbox">
+      <input type="checkbox" id="checkbox-only-current" /> Show only current
+    </label>
+  </div>
+
+  @Html.Partial("_CareersTable", careers)
+</div>
+
+@if (((PrfPrincipal)User).HasPermission(AdminPermission.CanViewAndSearchSources))
+{
+    <hr />
+    <h3>Unit Sources</h3>
+    <div class="clearfix" id="unit-sources">
+    </div>
+}
+
+<div class="clearfix">
+  <hr />
+  <h3>Event Responsibilities</h3>
+
+  <p>Events attributed to this unit are listed below.  To view events attributed to units below this one in the hierarchy, click the button below.</p>
+  <p>@Html.ActionLink("View indirect responsibilities", "Indirects", new { area = "Profiling", id = Model.Id, includeNameChanges = Request.QueryString["includeNameChanges"] }, new { @class = "btn btn-mini" })</p>
+
+  @if (ViewBag.OrganizationResponsibilities.Count > 0)
+  {
+      IList<OrganizationResponsibility> orgResponsibilities = ViewBag.OrganizationResponsibilities;
+    @Html.Partial("_OrganizationResponsibilities", orgResponsibilities)
+  }
+  else
+  {
+    <span class="muted">There are no known event responsibilities.</span>
+  }
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>Locations</h3>
+
+  @{
+      IList<UnitLocation> locations = ViewBag.UnitLocations;
+  }
+
+  @if (locations.Count > 0)
+  {
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th></th><th>Start Date</th><th>As Of Date</th><th>End Date</th><th>Location</th><th>Commentary</th>
+        </tr>
+      </thead>
+      @foreach (UnitLocation ul in locations
+        .OrderByDescending(x => x.GetSortDate()))
+      {
+        <tr>
+          <td style="text-align: center;">
+            <div style="display: inline;">
+              <a href="@(Request.ApplicationPath + "/")Profiling/Units/@Model.Id/Locations/Edit/@ul.Id"><i class="accordion-toggle icon-pencil" title="Edit Location" style="margin-right: 5px;"></i></a>
+            </div>
+            <div style="display: inline;">
+              <i class="accordion-toggle icon-trash delete-location" title="Delete Location" style="margin-right: 5px;" data-id="@ul.Id"></i>
+            </div>
+          </td>
+          <td>@Html.DateLabel(ul.YearOfStart, ul.MonthOfStart, ul.DayOfStart)</td>
+          <td>@Html.DateLabel(ul.YearAsOf, ul.MonthAsOf, ul.DayAsOf)</td>
+          <td>@Html.DateLabel(ul.YearOfEnd, ul.MonthOfEnd, ul.DayOfEnd)</td>
+          <td>@Html.ActionLink(ul.Location.LocationName, "Details", "Locations", new { id = ul.Location.Id, area = "Profiling" }, null)</td>
+          <td>@ul.Commentary</td>
+        </tr>
+      }
+    </table>
+  }
+  else
+  {
+    <span class="muted">There are no unit locations.</span>
+  }
+</div>
+
+<div class="clearfix">
+  <hr />
+  <h3>Combined Locations</h3>
+
+  <p>This list is drawn from known information on locations where this unit was present via careers, events, and manual location entries.</p>
+  <p>@Html.ActionLink("View map", "Locations", "Units", new { id = Model.Id }, new { @class = "btn btn-mini" })</p>
+  @{
+      IDictionary<Location, IList<EntityLocationDateDTO>> locs = ViewBag.CombinedLocations;
+  }
+
+  @if (locs.Keys.Count > 0)
+  {
+      <table id="combined-locations-table" class="table table-bordered" style="width: auto;">
+          <thead>
+              <tr>
+                  <th>Location</th>
+                  <th>Start Date</th>
+                  <th>As Of Date</th>
+                  <th>End Date</th>
+              </tr>
+          </thead>
+          <tbody>
+              @foreach (EntityLocationDateDTO dto in locs.Values.Aggregate((x, y) => x.Concat(y).ToList()).OrderByDescending(x => x.GetSortDate()))
+              {
+                  <tr title="@dto.SourceTypeName">
+                      <td>@Html.ActionLink(dto.Location.LocationName, "Details", "Locations", new { id = dto.Location.Id, area = "Profiling" }, null)</td>
+                      <td>@dto.StartDateString</td>
+                      <td>@dto.AsOfDateString</td>
+                      <td>@dto.EndDateString</td>
+                  </tr>
+              }
+          </tbody>
+      </table>
+  }
+  else
+  {
+    <span class="muted">No information on locations where this unit was present.</span>
+  }
+</div>

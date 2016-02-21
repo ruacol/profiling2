@@ -1,0 +1,69 @@
+﻿/* offsets top nav toolbar */
+body 
+{
+  padding-top: 60px;
+}
+/* spacer for forms in modals */
+.form-horizontal .control-group
+{
+  margin-bottom: 10px;
+}
+/* layout adjustments for source page */
+.ui-accordion .ui-accordion-header
+{
+  padding: 5px 0px 5px 25px; 
+}
+/* adjust default bootbox modal width for event narratives */
+.modal.narrative
+{
+  width: 70%;
+  left: 30%;
+}
+/* highlight selected source search result */
+td.highlighted
+{
+  background-color: Yellow;
+}
+/* html diff in audit page */
+ins
+{
+  background-color: #cfc;
+  text-decoration: none;
+}
+del
+{
+  color: #999;
+  background-color:#FEC8C8;
+}
+/* fix datepicker not showing in firefox 22.0 */
+.ui-datepicker
+{ 
+  z-index: 9999 !important;
+}
+/* style tables in stats/counts pages */
+.table-stats td
+{
+  width: 50%;
+}
+.table-stats td.value
+{
+  text-align: right;
+}
+/* apparently this is part of bootstrap 2.3 */
+@media print {
+  .visible-print  { display: inherit !important; }
+  .hidden-print   { display: none !important; }
+}
+/* customise DataTables 'Processing...' box */
+.dataTables_processing {
+	border: 1px solid #d3d6ff;
+	color: #0088cc;
+  font-weight: bold;
+}
+/* ellipsis, used for text overflow on table cell */
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0;
+}

@@ -1,0 +1,46 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model ActiveScreeningViewModel
+
+<div id="validation-errors"></div>
+
+<p>
+  Mark this profile as being actively screened on the date you set in this form.  
+  This will allow this profile to be skipped if it was last actively screened within the 3 month rule.
+</p>
+
+<fieldset>
+    <div class="control-group">
+        <label class="control-label">Person *</label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.PersonId)
+            <span class="input-xxlarge uneditable-input">@Model.PersonName</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Request</label>
+        <div class="controls">
+            @Html.DropDownListFor(x => x.RequestId, Model.Requests, string.Empty, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Date of Screening *</label>
+        <div class="controls">
+            <div class="input-append">
+                @Html.TextBoxFor(x => x.DateActivelyScreened, new { @readonly = true, style = "cursor: pointer; background-color: #ffffff;" })
+                <span class="add-on"><i class="icon-calendar"></i></span>
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Screened By</label>
+        <div class="controls">
+            @Html.DropDownListFor(x => x.ScreenedById, Model.Users, string.Empty, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Notes</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+</fieldset>

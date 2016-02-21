@@ -1,0 +1,144 @@
+﻿@using Profiling2.Domain.Prf
+@using Profiling2.Domain.Prf.Sources
+@using Profiling2.Web.Mvc.Areas.Sources.Controllers.ViewModels
+@model MultipleUploadViewModel
+@{
+    ViewBag.Title = "Upload Feeding Sources";
+}
+@section scripts
+{
+    $(document).ready(function() {
+        $("#FileData").change(function() {
+            if (window.File) {
+                for (var i = 0; i < $("#FileData")[0].files.length; i++) {
+                    var file = $("#FileData")[0].files[i];
+
+                    if (file.size > 51200000) {
+                        bootbox.alert("Warning: " + file.name + " may be larger than the allowable upload limit.");
+                    }
+
+                    var lastModifiedDate = file.lastModifiedDate;
+                    if ($("#FileModifiedDateTime[" + i + "]").length == 0) {
+                        $("<input type='hidden' name='FileModifiedDateTime[" + i + "]' id='FileModifiedDateTime[" + i + "]' value='" + moment(lastModifiedDate).format('LLL') + "' />").appendTo($("form"));
+                    } else {
+                        $("#FileModifiedDateTime[" + i + "]").val(moment(lastModifiedDate).format('LLL'));
+                    }
+                }
+            } else {
+                // browsers that don't support HTML5 File API...
+                bootbox.alert("Your browser doesn't support HTML5 File API.  Your file will upload, but will not have any date associated with it.  If possible, please close and return to this page using a modern browser.");
+            }
+        });
+
+        new Profiling.MultiSelect({
+            el: "#AuthorIds",
+            placeholder: 'Search by author name...',
+            nameUrl: "@(Request.ApplicationPath + "/")Sources/Authors/Name/",
+            getUrl: '@(Request.ApplicationPath + "/")Sources/Authors/Get'
+        });
+    
+        new Profiling.MultiSelect({
+            el: "#OwnerIds",
+            placeholder: 'Search by owner name...',
+            nameUrl: "@(Request.ApplicationPath + "/")Sources/Owners/Name/",
+            getUrl: '@(Request.ApplicationPath + "/")Sources/Owners/All'
+        });
+
+        view = new Profiling.Views.SourceAuthorCreateFormView({
+          modalId: 'modal-source-author-create',
+          modalUrl: "@(Request.ApplicationPath + "/")Sources/Authors/CreateModal",
+          modalSaveButton: 'modal-source-author-create-button'
+        });
+        $("#label-authors").prepend(view.render().el);
+    });
+}
+
+<h2>Upload Sources</h2>
+
+<p>Upload files in order for them to be approved and fed into the main pool of sources.  You may select multiple files.</p>
+
+<p>
+    Tick the restricted box if the uploaded sources should only be seen by those with the <em>@AdminPermission.CanViewAndSearchRestrictedSources</em> permission.
+    Setting the author or owner of the document correctly will allow access permissions to be properly enforced 
+    (i.e. users affiliated with the owning entity are allowed to view sources owned by that entity).
+</p>
+<p>
+    You can also enter some notes that will accompany these files when being approved.
+</p>
+
+<blockquote>
+    <p>If uploading multiple sources, each will share the same attributes set in this form.</p>
+</blockquote>
+
+<hr />
+
+@if (TempData["SuccessfullyUploaded"] != null && ((IList<FeedingSource>)TempData["SuccessfullyUploaded"]).Any())
+{
+    <div class="alert alert-success">
+        <p>Successfully saved the following files:</p>
+        <ul>
+            @foreach (FeedingSource fs in (IList<FeedingSource>)TempData["SuccessfullyUploaded"])
+            {
+                <li>@Html.ActionLink(fs.Name, "Details", "Feeding", new { area = "Sources", id = fs.Id }, new { target = "_blank" })</li>
+            }
+        </ul>
+    </div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.Partial("_RawValidationSummary")
+    </div>
+}
+
+@using (Html.BeginForm("Upload", "Feeding", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <div class="control-group">
+        <label class="control-label">Files</label>
+        <div class="controls">
+            <input type="file" name="FileData" id="FileData" multiple="multiple" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Restricted?</label>
+        <div class="controls">
+            @Html.CheckBoxFor(x => x.Restricted)
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Read Only?</label>
+        <div class="controls">
+            @Html.CheckBoxFor(x => x.IsReadOnly)
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Public?</label>
+        <div class="controls">
+            @Html.CheckBoxFor(x => x.IsPublic)
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" id="label-authors">Authors</label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.AuthorIds, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" id="label-owners">Owning Entities</label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.OwnerIds, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Upload Notes</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.UploadNotes, new { @class = "input-xxlarge" })
+        </div>
+    </div>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Upload</button>
+        @Html.ActionLink("Back", "Index", "Feeding", new { area = "Sources" }, new { @class = "btn" })
+    </div>
+}

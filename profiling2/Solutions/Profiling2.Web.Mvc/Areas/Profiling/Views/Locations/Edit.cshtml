@@ -1,0 +1,70 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model LocationViewModel
+@{
+    ViewBag.Title = "Edit Location";
+}
+@section styles
+{
+  @Html.RenderCssBundle("~/Content/leaflet.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <!--[if lte IE 8]>
+      @Html.RenderCssBundle("~/Content/leaflet.ie.css.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+  <![endif]-->
+}
+@section scriptSources
+{
+  @Html.RenderJsBundle("~/Scripts/leaflet.js.bundle", (HttpContext.Current.IsDebuggingEnabled ? BundleOptions.Normal : BundleOptions.MinifiedAndCombined))
+}
+@section scripts
+{
+  $(document).ready(function() {
+    var opts = { height: 400 };
+    @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+    {
+        <text>
+            opts.latitude = @Model.Latitude.Value;
+            opts.longitude = @Model.Longitude.Value;
+        </text>
+    }
+    var mapView = new Profiling.Views.MapView(opts);
+    $("#container").html(mapView.render().el);
+
+    _.defer(function() {
+        @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+        {
+            <text>var marker = L.marker([@Model.Latitude.Value, @Model.Longitude.Value]).addTo(mapView.map);</text>
+        }
+
+        new L.Control.GeoSearch({
+            provider: new L.GeoSearch.Provider.OpenStreetMap(),
+            showMarker: true
+        }).addTo(mapView.map);
+
+        mapView.map.on('click', function(e) {
+            var popup = L.popup()
+                .setLatLng(e.latlng)
+                .setContent('<strong>Latitude:</strong> ' + e.latlng.lat + '<br /><strong>Longitude:</strong> ' + e.latlng.lng)
+                .openOn(mapView.map);
+        });
+    });
+  }); 
+}
+
+<h2>Edit Location</h2>
+
+<hr />
+
+<div class="row-fluid">
+    <div class="span6">
+        @using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.Partial("_LocationForm", Model)
+        
+    
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+                @Html.ActionLink("Back", "Details", "Locations", new { id = Model.Id, area = "Profiling" }, new { @class = "btn" })
+            </div>
+        }
+    </div>
+    <div id="container" class="span6"></div>
+</div>

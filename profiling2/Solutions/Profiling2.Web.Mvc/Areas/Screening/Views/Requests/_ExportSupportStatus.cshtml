@@ -1,0 +1,13 @@
+﻿@using Profiling2.Domain.Scr
+@model Request
+
+<div class="btn-group">
+  <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+    <strong>Export Support Status</strong>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="@Url.Action("Export", "Requests", new { id = Model.Id })?sortByRank=false">...persons sorted as they were added</a></li>
+    <li><a href="@Url.Action("Export", "Requests", new { id = Model.Id })?sortByRank=true">...persons sorted by rank</a></li>
+  </ul>
+</div>

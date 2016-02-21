@@ -1,0 +1,19 @@
+﻿@using Profiling2.Web.Mvc.Areas.Sources.Controllers.ViewModels
+@model SourceOwningEntityViewModel
+@{
+    ViewBag.Title = "Edit Source Owning Entity";
+}
+
+<h2>Edit Source Owning Entity</h2>
+
+<hr />
+
+@using (Html.BeginForm("Edit", "Owners", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.Partial("_SourceOwningEntityForm", Model)
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @Html.ActionLink("Back", "Index", "Owners", new { area = "Sources" }, new { @class = "btn" })
+    </div>
+}

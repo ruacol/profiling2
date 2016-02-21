@@ -1,0 +1,53 @@
+﻿@using System.Linq
+@using Profiling2.Domain.DTO
+@using Profiling2.Domain.Prf.Persons;
+@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model DateViewModel
+@{
+    ViewBag.Title = "Profiling Counts";
+}
+@section scripts
+{
+  $(document).ready(function() {
+    $("#StartDate").datepicker({ format: "yyyy-mm-dd", autoclose: true });
+  });
+}
+
+<h2>Profiling Counts</h2>
+
+<hr />
+
+<p class="hidden-print">Select the date in the past for which to retrieve counts (counts are exclusive of the date itself).</p>
+
+<div class="clearfix hidden-print" style="margin-top: 20px;">
+  @using (Html.BeginForm("Counts", "Home", new { area = "Profiling" }, FormMethod.Post, new { @class = "form-horizontal" }))
+  {
+    <div class="control-group">
+      <label class="control-label">Date</label>
+      <div class="controls">
+        <div class="input-append">
+          @Html.TextBoxFor(x => x.StartDate, new { style = "cursor: pointer; background-color: #ffffff;" })
+          @Html.HiddenFor(x => x.EndDate)
+          <span class="add-on"><i class="icon-calendar"></i></span>
+          <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Go</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<div class="clearfix">
+    <div class="row-fluid">
+    @if (ViewBag.CurrentProfilingCounts != null)
+    {
+        ViewBag.ShowHeadings = true;
+        @Html.Partial("_ProfilingCounts", (ProfilingCountsView)ViewBag.CurrentProfilingCounts)
+    }
+
+    @if (ViewBag.ProfilingCounts != null)
+    {
+        ViewBag.ShowHeadings = false;
+        @Html.Partial("_ProfilingCounts", (ProfilingCountsView)ViewBag.ProfilingCounts)
+    }
+    </div>
+</div>

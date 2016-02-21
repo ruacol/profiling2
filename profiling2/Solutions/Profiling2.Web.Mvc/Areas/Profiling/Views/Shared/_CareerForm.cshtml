@@ -1,0 +1,153 @@
+﻿@using Profiling2.Web.Mvc.Areas.Profiling.Controllers.ViewModels
+@model CareerViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<div id="validation-errors"></div>
+
+@Html.HiddenFor(x => x.Id)
+@Html.HiddenFor(x => x.PersonId)
+    
+<div class="control-group">
+    <label class="control-label">Start Date</label>
+    <div class="controls">
+        <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfStart, new { @class = "input-mini" })
+        <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfStart, new { @class = "input-mini" })
+        <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfStart, new { @class = "input-mini" })
+        <i class="accordion-toggle icon-info-sign" title="The date (yyyy-mm-dd) when this career started.  If parts of the date are not known, they can be left blank, for example 2009 - - 29."></i>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">End Date</label>
+    <div class="controls">
+        <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearOfEnd, new { @class = "input-mini" })
+        <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthOfEnd, new { @class = "input-mini" })
+        <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayOfEnd, new { @class = "input-mini" })
+        <i class="accordion-toggle icon-info-sign" title="The date (yyyy-mm-dd) when this career ended.  If parts of the date are not known, they can be left blank, for example 2009 - - 29."></i>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label">As Of</label>
+    <div class="controls">
+        <span class="muted">Year</span> @Html.TextBoxFor(x => x.YearAsOf, new { @class = "input-mini" })
+        <span class="muted">Month</span> @Html.TextBoxFor(x => x.MonthAsOf, new { @class = "input-mini" })
+        <span class="muted">Day</span> @Html.TextBoxFor(x => x.DayAsOf, new { @class = "input-mini" })
+        <i class="accordion-toggle icon-info-sign" title="The date (yyyy-mm-dd) when this career segment was first known about (but the start date may have been before).  If parts of the date are not known, they can be left blank, for example 2009 - - 29."></i>
+    </div>
+</div>
+
+<hr />
+
+    <div class="control-group">
+        <label class="control-label">
+            Function
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.RoleId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The function that this individual held for this particular career segment.  e.g. Commander.  Results are in both English and French, if they exist."></i>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+        <label class="checkbox inline has-help-text" title="Check this box if this individual was only acting in the above function.  e.g. Acting Commander.">
+            @Html.CheckBoxFor(x => x.Acting) Acting?
+        </label>
+        <label class="checkbox inline has-help-text" title="Check this box if this individual was absent in the above function.  Specifics regarding date and source can be placed in the commentary.">
+            @Html.CheckBoxFor(x => x.Absent) Absent?
+        </label>
+        <label class="checkbox inline has-help-text" title="Check this box if this individual was only nominated for the above function, but it is not known whether they took up the function.">
+            @Html.CheckBoxFor(x => x.Nominated) Nominated?
+        </label>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Job))
+    {
+        <div class="control-group">
+            <label class="control-label">
+                (Job)
+            </label>
+            <div class="controls">
+                @Html.TextAreaFor(x => x.Job, new { @class = "input-xxlarge" })
+                <i class="accordion-toggle icon-info-sign" title="This field is deprecated - please delete and move the data to other standardised fields.  This field can no longer be saved."></i>
+            </div>
+        </div>
+    }
+
+    <div class="control-group">
+        <label class="control-label">
+            Unit
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.UnitId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The unit in which this individual was a member, or held the above function."></i>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">
+            Rank
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.RankId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The rank that this individual has attained for this particular career segment.  e.g. Colonel.  Results are in both English and French, if they exist."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Organization
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.OrganizationId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The military, armed group, or police organization in which the individual is a member.  e.g. FARDC."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Location
+        </label>
+        <div class="controls">
+            @Html.HiddenFor(x => x.LocationId, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="The location where this career segment takes place.  e.g. Kinshasa."></i>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">Current Career?</label>
+        <div class="controls">
+            @Html.CheckBoxFor(x => x.IsCurrentCareer)
+            <i class="accordion-toggle icon-info-sign" title="Checked if the individual is currently active in this career segment.  A person may have more than one current career."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Defected?</label>
+        <div class="controls">
+            @Html.CheckBoxFor(x => x.Defected)
+            <i class="accordion-toggle icon-info-sign" title="Checked if the individual defected from this career segment on the <em>End Date</em>."></i>
+        </div>
+    </div>
+    
+<div style="clear: both;">
+    <hr />
+        
+    <div class="control-group">
+        <label class="control-label">Commentary</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Commentary, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="Any additional commentary about this career segment (appears in exported profile)."></i>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Notes</label>
+        <div class="controls">
+            @Html.TextAreaFor(x => x.Notes, new { @class = "input-xxlarge" })
+            <i class="accordion-toggle icon-info-sign" title="Notes about this career (does not appear in exported profile)."></i>
+        </div>
+    </div>
+</div>

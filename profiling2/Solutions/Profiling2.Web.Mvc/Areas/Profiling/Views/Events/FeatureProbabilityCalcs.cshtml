@@ -1,0 +1,37 @@
+﻿@using Profiling2.Domain.Prf.Suggestions
+@model IList<FeatureProbabilityCalc>
+@{
+    ViewBag.Title = "Blah";
+}
+
+<h2>Blah</h2>
+
+<table class="table table-bordered">
+  <tr>
+    <th>ID</th>
+    <th>Feature</th>
+    <th>IsAccepted</th>
+    <th>IsNotAccepted</th>
+    <th>Probability</th>
+    <th>Odds</th>
+    <th>Logit</th>
+    <th>SPLogit</th>
+    <th>LogitProbability</th>
+    <th>SPLogitProbability</th>
+  </tr>
+  @foreach (FeatureProbabilityCalc c in Model)
+  {
+    <tr>
+      <td>@c.Feature.Id</td>
+      <td>@c.Feature.Feature</td>
+      <td>@c.IsAcceptedCount</td>
+      <td>@c.IsNotAcceptedCount</td>
+      <td>@c.Probability</td>
+      <td>@c.Odds</td>
+      <td>@c.Logit</td>
+      <td>@c.SPLogit</td>
+      <td>@c.GetLogitProbability(c.Logit)</td>
+      <td>@c.GetLogitProbability(c.SPLogit)</td>
+    </tr>
+  }
+</table>
